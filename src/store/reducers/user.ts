@@ -8,12 +8,12 @@ import axiosInstance from '../../utils/axios';
 
 interface UserState {
   logged: boolean;
-  pseudo: string;
+  firstname: string;
   // token: string;
 }
 export const initialState: UserState = {
   logged: false,
-  pseudo: '',
+  firstname: '',
   // token: '',
 };
 
@@ -51,12 +51,12 @@ const userReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(login.fulfilled, (state, action) => {
       state.logged = action.payload.logged;
-      state.pseudo = action.payload.pseudo;
+      state.firstname = action.payload.firstname;
       // state.token = action.payload.token;
     })
     .addCase(logout, (state) => {
       state.logged = false;
-      state.pseudo = '';
+      state.firstname = '';
 
       // state.token = '';
       // on supprime le token de l'instance Axios

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, FormEvent } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -83,7 +84,10 @@ function SignIn() {
   const isLogged = useAppSelector((state) => state.user.logged);
   console.log(isLogged);
 
-  // const pseudo = useAppSelector((state) => state.user.pseudo);
+  const navigate = useNavigate();
+
+  const firstname = useAppSelector((state) => state.user.firstname);
+  console.log(firstname);
 
   const dispatch = useAppDispatch();
 
@@ -101,6 +105,11 @@ function SignIn() {
     dispatch(login(formData));
   };
 
+  // Si l'utilisateur est connecté, effectuez la redirection ici
+  if (isLogged) {
+    navigate('/events');
+  }
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
@@ -112,7 +121,7 @@ function SignIn() {
         >
           {isLogged && (
             <Box sx={{ mt: 60 }}>
-              <Typography>bienvenue Geoffrey</Typography>
+              <Typography>Bienvenue {firstname}, tu es connecté !</Typography>
               <Button onClick={handleLogout}>me déconnecter</Button>
             </Box>
           )}
@@ -186,7 +195,7 @@ function SignIn() {
                     </Link>
                   </Grid>
                   <Grid item>
-                    <Link href="#" variant="body2">
+                    <Link href="/signup" variant="body2">
                       Je veux m'inscrire
                     </Link>
                   </Grid>
