@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,8 +15,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { Link } from '@mui/material';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import logo from '../../assets/1-removebg-preview.png';
+import { logout } from '../store/reducers/user';
 
 interface Props {
   /**
@@ -30,14 +33,29 @@ const navItems = [
   { name: "M'inscrire", link: 'signup' },
   // { name: 'Me déconnecter', link: 'logout' },
 ];
+const navItemsLogged = [{ name: 'Me déconnecter', link: 'logout' }];
 
 function Navbar(props: Props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/');
+  };
+
+  const isLogged = useAppSelector((state) => state.user.logged);
+  console.log(isLogged);
+
+  const firstname = useAppSelector((state) => state.user.firstname);
+  console.log(firstname);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -60,19 +78,29 @@ function Navbar(props: Props) {
   const container =
     window !== undefined ? () => window().document.body : undefined;
 
-  const handleLogout = () => {
-    localStorage.clear();
-    console.log('handleLogout');
-  };
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar
-        style={{ backgroundColor: '#ABD1C6', color: '#001E1D' }}
-        component="nav"
-      >
-        <Toolbar>
+      {isLogged && (
+        <AppBar
+          style={{ backgroundColor: '#ABD1C6', color: '#001E1D' }}
+          component="nav"
+        >
+          <Box>
+            <Typography>Bienvenue {firstname}, tu es connecté !</Typography>
+            <Button
+              sx={{
+                color: '#001E1D',
+                '&:hover': {
+                  backgroundColor: '#001E1D',
+                  color: '#f9bc60',
+                },
+              }}
+              onClick={handleLogout}
+            >
+              me déconnecter
+            </Button>
+          </Box>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -82,51 +110,69 @@ function Navbar(props: Props) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{
-              flexGrow: 1,
-              display: { xs: 'none', sm: 'block' },
-            }}
-          >
-            <Link
-              href="/"
+        </AppBar>
+      )}
+      {!isLogged && (
+        <AppBar
+          style={{ backgroundColor: '#ABD1C6', color: '#001E1D' }}
+          component="nav"
+        >
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              component="div"
               sx={{
                 flexGrow: 1,
                 display: { xs: 'none', sm: 'block' },
               }}
             >
-              <img
-                alt="logo-weekaway"
-                src={logo}
-                style={{
-                  width: 150,
-                  height: 150,
-                }}
-              />
-            </Link>
-          </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button
-                key={item.name}
-                href={item.link}
+              <Link
+                href="/"
                 sx={{
-                  color: '#001E1D',
-                  '&:hover': {
-                    backgroundColor: '#001E1D',
-                    color: '#f9bc60',
-                  },
+                  flexGrow: 1,
+                  display: { xs: 'none', sm: 'block' },
                 }}
               >
-                {item.name}
-              </Button>
-            ))}
-            <Button onClick={handleLogout}>Me Déconnecter</Button>
-          </Box>
-        </Toolbar>
-      </AppBar>
+                <img
+                  alt="logo-weekaway"
+                  src={logo}
+                  style={{
+                    width: 150,
+                    height: 150,
+                  }}
+                />
+              </Link>
+            </Typography>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              {navItems.map((item) => (
+                <Button
+                  key={item.name}
+                  href={item.link}
+                  sx={{
+                    color: '#001E1D',
+                    '&:hover': {
+                      backgroundColor: '#001E1D',
+                      color: '#f9bc60',
+                    },
+                  }}
+                >
+                  {item.name}
+                </Button>
+              ))}
+            </Box>
+          </Toolbar>
+        </AppBar>
+      )}
+
       <nav>
         <Drawer
           container={container}
@@ -148,6 +194,7 @@ function Navbar(props: Props) {
           {drawer}
         </Drawer>
       </nav>
+
       <Box component="main">
         <Toolbar />
       </Box>

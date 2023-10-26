@@ -4,7 +4,7 @@ import {
   createReducer,
 } from '@reduxjs/toolkit';
 // import axios from 'axios';
-import axiosInstance from '../../utils/axios';
+import axiosInstance from '../../../utils/axios';
 
 interface UserState {
   logged: boolean;
