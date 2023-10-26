@@ -13,13 +13,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import styled from '@emotion/styled';
-import { makeStyles } from '@mui/styles';
-import { Grid } from '@mui/material';
-import './Navbar.scss';
+import { Link } from '@mui/material';
 
 import logo from '../../assets/1-removebg-preview.png';
-import visu from '../../assets/2-removebg-preview.png';
 
 interface Props {
   /**
@@ -29,7 +25,10 @@ interface Props {
   window?: () => Window;
 }
 const drawerWidth = 240;
-const navItems = ['Me connecter', "M'inscrire"];
+const navItems = [
+  { name: 'Me connecter', link: 'signin' },
+  { name: "M'inscrire", link: 'signup' },
+];
 
 function Navbar(props: Props) {
   const { window } = props;
@@ -42,14 +41,14 @@ function Navbar(props: Props) {
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
-        MUI
+        WeekAway
       </Typography>
-      <Divider />
+      <Divider sx={{ bgcolor: '#001E1D' }} />
       <List>
         {navItems.map((item) => (
-          <ListItem key={item} disablePadding>
+          <ListItem key={item.name} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
-              <ListItemText primary={item} />
+              <ListItemText primary={item.name} />
             </ListItemButton>
           </ListItem>
         ))}
@@ -80,14 +79,42 @@ function Navbar(props: Props) {
           <Typography
             variant="h6"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: 'none', sm: 'block' },
+            }}
           >
-            <img alt="logo" src={logo} style={{ width: 150, height: 150 }} />
+            <Link
+              href="/"
+              sx={{
+                flexGrow: 1,
+                display: { xs: 'none', sm: 'block' },
+              }}
+            >
+              <img
+                alt="logo-weekaway"
+                src={logo}
+                style={{
+                  width: 150,
+                  height: 150,
+                }}
+              />
+            </Link>
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
-              <Button key={item} sx={{ color: '#001E1D' }}>
-                {item}
+              <Button
+                key={item.name}
+                href={item.link}
+                sx={{
+                  color: '#001E1D',
+                  '&:hover': {
+                    backgroundColor: '#001E1D',
+                    color: '#f9bc60',
+                  },
+                }}
+              >
+                {item.name}
               </Button>
             ))}
           </Box>
@@ -107,13 +134,14 @@ function Navbar(props: Props) {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
+              bgcolor: '#ABD1C6',
             },
           }}
         >
           {drawer}
         </Drawer>
       </nav>
-      <Box component="main" sx={{ p: 3 }}>
+      <Box component="main">
         <Toolbar />
       </Box>
     </Box>
