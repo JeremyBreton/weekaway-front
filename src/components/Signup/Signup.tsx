@@ -43,14 +43,6 @@ export default function SignUp() {
     );
 
     setUser(response.data);
-
-    // localStorage.setItem('user', response.data);
-
-    //   console.log(response.data);
-    //   console.log({
-    //     email: data.get('email'),
-    //     password: data.get('password'),
-    //   });
   };
 
   return (

@@ -28,7 +28,7 @@ const drawerWidth = 240;
 const navItems = [
   { name: 'Me connecter', link: 'signin' },
   { name: "M'inscrire", link: 'signup' },
-  { name: 'Me déconnecter', link: 'logout' },
+  // { name: 'Me déconnecter', link: 'logout' },
 ];
 
 function Navbar(props: Props) {
@@ -59,6 +59,11 @@ function Navbar(props: Props) {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  const handleLogout = () => {
+    localStorage.clear();
+    console.log('handleLogout');
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -118,6 +123,7 @@ function Navbar(props: Props) {
                 {item.name}
               </Button>
             ))}
+            <Button onClick={handleLogout}>Me Déconnecter</Button>
           </Box>
         </Toolbar>
       </AppBar>
