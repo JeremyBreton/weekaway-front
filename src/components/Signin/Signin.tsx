@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -11,19 +12,74 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import axios from 'axios';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from '../Theme/Theme';
 
 const defaultTheme = createTheme(themeOptions);
 
-export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+function SignIn() {
+  // Ca on en a besoin dans navbar et dans signin
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [user, setUser] = useState();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const user = { email, password };
     const data = new FormData(event.currentTarget);
+
+    const response = await axios.post(
+      'http://geoffrey-fardeau.vpnuser.lan:3000/api/login',
+      user
+    );
+
+    setUser(response.data);
+
+    localStorage.setItem('user', response.data);
+
+    console.log(response.data);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
+  };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   const user = { email, password };
+  //   // send the username and password to the server
+  //   const response = await axios.post(
+  //     'http://geoffrey-fardeau.vpnuser.lan:3000/api/login',
+  //     user
+  //   );
+  //   // set the state of the user
+  //   setUser(response.data);
+  //   // store the user in localStorage
+  //   localStorage.setItem('user', response.data);
+  //   console.log(response.data);
+  // };
+
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem('user');
+    if (loggedInUser) {
+      const foundUser = JSON.parse(loggedInUser);
+      setUser(foundUser);
+    }
+  }, []);
+
+  // if there's a user show the message below
+  if (user) {
+    return <div>{user} is loggged in</div>;
+  }
+
+  // if there's no user, show the login form
+
+  const handleLogout = () => {
+    setUser({});
+    setEmail('');
+    setPassword('');
+    localStorage.clear();
   };
 
   return (
@@ -63,6 +119,8 @@ export default function SignIn() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                value={email}
+                onChange={({ target }) => setEmail(target.value)}
               />
               <TextField
                 margin="normal"
@@ -73,6 +131,8 @@ export default function SignIn() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={password}
+                onChange={({ target }) => setPassword(target.value)}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
@@ -111,3 +171,5 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+export default SignIn;

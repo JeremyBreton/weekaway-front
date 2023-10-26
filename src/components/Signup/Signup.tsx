@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,17 +14,43 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from '../Theme/Theme';
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme(themeOptions);
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [firstname, setfirstname] = useState('');
+  const [lastname, setlastname] = useState('');
+  const [user, setUser] = useState();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const user = { firstname, lastname, email, password };
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+
+    const response = await axios.post(
+      'http://geoffrey-fardeau.vpnuser.lan:3000/api/register',
+      user
+    );
+
+    setUser(response.data);
+
+    // localStorage.setItem('user', response.data);
+
+    //   console.log(response.data);
+    //   console.log({
+    //     email: data.get('email'),
+    //     password: data.get('password'),
+    //   });
   };
 
   return (
@@ -68,6 +96,8 @@ export default function SignUp() {
                     id="firstName"
                     label="Prénom"
                     autoFocus
+                    value={firstname}
+                    onChange={({ target }) => setfirstname(target.value)}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -78,6 +108,8 @@ export default function SignUp() {
                     label="Nom"
                     name="lastName"
                     autoComplete="family-name"
+                    value={lastname}
+                    onChange={({ target }) => setlastname(target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -88,6 +120,8 @@ export default function SignUp() {
                     label="Email"
                     name="email"
                     autoComplete="email"
+                    value={email}
+                    onChange={({ target }) => setEmail(target.value)}
                   />
                 </Grid>
                 <Grid item xs={12}>
@@ -99,6 +133,8 @@ export default function SignUp() {
                     type="password"
                     id="password"
                     autoComplete="new-password"
+                    value={password}
+                    onChange={({ target }) => setPassword(target.value)}
                   />
                 </Grid>
               </Grid>

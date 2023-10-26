@@ -4,7 +4,7 @@ function Error() {
   return (
     <div>
       <Navbar />
-      <p>Erreur</p>
+      <h1>Erreur</h1>
     </div>
   );
 }

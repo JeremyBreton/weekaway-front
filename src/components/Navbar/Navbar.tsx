@@ -28,6 +28,7 @@ const drawerWidth = 240;
 const navItems = [
   { name: 'Me connecter', link: 'signin' },
   { name: "M'inscrire", link: 'signup' },
+  { name: 'Me déconnecter', link: 'logout' },
 ];
 
 function Navbar(props: Props) {
