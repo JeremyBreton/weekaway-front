@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -32,6 +33,8 @@ export default function SignUp() {
   const [lastname, setlastname] = useState('');
   const [user, setUser] = useState();
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const user = { firstname, lastname, email, password };
@@ -43,6 +46,9 @@ export default function SignUp() {
     );
 
     setUser(response.data);
+
+    // Si l'utilisateur est connecté, effectuez la redirection ici {
+    navigate('/Signin');
   };
 
   return (

@@ -13,7 +13,6 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import axios from 'axios';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -22,72 +21,18 @@ import { login, logout } from '../../store/reducers/user';
 
 const defaultTheme = createTheme(themeOptions);
 
-// function SignIn() {
-// // Ca on en a besoin dans navbar et dans signin
-// const [email, setEmail] = useState('');
-// const [password, setPassword] = useState('');
-// const [user, setUser] = useState();
-
-// const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-//   event.preventDefault();
-//   const user = { email, password };
-//   const data = new FormData(event.currentTarget);
-
-//   const response = await axios.post(
-//     'http://geoffrey-fardeau.vpnuser.lan:3000/api/login',
-//     user
-//   );
-
-//   setUser(response.data);
-
-//   console.log(response.data);
-//   console.log({
-//     email: data.get('email'),
-//     password: data.get('password'),
-//   });
-// };
-
-// // const handleSubmit = async (e) => {
-// //   e.preventDefault();
-// //   const user = { email, password };
-// //   // send the username and password to the server
-// //   const response = await axios.post(
-// //     'http://geoffrey-fardeau.vpnuser.lan:3000/api/login',
-// //     user
-// //   );
-// //   // set the state of the user
-// //   setUser(response.data);
-// //   // store the user in localStorage
-// //   localStorage.setItem('user', response.data);
-// //   console.log(response.data);
-// // };
-
-// // if there's a user show the message below
-// if (user) {
-//   return <div>{user} is loggged in</div>;
-// }
-
-// // if there's no user, show the login form
-
-// const handleLogout = () => {
-//   setUser({});
-//   setEmail('');
-//   setPassword('');
-//   localStorage.clear();
-// };
-
 interface LoginFormProps {
   handleLogout: () => void;
 }
 
 function SignIn() {
   const isLogged = useAppSelector((state) => state.user.logged);
-  console.log(isLogged);
+  console.log('isLogged', isLogged);
 
   const navigate = useNavigate();
 
   const firstname = useAppSelector((state) => state.user.firstname);
-  console.log(firstname);
+  // console.log("Firstname", firstname);
 
   const dispatch = useAppDispatch();
 
@@ -106,9 +51,15 @@ function SignIn() {
   };
 
   // Si l'utilisateur est connecté, effectuez la redirection ici
-  if (isLogged) {
-    navigate('/events');
-  }
+  // if (isLogged) {
+  //   navigate('/events');
+  // }
+  console.log('isLogged', isLogged);
+  useEffect(() => {
+    if (isLogged) {
+      navigate('/events');
+    }
+  }, [isLogged, navigate]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -119,12 +70,6 @@ function SignIn() {
           // height="100vh"
           sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}
         >
-          {isLogged && (
-            <Box sx={{ mt: 60 }}>
-              <Typography>Bienvenue {firstname}, tu es connecté !</Typography>
-              <Button onClick={handleLogout}>me déconnecter</Button>
-            </Box>
-          )}
           {!isLogged && (
             <Box
               sx={{
@@ -155,8 +100,6 @@ function SignIn() {
                   name="email"
                   autoComplete="email"
                   autoFocus
-                  // value={}
-                  // onChange={({ target }) => setEmail(target.value)}
                 />
                 <TextField
                   margin="normal"
@@ -167,12 +110,10 @@ function SignIn() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
-                  // value={}
-                  // onChange={({ target }) => setPassword(target.value)}
                 />
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
+                  label="Se souvenir de moi"
                 />
                 <Button
                   type="submit"
