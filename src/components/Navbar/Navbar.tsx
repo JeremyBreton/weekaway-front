@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -101,10 +102,12 @@ function Navbar(props: Props) {
 
   const defaultTheme = createTheme(themeOptions);
 
+  const isLoggedIn = Cookies.get('isLogged');
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      {isLogged && (
+      {isLoggedIn && (
         <ThemeProvider theme={defaultTheme}>
           <AppBar
             style={{
@@ -185,7 +188,7 @@ function Navbar(props: Props) {
           </AppBar>
         </ThemeProvider>
       )}
-      {!isLogged && (
+      {!isLoggedIn && (
         <ThemeProvider theme={defaultTheme}>
           <AppBar
             style={{

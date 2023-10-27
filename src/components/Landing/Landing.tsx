@@ -28,6 +28,9 @@ function Landing() {
     navigate('/create');
   };
 
+  const eventFilteredPast = events.filter((event) => event.status === false);
+  const eventFilteredFutur = events.filter((event) => event.status === true);
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box
@@ -41,22 +44,22 @@ function Landing() {
         }}
       >
         <Typography sx={{ fontSize: 30, color: 'secondary.main', mb: 5 }}>
-          Mes évènements
+          Mes évènements à venir
         </Typography>
-        <Box
-          sx={{
-            backgroundColor: 'background.paper',
-            borderRadius: 5,
-            px: 5,
-            width: '30%',
-            justifyContent: 'center',
-            mb: 5,
-          }}
-        >
-          <Container>
-            {events.map((event) => (
+        {eventFilteredFutur.map((event) => (
+          <Box
+            sx={{
+              backgroundColor: 'background.paper',
+              borderRadius: 5,
+              px: 5,
+              width: '30%',
+              justifyContent: 'center',
+              mb: 5,
+            }}
+            key={event.id}
+          >
+            <Container>
               <CustomBox
-                key={event.id}
                 sx={{
                   bgcolor: 'background.paper',
                   justifyContent: 'center',
@@ -75,9 +78,47 @@ function Landing() {
                   {event.name}
                 </Typography>
               </CustomBox>
-            ))}
-          </Container>
-        </Box>
+            </Container>
+          </Box>
+        ))}
+        <Typography sx={{ fontSize: 30, color: 'secondary.main', mb: 5 }}>
+          Mes évènements passés
+        </Typography>
+        {eventFilteredPast.map((event) => (
+          <Box
+            sx={{
+              backgroundColor: 'background.paper',
+              borderRadius: 5,
+              px: 5,
+              width: '30%',
+              justifyContent: 'center',
+              mb: 5,
+            }}
+            key={event.id}
+          >
+            <Container>
+              <CustomBox
+                sx={{
+                  bgcolor: 'background.paper',
+                  justifyContent: 'center',
+                  width: 'md',
+                  mb: 5,
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontSize: '35px',
+                    color: '#001E1D',
+                    fontWeight: '700',
+                    my: 10,
+                  }}
+                >
+                  {event.name}
+                </Typography>
+              </CustomBox>
+            </Container>
+          </Box>
+        ))}
         <Box
           sx={{
             backgroundColor: 'background.paper',
@@ -87,27 +128,7 @@ function Landing() {
             mb: 5,
           }}
         >
-          <Container>
-            {/* <CustomBox
-              sx={{
-                bgcolor: 'background.paper',
-                justifyContent: 'center',
-                width: 'md',
-                mb: 5,
-              }}
-            >
-              <Typography
-                sx={{
-                  fontSize: '35px',
-                  color: '#001E1D',
-                  fontWeight: '700',
-                  my: 10,
-                }}
-              >
-                Beuverie chez Tim
-              </Typography>
-            </CustomBox> */}
-          </Container>
+          <Container />
         </Box>
         <Button
           variant="contained"

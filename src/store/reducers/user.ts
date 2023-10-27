@@ -4,6 +4,7 @@ import {
   createReducer,
 } from '@reduxjs/toolkit';
 // import axios from 'axios';
+import Cookies from 'js-cookie';
 import axiosInstance from '../../utils/axios';
 
 interface UserState {
@@ -34,17 +35,16 @@ export const login = createAsyncThunk(
     const formObj = Object.fromEntries(formData);
     console.log('formObj', formObj);
 
-    const { data } = await axiosInstance.post('/login', formObj);
-    console.log('data', data);
+    const { data } = await axiosInstance.post('/login', formObj, {
+      withCredentials: true,
+    });
+    console.log('data', data.user_id);
+
     if (data.token) {
-      localStorage.setItem('userToken', data.token);
-      data.logged = true;
-      console.log(
-        'localStorage',
-        localStorage.setItem('userToken', data.token)
-      );
-      console.log('coucou');
+      Cookies.set('id', data.user_id);
+      Cookies.set('token', data.token);
     }
+
     // Dès que j'ai le JWT, je l'ajoute à mon instance Axios :
     // toutes mes prochaines requêtes l'auront (et l'enverront)
     axiosInstance.defaults.headers.common.Authorization = `Bearer ${data.token}`;
@@ -72,7 +72,9 @@ const userReducer = createReducer(initialState, (builder) => {
       state.token = '';
       // on supprime le token de l'instance Axios
       delete axiosInstance.defaults.headers.common.Authorization;
-      localStorage.clear();
+      Cookies.remove('id');
+      Cookies.remove('token');
+      Cookies.remove('isLogged');
     });
 });
 

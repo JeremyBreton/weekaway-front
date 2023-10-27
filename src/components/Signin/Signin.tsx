@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState, FormEvent } from 'react';
+import { useEffect, useState, FormEvent, useContext } from 'react';
+import Cookies from 'js-cookie';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -23,6 +24,7 @@ const defaultTheme = createTheme(themeOptions);
 
 interface LoginFormProps {
   handleLogout: () => void;
+  AuthContext: () => void;
 }
 
 function SignIn() {
@@ -54,10 +56,17 @@ function SignIn() {
   // if (isLogged) {
   //   navigate('/events');
   // }
+  // const { setIsAuthenticated } = useContext(AuthContext);
+
   console.log('isLogged', isLogged);
   useEffect(() => {
     if (isLogged) {
+      Cookies.set('isLogged', 'true');
       navigate('/events');
+
+      //! important Needs to be debugged
+      // const id = Cookies.get('id');
+      // navigate(`/user/${id}/events`);
     }
   }, [isLogged, navigate]);
 

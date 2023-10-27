@@ -1,6 +1,7 @@
 import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 // import axios from 'axios';
-import axios from 'axios';
+import Cookies from 'js-cookie';
+
 import axiosInstance from '../../utils/axios';
 import { Event } from '../../@types/Event';
 
@@ -24,16 +25,18 @@ import { Event } from '../../@types/Event';
 // import type { RootState } from '..';
 
 interface EventsState {
-  loading: boolean;
+  // loading: boolean;
   list: Event[];
 }
 export const initialState: EventsState = {
-  loading: true,
+  // loading: true,
   list: [],
 };
 
+const id = Cookies.get('id');
+
 export const fetchEvents = createAsyncThunk('event/fetch', async () => {
-  const { data } = await axiosInstance.get('/event');
+  const { data } = await axiosInstance.get(`/user/${id}/events`);
   console.log('data', data);
   return data;
 });
