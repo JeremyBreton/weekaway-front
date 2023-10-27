@@ -3,8 +3,12 @@ import { Box, Container } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from '../Theme/Theme';
+import { useAppSelector } from '../../hooks/redux';
 
 function Landing() {
+  const events = useAppSelector((state) => state.events.list);
+  console.log('events', events);
+
   const CustomBox = styled(Box)(({ theme }) => ({
     display: 'flex',
     gap: theme.spacing(10),
@@ -50,25 +54,28 @@ function Landing() {
           }}
         >
           <Container>
-            <CustomBox
-              sx={{
-                bgcolor: 'background.paper',
-                justifyContent: 'center',
-                width: 'md',
-                mb: 5,
-              }}
-            >
-              <Typography
+            {events.map((event) => (
+              <CustomBox
+                key={event.id}
                 sx={{
-                  fontSize: '35px',
-                  color: '#001E1D',
-                  fontWeight: '700',
-                  my: 10,
+                  bgcolor: 'background.paper',
+                  justifyContent: 'center',
+                  width: 'md',
+                  mb: 5,
                 }}
               >
-                Concert de Geoffrey
-              </Typography>
-            </CustomBox>
+                <Typography
+                  sx={{
+                    fontSize: '35px',
+                    color: '#001E1D',
+                    fontWeight: '700',
+                    my: 10,
+                  }}
+                >
+                  {event.name}
+                </Typography>
+              </CustomBox>
+            ))}
           </Container>
         </Box>
         <Box
@@ -81,7 +88,7 @@ function Landing() {
           }}
         >
           <Container>
-            <CustomBox
+            {/* <CustomBox
               sx={{
                 bgcolor: 'background.paper',
                 justifyContent: 'center',
@@ -99,7 +106,7 @@ function Landing() {
               >
                 Beuverie chez Tim
               </Typography>
-            </CustomBox>
+            </CustomBox> */}
           </Container>
         </Box>
         <Button
