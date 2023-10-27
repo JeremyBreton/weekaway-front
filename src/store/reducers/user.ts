@@ -9,12 +9,12 @@ import axiosInstance from '../../utils/axios';
 interface UserState {
   logged: boolean;
   firstname: string;
-  // token: string;
+  token: string;
 }
 export const initialState: UserState = {
   logged: false,
   firstname: '',
-  // token: '',
+  token: '',
 };
 
 export const logout = createAction('user/logout');
@@ -36,13 +36,25 @@ export const login = createAsyncThunk(
 
     const { data } = await axiosInstance.post('/login', formObj);
     console.log('data', data);
+    if (data.token) {
+      localStorage.setItem('userToken', data.token);
+      data.logged = true;
+      console.log(
+        'localStorage',
+        localStorage.setItem('userToken', data.token)
+      );
+      console.log('coucou');
+    }
     // Dès que j'ai le JWT, je l'ajoute à mon instance Axios :
     // toutes mes prochaines requêtes l'auront (et l'enverront)
     axiosInstance.defaults.headers.common.Authorization = `Bearer ${data.token}`;
-
+    console.log(
+      'axiosInstance',
+      axiosInstance.defaults.headers.common.Authorization
+    );
     // le token n'est plus nécessaire ici, je le supprime de mes données
     delete data.token;
-
+    console.log('data', data);
     return data as UserState;
   }
 );
@@ -52,15 +64,15 @@ const userReducer = createReducer(initialState, (builder) => {
     .addCase(login.fulfilled, (state, action) => {
       state.logged = action.payload.logged;
       state.firstname = action.payload.firstname;
-      // state.token = action.payload.token;
+      state.token = action.payload.token;
     })
     .addCase(logout, (state) => {
       state.logged = false;
       state.firstname = '';
-
-      // state.token = '';
+      state.token = '';
       // on supprime le token de l'instance Axios
       delete axiosInstance.defaults.headers.common.Authorization;
+      localStorage.clear();
     });
 });
 

@@ -1,9 +1,10 @@
 import { Button, styled, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
+import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from '../Theme/Theme';
 
-function Presentation() {
+function Landing() {
   const CustomBox = styled(Box)(({ theme }) => ({
     display: 'flex',
     gap: theme.spacing(10),
@@ -17,6 +18,12 @@ function Presentation() {
 
   const defaultTheme = createTheme(themeOptions);
 
+  const navigate = useNavigate();
+
+  const handleClickCreateEvent = () => {
+    navigate('/create');
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Box
@@ -24,6 +31,9 @@ function Presentation() {
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
+          backgroundColor: 'background.default',
+          pt: 15,
+          minHeight: '100vh',
         }}
       >
         <Typography sx={{ fontSize: 30, color: 'secondary.main', mb: 5 }}>
@@ -92,7 +102,11 @@ function Presentation() {
             </CustomBox>
           </Container>
         </Box>
-        <Button variant="contained" sx={{ mb: 5, color: 'secondary.main' }}>
+        <Button
+          variant="contained"
+          sx={{ mb: 5, color: 'secondary.main' }}
+          onClick={handleClickCreateEvent}
+        >
           Créer mon évènement
         </Button>
       </Box>
@@ -100,4 +114,4 @@ function Presentation() {
   );
 }
 
-export default Presentation;
+export default Landing;

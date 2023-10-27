@@ -27,12 +27,12 @@ interface LoginFormProps {
 
 function SignIn() {
   const isLogged = useAppSelector((state) => state.user.logged);
-  console.log(isLogged);
+  console.log('isLogged', isLogged);
 
   const navigate = useNavigate();
 
   const firstname = useAppSelector((state) => state.user.firstname);
-  console.log(firstname);
+  // console.log("Firstname", firstname);
 
   const dispatch = useAppDispatch();
 
@@ -51,9 +51,15 @@ function SignIn() {
   };
 
   // Si l'utilisateur est connecté, effectuez la redirection ici
-  if (isLogged) {
-    navigate('/events');
-  }
+  // if (isLogged) {
+  //   navigate('/events');
+  // }
+  console.log('isLogged', isLogged);
+  useEffect(() => {
+    if (isLogged) {
+      navigate('/events');
+    }
+  }, [isLogged, navigate]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -64,12 +70,6 @@ function SignIn() {
           // height="100vh"
           sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}
         >
-          {isLogged && (
-            <Box sx={{ mt: 60 }}>
-              <Typography>Bienvenue {firstname}, tu es connecté !</Typography>
-              <Button onClick={handleLogout}>me déconnecter</Button>
-            </Box>
-          )}
           {!isLogged && (
             <Box
               sx={{
@@ -113,7 +113,7 @@ function SignIn() {
                 />
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
-                  label="Remember me"
+                  label="Se souvenir de moi"
                 />
                 <Button
                   type="submit"
