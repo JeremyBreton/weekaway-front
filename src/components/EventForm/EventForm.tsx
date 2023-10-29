@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import {
   Button,
   Checkbox,
@@ -12,6 +12,8 @@ import { Box, Container } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import axios from 'axios';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import Calendar from '../Calendar/Calendar';
@@ -35,10 +37,24 @@ function EventForm() {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // je vais dispatcher un thunk pour contacter mon API avec les identifiants
     const form = event.currentTarget;
     const formData = new FormData(form);
-    dispatch(event(formData));
+
+    const formObj = Object.fromEntries(formData);
+    const eventPicture = formObj.event.toString();
+    formData.append('event', eventPicture);
+
+    console.log('Je suis le formbobj', formObj);
+
+    console.log('formObj', formObj);
+
+    axios.post('http://caca-boudin.fr/api/event', formObj, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    //! important : il faut rediriger vers la page de l'event
+    // axios.post('http://caca-boudin.fr/api/event', formObj.event);
   };
 
   // const [startDate, setStartDate] = useState(new Date());
@@ -56,6 +72,22 @@ function EventForm() {
       // navigate('/events');
     }
   }, [isAuthenticated]);
+
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
+
+  console.log('cest moi', VisuallyHiddenInput);
+
+  const handleOwnerId = Cookies.get('id');
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -93,7 +125,7 @@ function EventForm() {
                   name="name"
                   autoFocus
                 />
-                <TextField
+                {/* <TextField
                   margin="normal"
                   required
                   fullWidth
@@ -101,8 +133,8 @@ function EventForm() {
                   label="Thème de l'évènement"
                   type="Theme"
                   id="Theme"
-                />
-                <TextField
+                /> */}
+                {/* <TextField
                   margin="normal"
                   required
                   fullWidth
@@ -110,26 +142,43 @@ function EventForm() {
                   label="Lieu de l'évènement"
                   type="Lieu"
                   id="Lieu"
-                />
+                /> */}
                 <TextField
                   margin="normal"
                   required
                   fullWidth
-                  name="Description"
+                  name="description"
                   label="Description de l'évènement"
                   type="Description"
-                  id="Description"
+                  id="description"
                 />
-                <Calendar />
-                {/* <DatePicker
-                selected={startDate}
-                onChange={onChange}
-                startDate={startDate}
-                endDate={endDate}
-                selectsRange
-                inline
-              /> */}
+                <Button
+                  component="label"
+                  variant="contained"
+                  startIcon={<CloudUploadIcon />}
+                >
+                  Bannière de l'évènement
+                  <VisuallyHiddenInput type="file" id="event" name="event" />
+                </Button>
                 {/* <Calendar /> */}
+                <VisuallyHiddenInput
+                  type="input"
+                  id="ownerId"
+                  name="ownerId"
+                  value={handleOwnerId}
+                />
+                <VisuallyHiddenInput
+                  type="input"
+                  id="status"
+                  name="status"
+                  value="true"
+                />
+                <VisuallyHiddenInput
+                  type="input"
+                  id="linkProject"
+                  name="linkProject"
+                  value="google.fr"
+                />
                 <Button
                   type="submit"
                   fullWidth

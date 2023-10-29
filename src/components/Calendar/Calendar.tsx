@@ -7,6 +7,7 @@ import { PickersDay } from '@mui/x-date-pickers/PickersDay';
 import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
+import { useState } from 'react';
 import { themeOptions } from '../Theme/Theme';
 
 const StyledButton = styled(IconButton)(({ theme }) => ({
@@ -21,13 +22,43 @@ const StyledDay = styled(PickersDay)(({ theme }) => ({
 }));
 
 function Calendar() {
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
+  const [error, setError] = useState(null);
+  console.log('startDate', startDate);
+  console.log('endDate', endDate);
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+    setError(null);
+  };
+  const handleEndDateChange = (date) => {
+    //! Tu créés ton comportement qui va gérer le changement de date de fin (tu vas l'appeler dans ton composant CustomCalendar)
+    if (startDate && date < startDate) {
+      setError(
+        'La date de fin ne peut pas être antérieure à la date de début.'
+      );
+      return;
+    }
+    setEndDate(date);
+    setError(null);
+  };
+  console.log('error', error);
+
   const defaultTheme = createTheme(themeOptions);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ backgroundColor: '#ABD1C6' }}>
         <ThemeProvider theme={defaultTheme}>
           <DatePicker
             label="Date de début"
+            format="DD/MM/YYYY"
+            // renderInput={(params) => <TextField {...params} />}
+            // value={startDate}
+            // onChange={(newValue) => {
+            //   setStartDate(newValue);
+            // }}
             slots={{
               openPickerIcon: EditCalendarRoundedIcon,
               openPickerButton: StyledButton,
@@ -40,11 +71,17 @@ function Calendar() {
                 variant: 'filled',
                 focused: true,
                 color: 'primary',
+                placeholder: 'JJ/MM/AAAA',
+                value: startDate,
+                onChange: handleStartDateChange,
               },
             }}
           />
           <DatePicker
             label="Date de fin"
+            // selectedDate={endDate} //! T'appelles ton states endDate
+            // onDateChange={handleEndDateChange}
+            format="DD/MM/YYYY"
             slots={{
               openPickerIcon: EditCalendarRoundedIcon,
               openPickerButton: StyledButton,
@@ -57,6 +94,9 @@ function Calendar() {
                 variant: 'filled',
                 focused: true,
                 color: 'primary',
+                placeholder: 'JJ/MM/AAAA',
+                value: endDate,
+                onChange: handleEndDateChange,
               },
             }}
           />

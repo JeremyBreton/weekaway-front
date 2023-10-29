@@ -1,4 +1,13 @@
-import { Button, styled, Typography } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardMedia,
+  styled,
+  Typography,
+} from '@mui/material';
 import { Box, Container } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -57,78 +66,152 @@ function Landing() {
         <Typography sx={{ fontSize: 30, color: 'secondary.main', mb: 5 }}>
           Mes évènements à venir
         </Typography>
-        {eventFilteredFutur.map((event) => (
-          <Box
-            sx={{
-              backgroundColor: 'background.paper',
-              borderRadius: 5,
-              px: 5,
-              width: '30%',
-              justifyContent: 'center',
-              mb: 5,
-            }}
-            key={event.eventId}
-          >
-            <Container>
-              <CustomBox
-                sx={{
-                  bgcolor: 'background.paper',
-                  justifyContent: 'center',
-                  width: 'md',
-                  mb: 5,
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: '35px',
-                    color: '#001E1D',
-                    fontWeight: '700',
-                    my: 10,
-                  }}
-                >
-                  {event.name}
-                </Typography>
-              </CustomBox>
-            </Container>
-          </Box>
-        ))}
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
+          {eventFilteredFutur.map((event) => (
+            <Card
+              key={event.eventId}
+              sx={{
+                width: 500,
+                height: 300,
+                mr: 10,
+                mb: 10,
+              }}
+            >
+              <CardActionArea>
+                <CardMedia
+                  component="img"
+                  height="140"
+                  image={event.picture}
+                  alt="banniere de l'évènement"
+                  sx={{ objectFit: 'cover' }}
+                />
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div">
+                    {event.name}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {event.description}
+                  </Typography>
+                </CardContent>
+              </CardActionArea>
+              <CardActions>
+                <Button size="small" color="primary" sx={{ mt: 10 }}>
+                  Voir l'évènement
+                </Button>
+              </CardActions>
+            </Card>
+
+            // <Box
+            //   sx={{
+            //     backgroundColor: 'background.paper',
+            //     borderRadius: 5,
+            //     px: 5,
+            //     width: '30%',
+            //     justifyContent: 'center',
+            //     mb: 5,
+            //   }}
+            //   key={event.eventId}
+            // >
+            //   <Container>
+            //     <CustomBox
+            //       sx={{
+            //         bgcolor: 'background.paper',
+            //         justifyContent: 'center',
+            //         width: 'md',
+            //         mb: 5,
+            //       }}
+            //     >
+            //       <Typography
+            //         sx={{
+            //           fontSize: '35px',
+            //           color: '#001E1D',
+            //           fontWeight: '700',
+            //           my: 10,
+            //         }}
+            //       >
+            //         {event.name}
+            //       </Typography>
+            //     </CustomBox>
+            //   </Container>
+            // </Box>
+          ))}
+        </Box>
         <Typography sx={{ fontSize: 30, color: 'secondary.main', mb: 5 }}>
           Mes évènements passés
         </Typography>
         {eventFilteredPast.map((event) => (
-          <Box
-            sx={{
-              backgroundColor: 'background.paper',
-              borderRadius: 5,
-              px: 5,
-              width: '30%',
-              justifyContent: 'center',
-              mb: 5,
-            }}
+          <Card
             key={event.eventId}
+            sx={{
+              width: 500,
+              height: 300,
+              mr: 10,
+              mb: 10,
+            }}
           >
-            <Container>
-              <CustomBox
-                sx={{
-                  bgcolor: 'background.paper',
-                  justifyContent: 'center',
-                  width: 'md',
-                  mb: 5,
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: '35px',
-                    color: '#001E1D',
-                    fontWeight: '700',
-                    my: 10,
-                  }}
-                >
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                height="140"
+                image={event.picture}
+                alt="banniere de l'évènement"
+                sx={{ objectFit: 'cover' }}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
                   {event.name}
                 </Typography>
-              </CustomBox>
-            </Container>
-          </Box>
+                <Typography variant="body2" color="text.secondary">
+                  {event.description}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+            <CardActions>
+              <Button size="small" color="primary" sx={{ mt: 10 }}>
+                Voir l'évènement
+              </Button>
+            </CardActions>
+          </Card>
+          //   <Box
+          //     sx={{
+          //       backgroundColor: 'background.paper',
+          //       borderRadius: 5,
+          //       px: 5,
+          //       width: '30%',
+          //       justifyContent: 'center',
+          //       mb: 5,
+          //     }}
+          //     key={event.eventId}
+          //   >
+          //     <Container>
+          //       <CustomBox
+          //         sx={{
+          //           bgcolor: 'background.paper',
+          //           justifyContent: 'center',
+          //           width: 'md',
+          //           mb: 5,
+          //         }}
+          //       >
+          //         <Typography
+          //           sx={{
+          //             fontSize: '35px',
+          //             color: '#001E1D',
+          //             fontWeight: '700',
+          //             my: 10,
+          //           }}
+          //         >
+          //           {event.name}
+          //         </Typography>
+          //       </CustomBox>
+          //     </Container>
+          //   </Box>
         ))}
         <Box
           sx={{
@@ -147,6 +230,9 @@ function Landing() {
           onClick={handleClickCreateEvent}
         >
           Créer mon évènement
+        </Button>
+        <Button variant="contained" sx={{ mb: 5, color: 'secondary.main' }}>
+          Rejoindre un évènement
         </Button>
       </Box>
     </ThemeProvider>

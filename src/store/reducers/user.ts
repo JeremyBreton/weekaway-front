@@ -82,6 +82,7 @@ const userReducer = createReducer(initialState, (builder) => {
       // on supprime le token de l'instance Axios
       delete axiosInstance.defaults.headers.common.Authorization;
       removeCookie('token');
+      removeCookie('id');
       // Cookies.remove('isLogged');
     });
 });

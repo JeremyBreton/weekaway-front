@@ -48,11 +48,10 @@ function SignIn() {
     // je vais dispatcher un thunk pour contacter mon API avec les identifiants
     const form = event.currentTarget;
     const formData = new FormData(form);
+    console.log('form', form);
+    console.log('formData', formData);
 
     dispatch(login(formData));
-
-    const id = Cookies.get('id');
-    navigate(`/user/${id}/events`);
   };
   console.log('isLogged', isLogged);
   useEffect(() => {
