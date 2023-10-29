@@ -2,12 +2,13 @@ import { Button, styled, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useEffect } from 'react';
 import { themeOptions } from '../Theme/Theme';
-import { useAppSelector } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { fetchEvents } from '../../store/reducers/events';
 
 function Landing() {
-  const events = useAppSelector((state) => state.events.list);
-  console.log('events', events);
+  const eventsArray = useAppSelector((state) => state.events.eventsArray);
 
   const CustomBox = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -28,8 +29,18 @@ function Landing() {
     navigate('/create');
   };
 
-  const eventFilteredPast = events.filter((event) => event.status === false);
-  const eventFilteredFutur = events.filter((event) => event.status === true);
+  const eventFilteredPast = eventsArray.filter(
+    (event) => event.status === false
+  );
+  const eventFilteredFutur = eventsArray.filter(
+    (event) => event.status === true
+  );
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchEvents());
+  }, [dispatch]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -56,7 +67,7 @@ function Landing() {
               justifyContent: 'center',
               mb: 5,
             }}
-            key={event.id}
+            key={event.eventId}
           >
             <Container>
               <CustomBox
@@ -94,7 +105,7 @@ function Landing() {
               justifyContent: 'center',
               mb: 5,
             }}
-            key={event.id}
+            key={event.eventId}
           >
             <Container>
               <CustomBox

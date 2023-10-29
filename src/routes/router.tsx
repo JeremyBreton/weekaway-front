@@ -7,6 +7,7 @@ import SignUp from '../components/Signup/Signup';
 import Error from './Root/Error/Error';
 import Landing from '../components/Landing/Landing';
 import EventForm from '../components/EventForm/EventForm';
+import Presentation from '../components/Presentation/Presentation';
 
 // Router : 1. je crée le router avec `createBrowserRouter`
 const router = createBrowserRouter([
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
           {
             path: '/create',
             element: <EventForm />,
+          },
+          {
+            path: '/logout',
+            element: <Presentation />,
           },
         ],
       },

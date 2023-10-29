@@ -2,7 +2,8 @@ import Navbar from '../Navbar/Navbar';
 import './App.scss';
 import Presentation from '../Presentation/Presentation';
 import Advantage from '../Advantage/Advantage';
-import Landing from '../Landing/Landing';
+import Calendar from '../Calendar/Calendar';
+import EventForm from '../EventForm/EventForm';
 
 function App() {
   return (
@@ -10,7 +11,6 @@ function App() {
       <Navbar />
       <Presentation />
       <Advantage />
-      <Landing />
     </div>
   );
 }

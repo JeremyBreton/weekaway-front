@@ -5,8 +5,6 @@ import Cookies from 'js-cookie';
 import axiosInstance from '../../utils/axios';
 import { Event } from '../../@types/Event';
 
-// import data from '../../data';
-
 /*
   Erreur ESLint : « Dependency cycle »
 
@@ -27,18 +25,23 @@ import { Event } from '../../@types/Event';
 interface EventsState {
   // loading: boolean;
   list: Event[];
+  eventsArray: Event[];
 }
 export const initialState: EventsState = {
   // loading: true,
   list: [],
+  eventsArray: [],
 };
 
-const id = Cookies.get('id');
-
 export const fetchEvents = createAsyncThunk('event/fetch', async () => {
+  const id = Cookies.get('id');
   const { data } = await axiosInstance.get(`/user/${id}/events`);
   console.log('data', data);
-  return data;
+
+  const eventsArray = data.events;
+  console.log('coucou ici', eventsArray);
+
+  return { data, eventsArray };
 });
 
 const eventsReducer = createReducer(initialState, (builder) => {
@@ -48,7 +51,11 @@ const eventsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchEvents.fulfilled, (state, action) => {
       // state.loading = false;
-      state.list = action.payload;
+      // state.list = action.payload;
+      state.eventsArray = action.payload.eventsArray;
+    })
+    .addCase(fetchEvents.rejected, (state) => {
+      state.list = [];
     });
 });
 

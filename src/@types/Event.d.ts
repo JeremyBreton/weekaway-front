@@ -2,6 +2,7 @@ export interface Event {
   id: number;
   name: string;
   owner_id: number;
+  eventId: number;
   status: boolean;
   description: string;
   picture: string;

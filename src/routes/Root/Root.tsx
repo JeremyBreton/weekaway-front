@@ -20,9 +20,9 @@ function Root() {
 
   const location = useLocation();
 
-  useEffect(() => {
-    dispatch(fetchEvents());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(fetchEvents());
+  // }, [dispatch]);
 
   useEffect(() => {
     // window.scrollTo({
