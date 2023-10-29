@@ -54,20 +54,10 @@ function EventForm() {
       },
     });
     //! important : il faut rediriger vers la page de l'event
-    // axios.post('http://caca-boudin.fr/api/event', formObj.event);
   };
-
-  // const [startDate, setStartDate] = useState(new Date());
-  // const [endDate, setEndDate] = useState(null);
-  // const onChange = (dates) => {
-  //   const [start, end] = dates;
-  //   setStartDate(start);
-  //   setEndDate(end);
-  // };
 
   useEffect(() => {
     if (isAuthenticated) {
-      // Cookies.set('isLogged', 'true');
       Cookies.get('token');
       // navigate('/events');
     }
