@@ -23,10 +23,6 @@ import { getCookie } from '../../utils/cookieUtils';
 
 const defaultTheme = createTheme(themeOptions);
 
-// interface LoginFormProps {
-//   handleLogout: () => void;
-// }
-
 function SignIn() {
   // ! JEREMY
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
@@ -39,29 +35,22 @@ function SignIn() {
 
   const dispatch = useAppDispatch();
 
-  // const handleLogout = () => {
-  //   dispatch(logout());
-  // };
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // je vais dispatcher un thunk pour contacter mon API avec les identifiants
     const form = event.currentTarget;
     const formData = new FormData(form);
-    console.log('form', form);
-    console.log('formData', formData);
+    // console.log('form', form);
+    // console.log('formData', formData);
 
     dispatch(login(formData));
   };
   console.log('isLogged', isLogged);
   useEffect(() => {
     if (isLogged) {
-      // Cookies.set('isLogged', 'true');
       getCookie('token');
-      // navigate('/events');
-
-      // //! important Needs to be debugged
       const id = getCookie('id');
+      // //! important Needs to be debugged
+
       navigate(`/user/${id}/events`);
     }
   }, [isLogged, navigate]);
@@ -79,10 +68,7 @@ function SignIn() {
       <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
         <CssBaseline />
 
-        <Box
-          // height="100vh"
-          sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}
-        >
+        <Box sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}>
           {!isAuthenticated && (
             <Box
               sx={{

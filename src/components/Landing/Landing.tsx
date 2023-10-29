@@ -35,7 +35,11 @@ function Landing() {
   const navigate = useNavigate();
 
   const handleClickCreateEvent = () => {
-    navigate('/create');
+    navigate('/user/:id/create');
+  };
+
+  const handleClickJoinEvent = () => {
+    navigate('/user/:id/join');
   };
 
   const eventFilteredPast = eventsArray.filter(
@@ -103,6 +107,7 @@ function Landing() {
               </CardActionArea>
               <CardActions>
                 <Button size="small" color="primary" sx={{ mt: 10 }}>
+                  {/* eslint-disable-next-line react/no-unescaped-entities */}
                   Voir l'évènement
                 </Button>
               </CardActions>
@@ -231,7 +236,11 @@ function Landing() {
         >
           Créer mon évènement
         </Button>
-        <Button variant="contained" sx={{ mb: 5, color: 'secondary.main' }}>
+        <Button
+          variant="contained"
+          onClick={handleClickJoinEvent}
+          sx={{ mb: 5, color: 'secondary.main' }}
+        >
           Rejoindre un évènement
         </Button>
       </Box>

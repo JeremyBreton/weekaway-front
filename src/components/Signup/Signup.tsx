@@ -18,15 +18,6 @@ import { themeOptions } from '../Theme/Theme';
 const defaultTheme = createTheme(themeOptions);
 
 export default function SignUp() {
-  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-  //   const data = new FormData(event.currentTarget);
-  //   console.log({
-  //     email: data.get('email'),
-  //     password: data.get('password'),
-  //   });
-  // };
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstname, setfirstname] = useState('');
@@ -47,7 +38,6 @@ export default function SignUp() {
 
     setUser(response.data);
 
-    // Si l'utilisateur est connecté, effectuez la redirection ici {
     navigate('/Signin');
   };
 
@@ -74,6 +64,7 @@ export default function SignUp() {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
               M'inscrire
             </Typography>
             <Box
@@ -148,6 +139,7 @@ export default function SignUp() {
                   '&:hover': { color: 'secondary.main' },
                 }}
               >
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 M'inscrire
               </Button>
               <Grid container justifyContent="flex-end">

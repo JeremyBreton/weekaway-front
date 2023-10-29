@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { Box } from '@mui/system';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -14,7 +13,6 @@ const StyledButton = styled(IconButton)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
 }));
 const StyledDay = styled(PickersDay)(({ theme }) => ({
-  // borderRadius: theme.shape.borderRadius,
   color:
     theme.palette.mode === 'light'
       ? theme.palette.primary.dark
@@ -33,7 +31,7 @@ function Calendar() {
     setError(null);
   };
   const handleEndDateChange = (date) => {
-    //! Tu créés ton comportement qui va gérer le changement de date de fin (tu vas l'appeler dans ton composant CustomCalendar)
+    // compare if date is before startDate
     if (startDate && date < startDate) {
       setError(
         'La date de fin ne peut pas être antérieure à la date de début.'
@@ -49,16 +47,19 @@ function Calendar() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ backgroundColor: '#ABD1C6' }}>
+      <Box
+        sx={{
+          backgroundColor: '#ABD1C6',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
         <ThemeProvider theme={defaultTheme}>
           <DatePicker
             label="Date de début"
             format="DD/MM/YYYY"
-            // renderInput={(params) => <TextField {...params} />}
-            // value={startDate}
-            // onChange={(newValue) => {
-            //   setStartDate(newValue);
-            // }}
+            sx={{ mb: 2 }}
             slots={{
               openPickerIcon: EditCalendarRoundedIcon,
               openPickerButton: StyledButton,
@@ -79,8 +80,6 @@ function Calendar() {
           />
           <DatePicker
             label="Date de fin"
-            // selectedDate={endDate} //! T'appelles ton states endDate
-            // onDateChange={handleEndDateChange}
             format="DD/MM/YYYY"
             slots={{
               openPickerIcon: EditCalendarRoundedIcon,

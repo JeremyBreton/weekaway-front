@@ -1,27 +1,23 @@
 import { FormEvent, useEffect, useState } from 'react';
 import {
   Button,
-  Checkbox,
   CssBaseline,
-  FormControlLabel,
   styled,
   TextField,
   Typography,
 } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import { Box, Container, display } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios from 'axios';
 import { themeOptions } from '../Theme/Theme';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import Calendar from '../Calendar/Calendar';
 import { getCookie } from '../../utils/cookieUtils';
 
 function EventForm() {
   const defaultTheme = createTheme(themeOptions);
-  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
@@ -29,6 +25,7 @@ function EventForm() {
 
   useEffect(() => {
     if (!isAuthenticated) {
+      // eslint-disable-next-line no-alert
       alert('Vous devez être connectés pour créer un évènement');
       navigate('/signin');
     }
@@ -44,9 +41,9 @@ function EventForm() {
     const eventPicture = formObj.event.toString();
     formData.append('event', eventPicture);
 
-    console.log('Je suis le formbobj', formObj);
+    // console.log('Je suis le formbobj', formObj);
 
-    console.log('formObj', formObj);
+    // console.log('formObj', formObj);
 
     axios.post('http://caca-boudin.fr/api/event', formObj, {
       headers: {
@@ -59,7 +56,6 @@ function EventForm() {
   useEffect(() => {
     if (isAuthenticated) {
       Cookies.get('token');
-      // navigate('/events');
     }
   }, [isAuthenticated]);
 
@@ -75,8 +71,6 @@ function EventForm() {
     width: 1,
   });
 
-  console.log('cest moi', VisuallyHiddenInput);
-
   const handleOwnerId = Cookies.get('id');
 
   return (
@@ -85,10 +79,7 @@ function EventForm() {
         <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
           <CssBaseline />
 
-          <Box
-            // height="100vh"
-            sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}
-          >
+          <Box sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}>
             <Box
               sx={{
                 marginTop: 20,
@@ -104,7 +95,12 @@ function EventForm() {
                 component="form"
                 onSubmit={handleSubmit}
                 noValidate
-                sx={{ mt: 1 }}
+                sx={{
+                  mt: 1,
+                  justifyContent: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
               >
                 <TextField
                   margin="normal"
@@ -146,11 +142,13 @@ function EventForm() {
                   component="label"
                   variant="contained"
                   startIcon={<CloudUploadIcon />}
+                  sx={{ mb: 2 }}
                 >
+                  {/* eslint-disable-next-line react/no-unescaped-entities */}
                   Bannière de l'évènement
                   <VisuallyHiddenInput type="file" id="event" name="event" />
                 </Button>
-                {/* <Calendar /> */}
+                <Calendar />
                 <VisuallyHiddenInput
                   type="input"
                   id="ownerId"

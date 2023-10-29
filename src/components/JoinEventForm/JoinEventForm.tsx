@@ -7,13 +7,11 @@ import Cookies from 'js-cookie';
 
 import axios from 'axios';
 import { themeOptions } from '../Theme/Theme';
-import { useAppDispatch } from '../../hooks/redux';
 
 import { getCookie } from '../../utils/cookieUtils';
 
 function JoinEventForm() {
   const defaultTheme = createTheme(themeOptions);
-  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
@@ -21,6 +19,7 @@ function JoinEventForm() {
 
   useEffect(() => {
     if (!isAuthenticated) {
+      // eslint-disable-next-line no-alert
       alert('Vous devez être connectés pour créer un évènement');
       navigate('/signin');
     }
@@ -42,7 +41,6 @@ function JoinEventForm() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      // Cookies.set('isLogged', 'true');
       Cookies.get('token');
       // navigate('/events');
     }
@@ -54,10 +52,7 @@ function JoinEventForm() {
         <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
           <CssBaseline />
 
-          <Box
-            // height="100vh"
-            sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}
-          >
+          <Box sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}>
             <Box
               sx={{
                 marginTop: 20,
@@ -96,6 +91,7 @@ function JoinEventForm() {
                     '&:hover': { color: 'secondary.main' },
                   }}
                 >
+                  {/* eslint-disable-next-line react/no-unescaped-entities */}
                   Rejoindre l'évènement
                 </Button>
               </Box>

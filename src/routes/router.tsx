@@ -45,15 +45,15 @@ const router = createBrowserRouter([
             element: <Landing />,
           },
           {
-            path: '/create',
+            path: '/user/:id/create',
             element: <EventForm />,
           },
           {
-            path: '/join',
+            path: '/user/:id/join',
             element: <JoinEventForm />,
           },
           {
-            path: '/profile',
+            path: '/user/:id/profil',
             element: <ProfileSettings />,
           },
           {

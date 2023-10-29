@@ -1,19 +1,9 @@
-import { FormEvent, useEffect, useState } from 'react';
-import {
-  Button,
-  Checkbox,
-  CssBaseline,
-  FormControlLabel,
-  styled,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { useEffect, useState } from 'react';
+import { CssBaseline, styled, TextField, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import axios from 'axios';
 
 import * as React from 'react';
 import ArrowForwardIosSharpIcon from '@mui/icons-material/ArrowForwardIosSharp';
@@ -24,51 +14,26 @@ import MuiAccordionSummary, {
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { getCookie } from '../../utils/cookieUtils';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { themeOptions } from '../Theme/Theme';
 
 function ProfileSettings() {
   const defaultTheme = createTheme(themeOptions);
-  const dispatch = useAppDispatch();
 
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
-  console.log('isAuthenticated', isAuthenticated);
+  // console.log('isAuthenticated', isAuthenticated);
 
   useEffect(() => {
     if (!isAuthenticated) {
+      // eslint-disable-next-line no-alert
       alert('Vous devez être connectés pour créer un évènement');
       navigate('/signin');
     }
   }, [isAuthenticated, navigate]);
 
-  // const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-
-  //   const form = event.currentTarget;
-  //   const formData = new FormData(form);
-
-  //   const formObj = Object.fromEntries(formData);
-  //   const eventPicture = formObj.event.toString();
-  //   formData.append('event', eventPicture);
-
-  //   console.log('Je suis le formbobj', formObj);
-
-  //   console.log('formObj', formObj);
-
-  //   axios.post('http://caca-boudin.fr/api/event', formObj, {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data',
-  //     },
-  //   });
-  //   //! important : il faut rediriger vers la page de l'event
-  // };
-
   useEffect(() => {
     if (isAuthenticated) {
-      // Cookies.set('isLogged', 'true');
       Cookies.get('token');
-      // navigate('/events');
     }
   }, [isAuthenticated]);
 
@@ -110,13 +75,6 @@ function ProfileSettings() {
 
   const [expanded, setExpanded] = React.useState<string | false>('panel1');
 
-  // const handleChange =
-  //   (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
-  //     setExpanded(newExpanded ? panel : false);
-  //   };
-
-  const handleOwnerId = Cookies.get('id');
-
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
       setExpanded(isExpanded ? panel : false);
@@ -128,7 +86,6 @@ function ProfileSettings() {
           <CssBaseline />
 
           <Box
-            // height="100vh"
             sx={{
               backgroundColor: '#ABD1C6',
               borderRadius: 5,
@@ -186,6 +143,7 @@ function ProfileSettings() {
                   id="panel2bh-header"
                 >
                   <Typography sx={{ width: '33%', flexShrink: 0 }}>
+                    {/*  eslint-disable-next-line react/no-unescaped-entities */}
                     Mes paramètres d'utilisateur
                   </Typography>
                   <Typography sx={{ color: 'text.secondary' }}>
