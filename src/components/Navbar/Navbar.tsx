@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'js-cookie';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -22,6 +23,7 @@ import { themeOptions } from '../Theme/Theme';
 
 import logo from '../../assets/1-removebg-preview.png';
 import { logout } from '../../store/reducers/user';
+import { getCookie } from '../../utils/cookieUtils';
 
 interface Props {
   /**
@@ -34,16 +36,17 @@ const drawerWidth = 240;
 const navItems = [
   { name: 'Me connecter', link: 'signin' },
   { name: "M'inscrire", link: 'signup' },
-  // { name: 'Me déconnecter', link: 'logout' },
-];
-const navItemsLogged = [
-  { name: 'Mes évènements', link: 'events' },
-  { name: 'Créer un évènement', link: 'create' },
-  { name: 'Mon profil', link: 'profil' },
-  { name: 'Me déconnecter', link: 'logout' },
 ];
 
+const navItemsLogged = [
+  { name: 'Mes évènements', link: `user/${id}/events` },
+  { name: 'Créer un évènement', link: 'create' },
+  { name: 'Mon profil', link: 'profil' },
+];
+const id = Cookies.get('id');
 function Navbar(props: Props) {
+  const isLoggedIn = Cookies.get('token');
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
   const navigate = useNavigate();
@@ -61,6 +64,10 @@ function Navbar(props: Props) {
 
   const isLogged = useAppSelector((state) => state.user.logged);
   console.log('isLogged', isLogged);
+  // ! JEREMY
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
+  console.log('isAuthenticated', isAuthenticated);
+  // ! JEREMY
 
   const firstname = useAppSelector((state) => state.user.firstname);
   // console.log("firstname", firstname);
@@ -71,7 +78,7 @@ function Navbar(props: Props) {
         WeekAway
       </Typography>
       <Divider sx={{ bgcolor: '#001E1D' }} />
-      {!isLogged && (
+      {!isLoggedIn && (
         <List>
           {navItems.map((item) => (
             <ListItem key={item.name} disablePadding>
@@ -82,7 +89,7 @@ function Navbar(props: Props) {
           ))}
         </List>
       )}
-      {isLogged && (
+      {isLoggedIn && (
         <List>
           {navItemsLogged.map((item) => (
             <ListItem key={item.name} disablePadding>
@@ -104,7 +111,7 @@ function Navbar(props: Props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      {isLogged && (
+      {isLoggedIn && (
         <ThemeProvider theme={defaultTheme}>
           <AppBar
             style={{
@@ -166,11 +173,23 @@ function Navbar(props: Props) {
                         color: '#F9BC60',
                       },
                     }}
-                    onClick={handleLogout}
                   >
                     {item.name}
                   </Button>
                 ))}
+                <Button
+                  href="/logout"
+                  sx={{
+                    color: '#001E1D',
+                    '&:hover': {
+                      backgroundColor: '#001E1D',
+                      color: '#F9BC60',
+                    },
+                  }}
+                  onClick={handleLogout}
+                >
+                  Me déconnecter
+                </Button>
               </Box>
               <IconButton
                 color="inherit"
@@ -185,7 +204,7 @@ function Navbar(props: Props) {
           </AppBar>
         </ThemeProvider>
       )}
-      {!isLogged && (
+      {!isLoggedIn && (
         <ThemeProvider theme={defaultTheme}>
           <AppBar
             style={{

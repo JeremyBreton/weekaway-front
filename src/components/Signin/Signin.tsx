@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, FormEvent } from 'react';
+import Cookies from 'js-cookie';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,48 +19,61 @@ import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import { login, logout } from '../../store/reducers/user';
+import { getCookie } from '../../utils/cookieUtils';
 
 const defaultTheme = createTheme(themeOptions);
 
-interface LoginFormProps {
-  handleLogout: () => void;
-}
+// interface LoginFormProps {
+//   handleLogout: () => void;
+// }
 
 function SignIn() {
+  // ! JEREMY
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
+  console.log('isAuthenticated', isAuthenticated);
   const isLogged = useAppSelector((state) => state.user.logged);
   console.log('isLogged', isLogged);
+  // ! JEREMY
 
   const navigate = useNavigate();
 
-  const firstname = useAppSelector((state) => state.user.firstname);
-  // console.log("Firstname", firstname);
-
   const dispatch = useAppDispatch();
 
-  const handleLogout = () => {
-    dispatch(logout());
-  };
+  // const handleLogout = () => {
+  //   dispatch(logout());
+  // };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     // je vais dispatcher un thunk pour contacter mon API avec les identifiants
     const form = event.currentTarget;
     const formData = new FormData(form);
 
     dispatch(login(formData));
-  };
 
-  // Si l'utilisateur est connecté, effectuez la redirection ici
-  // if (isLogged) {
-  //   navigate('/events');
-  // }
+    const id = Cookies.get('id');
+    navigate(`/user/${id}/events`);
+  };
   console.log('isLogged', isLogged);
   useEffect(() => {
     if (isLogged) {
-      navigate('/events');
+      // Cookies.set('isLogged', 'true');
+      getCookie('token');
+      // navigate('/events');
+
+      // //! important Needs to be debugged
+      const id = getCookie('id');
+      navigate(`/user/${id}/events`);
     }
   }, [isLogged, navigate]);
+  // ! JEREMY
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     alert('Vous êtes connectés !');
+  //     navigate('/');
+  //   }
+  // }, [isAuthenticated, navigate]);
+  // ! JEREMY
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -70,7 +84,7 @@ function SignIn() {
           // height="100vh"
           sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}
         >
-          {!isLogged && (
+          {!isAuthenticated && (
             <Box
               sx={{
                 marginTop: 20,
@@ -131,12 +145,13 @@ function SignIn() {
                 </Button>
                 <Grid container>
                   <Grid item xs>
-                    <Link href="#" variant="body2">
+                    {/* <Link href="#" variant="body2">
                       Mot de passe oublié ?
-                    </Link>
+                    </Link> */}
                   </Grid>
                   <Grid item>
                     <Link href="/signup" variant="body2">
+                      {/* eslint-disable-next-line react/no-unescaped-entities */}
                       Je veux m'inscrire
                     </Link>
                   </Grid>
