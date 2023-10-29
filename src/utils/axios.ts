@@ -7,5 +7,5 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'http://geoffrey-fardeau.vpnuser.lan:3000/api',
+  baseURL: 'http://caca-boudin.fr/api',
 });

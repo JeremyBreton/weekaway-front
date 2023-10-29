@@ -41,7 +41,7 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
 
     const response = await axios.post(
-      'http://geoffrey-fardeau.vpnuser.lan:3000/api/register',
+      'http://caca-boudin.fr/api/register',
       user
     );
 

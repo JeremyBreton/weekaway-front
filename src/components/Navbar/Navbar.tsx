@@ -37,13 +37,13 @@ const navItems = [
   { name: 'Me connecter', link: 'signin' },
   { name: "M'inscrire", link: 'signup' },
 ];
-
+const id = Cookies.get('id');
 const navItemsLogged = [
   { name: 'Mes évènements', link: `user/${id}/events` },
   { name: 'Créer un évènement', link: 'create' },
   { name: 'Mon profil', link: 'profil' },
 ];
-const id = Cookies.get('id');
+
 function Navbar(props: Props) {
   const isLoggedIn = Cookies.get('token');
 
