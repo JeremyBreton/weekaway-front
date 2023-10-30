@@ -46,13 +46,13 @@ export const fetchEvents = createAsyncThunk('event/fetch', async () => {
   return { data, eventsArray };
 });
 
-export const fetchOneEvent = createAsyncThunk('oneEvent/fetch', async () => {
-  const eventId = Cookies.get('eventId');
-  const { data } = await axiosInstance.get(`/event/${eventId}`);
+// export const fetchOneEvent = createAsyncThunk('oneEvent/fetch', async () => {
+//   const eventId = Cookies.get('eventId');
+//   const { data } = await axiosInstance.get(`/event/${eventId}`);
 
-  const oneEventArray = data.events;
-  return { data, oneEventArray };
-});
+//   const oneEventArray = data.events;
+//   return { data, oneEventArray };
+// });
 
 const eventsReducer = createReducer(initialState, (builder) => {
   builder
@@ -66,10 +66,10 @@ const eventsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchEvents.rejected, (state) => {
       state.list = [];
-    })
-    .addCase(fetchOneEvent.fulfilled, (state, action) => {
-      state.oneEventArray = action.payload.oneEventArray;
     });
+  // .addCase(fetchOneEvent.fulfilled, (state, action) => {
+  //   state.oneEventArray = action.payload.oneEventArray;
+  // });
 });
 
 export default eventsReducer;
