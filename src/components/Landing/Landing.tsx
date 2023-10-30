@@ -16,9 +16,11 @@ import Cookies from 'js-cookie';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchEvents } from '../../store/reducers/events';
+import { findEventId } from '../../store/selectors/eventSelector';
 
 function Landing() {
   const eventsArray = useAppSelector((state) => state.events.eventsArray);
+  // console.log('eventsArray', eventsArray);
 
   const CustomBox = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -89,6 +91,9 @@ function Landing() {
                 height: 300,
                 mr: 10,
                 mb: 10,
+              }}
+              onClick={() => {
+                navigate(`/user/${id}/event/${event.eventId}`);
               }}
             >
               <CardActionArea>
@@ -183,6 +188,7 @@ function Landing() {
             </CardActionArea>
             <CardActions>
               <Button size="small" color="primary" sx={{ mt: 10 }}>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 Voir l'évènement
               </Button>
             </CardActions>

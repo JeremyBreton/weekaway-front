@@ -39,7 +39,6 @@ const navItems = [
 ];
 
 //! ICI
-const id = Cookies.get('id');
 const navItemsLogged = [
   { name: 'Mes évènements', link: `events` },
   { name: 'Créer un évènement', link: 'create' },
