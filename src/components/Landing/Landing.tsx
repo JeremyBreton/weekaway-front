@@ -93,6 +93,8 @@ function Landing() {
                 mb: 10,
               }}
               onClick={() => {
+                Cookies.remove('eventId', event.eventId as any);
+                Cookies.set('eventId', event.eventId as unknown as string);
                 navigate(`/user/${id}/event/${event.eventId}`);
               }}
             >
