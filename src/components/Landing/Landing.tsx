@@ -12,6 +12,7 @@ import { Box, Container } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useEffect } from 'react';
+import Cookies from 'js-cookie';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchEvents } from '../../store/reducers/events';
@@ -34,12 +35,14 @@ function Landing() {
 
   const navigate = useNavigate();
 
+  const id = Cookies.get('id');
+
   const handleClickCreateEvent = () => {
-    navigate('/user/:id/create');
+    navigate(`/user/${id}/create`);
   };
 
   const handleClickJoinEvent = () => {
-    navigate('/user/:id/join');
+    navigate(`/user/${id}/join`);
   };
 
   const eventFilteredPast = eventsArray.filter(

@@ -32,7 +32,7 @@ function Calendar() {
   };
   const handleEndDateChange = (date) => {
     // compare if date is before startDate
-    if (startDate && date < startDate) {
+    if (startDate && date <= startDate) {
       setError(
         'La date de fin ne peut pas être antérieure à la date de début.'
       );
@@ -41,6 +41,7 @@ function Calendar() {
     setEndDate(date);
     setError(null);
   };
+
   console.log('error', error);
 
   const defaultTheme = createTheme(themeOptions);
