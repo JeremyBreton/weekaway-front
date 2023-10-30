@@ -1,5 +1,4 @@
 import { styled, Typography } from '@mui/material';
-import { create } from '@mui/material/styles/createTransitions';
 import { Box, Container } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from '../Theme/Theme';
