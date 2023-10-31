@@ -15,9 +15,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { Link } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useEffect, useState } from 'react';
+import Link from '@mui/material/Link';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { themeOptions } from '../Theme/Theme';
 
@@ -39,7 +39,6 @@ const navItems = [
 ];
 
 //! ICI
-const id = Cookies.get('id');
 const navItemsLogged = [
   { name: 'Mes évènements', link: `events` },
   { name: 'Créer un évènement', link: 'create' },
@@ -109,6 +108,16 @@ function Navbar(props: Props) {
     window !== undefined ? () => window().document.body : undefined;
 
   const defaultTheme = createTheme(themeOptions);
+
+  // const coucouK = navItemsLogged.map((item) => {
+
+  //   const id = Cookies.get('id');
+  //   useEffect(() => {
+  //     const coucou = navigate(
+  //     `/user/${id}/${coucouK.link}}`
+  //   });
+  //   ) as unknown as string;
+  // }, [id, navigate]);
 
   return (
     <Box sx={{ display: 'flex' }}>

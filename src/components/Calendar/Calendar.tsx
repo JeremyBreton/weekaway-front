@@ -21,15 +21,19 @@ const StyledDay = styled(PickersDay)(({ theme }) => ({
 
 function Calendar() {
   const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [error, setError] = useState(null);
   console.log('startDate', startDate);
+
+  const [endDate, setEndDate] = useState<Date | null>(null);
   console.log('endDate', endDate);
+
+  const [error, setError] = useState(null);
+  console.log('error', error);
 
   const handleStartDateChange = (date) => {
     setStartDate(date);
     setError(null);
   };
+
   const handleEndDateChange = (date) => {
     // compare if date is before startDate
     if (startDate && date <= startDate) {
@@ -61,6 +65,8 @@ function Calendar() {
             label="Date de début"
             format="DD/MM/YYYY"
             sx={{ mb: 2 }}
+            onChange={handleStartDateChange}
+            value={startDate}
             slots={{
               openPickerIcon: EditCalendarRoundedIcon,
               openPickerButton: StyledButton,
@@ -74,14 +80,14 @@ function Calendar() {
                 focused: true,
                 color: 'primary',
                 placeholder: 'JJ/MM/AAAA',
-                value: startDate,
-                onChange: handleStartDateChange,
               },
             }}
           />
           <DatePicker
             label="Date de fin"
             format="DD/MM/YYYY"
+            onChange={handleEndDateChange}
+            value={endDate}
             slots={{
               openPickerIcon: EditCalendarRoundedIcon,
               openPickerButton: StyledButton,
@@ -95,8 +101,6 @@ function Calendar() {
                 focused: true,
                 color: 'primary',
                 placeholder: 'JJ/MM/AAAA',
-                value: endDate,
-                onChange: handleEndDateChange,
               },
             }}
           />

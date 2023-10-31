@@ -10,6 +10,7 @@ import EventForm from '../components/EventForm/EventForm';
 import Presentation from '../components/Presentation/Presentation';
 import JoinEventForm from '../components/JoinEventForm/JoinEventForm';
 import ProfileSettings from '../components/ProfileSettings/ProfileSettings';
+import EventDetails from '../components/EventDetails/EventDetails';
 
 // Router : 1. je crée le router avec `createBrowserRouter`
 const router = createBrowserRouter([
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
           {
             path: '/user/:id/profil',
             element: <ProfileSettings />,
+          },
+          {
+            path: '/user/:id/event/:idEvent',
+            element: <EventDetails />,
           },
           {
             path: '/logout',
