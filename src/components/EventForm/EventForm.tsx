@@ -19,6 +19,9 @@ import { getCookie } from '../../utils/cookieUtils';
 function EventForm() {
   const defaultTheme = createTheme(themeOptions);
 
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   console.log('isAuthenticated', isAuthenticated);
@@ -41,7 +44,7 @@ function EventForm() {
     const eventPicture = formObj.event.toString();
     formData.append('event', eventPicture);
 
-    // console.log('Je suis le formbobj', formObj);
+    console.log('Je suis le formbobj', formObj);
 
     // console.log('formObj', formObj);
 
@@ -51,6 +54,9 @@ function EventForm() {
       },
     });
     //! important : il faut rediriger vers la page de l'event
+    // const id = Cookies.get('id');
+
+    // navigate(`/user/${id}/event/${idEvent}`);
   };
 
   useEffect(() => {
@@ -70,6 +76,14 @@ function EventForm() {
     whiteSpace: 'nowrap',
     width: 1,
   });
+
+  const startDateReceived = (date: string | null) => {
+    console.log('date');
+  };
+
+  const endDateReceived = (date: string | null) => {
+    console.log('date');
+  };
 
   const handleOwnerId = Cookies.get('id');
 
@@ -148,7 +162,10 @@ function EventForm() {
                   Bannière de l'évènement
                   <VisuallyHiddenInput type="file" id="event" name="event" />
                 </Button>
-                <Calendar />
+                <Calendar
+                  startDateReceived={startDate}
+                  endDateReceived={endDate}
+                />
                 <VisuallyHiddenInput
                   type="input"
                   id="ownerId"

@@ -75,7 +75,11 @@ function EventDetails() {
                 height="200"
                 image={item.picture}
                 alt="banniere de l'évènement"
-                sx={{ objectFit: 'fill', mb: 5, borderRadius: 5 }}
+                sx={{
+                  objectFit: 'fill',
+                  mb: 5,
+                  borderRadius: 5,
+                }}
               />
               <Typography sx={{ textAlign: 'center', mb: 2 }}>
                 {item.name}

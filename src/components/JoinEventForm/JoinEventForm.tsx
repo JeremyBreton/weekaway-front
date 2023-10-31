@@ -25,20 +25,25 @@ function JoinEventForm() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // je vais dispatcher un thunk pour contacter mon API avec les identifiants
     const form = event.currentTarget;
     const id = Cookies.get('id');
     const formData = new FormData(form);
     const formObj = Object.fromEntries(formData);
     const eventtoJoin = { password: formObj.password, id };
 
-    axios.post('http://caca-boudin.fr/api/joinEvent', eventtoJoin);
-    //! important : il faut rediriger vers la page de l'event
-  };
+    const eventId = await axios
+      .post('http://caca-boudin.fr/api/joinEvent', eventtoJoin)
+      .then((response) => {
+        // const dataPromise = promise.then((response) => response.data);
+        return JSON.parse(JSON.stringify(response.data));
+      });
 
+    //! important : il faut rediriger vers la page de l'event
+    navigate(`/user/${id}/event/${eventId.eventId}`);
+  };
   useEffect(() => {
     if (isAuthenticated) {
       Cookies.get('token');
