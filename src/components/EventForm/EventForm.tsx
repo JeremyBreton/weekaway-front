@@ -6,12 +6,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Box, Container, display } from '@mui/system';
+import { Box, Container } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import axios from 'axios';
+import dayjs from 'dayjs';
 import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
 import { getCookie } from '../../utils/cookieUtils';
@@ -43,10 +44,12 @@ function EventForm() {
     const formObj = Object.fromEntries(formData);
     const eventPicture = formObj.event.toString();
     formData.append('event', eventPicture);
+    formData.append('startDate', startDate);
+    formData.append('endDate', endDate);
 
     console.log('Je suis le formbobj', formObj);
 
-    // console.log('formObj', formObj);
+    console.log('formObj', formObj);
 
     axios.post('http://caca-boudin.fr/api/event', formObj, {
       headers: {
@@ -78,11 +81,17 @@ function EventForm() {
   });
 
   const startDateReceived = (date: string | null) => {
-    console.log('date');
+    const formattedStartDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
+    setStartDate(formattedStartDate);
+    console.log('cest la date de début dans le parent', formattedStartDate);
   };
 
+  console.log('startDateReceived', startDateReceived);
+
   const endDateReceived = (date: string | null) => {
-    console.log('date');
+    const formattedEndDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
+    console.log('cest la date de fin dans le parent', formattedEndDate);
+    setEndDate(formattedEndDate);
   };
 
   const handleOwnerId = Cookies.get('id');
@@ -163,8 +172,8 @@ function EventForm() {
                   <VisuallyHiddenInput type="file" id="event" name="event" />
                 </Button>
                 <Calendar
-                  startDateReceived={startDate}
-                  endDateReceived={endDate}
+                  startDateReceived={startDateReceived}
+                  endDateReceived={endDateReceived}
                 />
                 <VisuallyHiddenInput
                   type="input"
@@ -180,9 +189,15 @@ function EventForm() {
                 />
                 <VisuallyHiddenInput
                   type="input"
-                  id="linkProject"
-                  name="linkProject"
-                  value="google.fr"
+                  id="startDate"
+                  name="startDate"
+                  value={startDate}
+                />
+                <VisuallyHiddenInput
+                  type="input"
+                  id="endDate"
+                  name="endDate"
+                  value={endDate}
                 />
                 <Button
                   type="submit"

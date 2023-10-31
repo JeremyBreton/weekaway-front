@@ -49,12 +49,13 @@ function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
 
   const [error, setError] = useState(null);
   console.log('error', error);
-  // const formattedStartDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
+  // const formattedStartDate = dayjs(startDate).format('YYYY-MM-DD HH:mm:ssZ');
   const handleStartDateChange = (date) => {
     setStartDate(date);
     setError(null);
 
     startDateReceived(date);
+    console.log(startDateReceived(date));
   };
   // const formattedEndDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
   const handleEndDateChange = (date) => {

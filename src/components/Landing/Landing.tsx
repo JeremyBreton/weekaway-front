@@ -65,15 +65,16 @@ function Landing() {
       <Box
         sx={{
           display: 'flex',
-          alignItems: 'center',
-          flexDirection: 'column',
+          justifyContent: 'center',
+          flexDirection: 'row',
           backgroundColor: 'background.default',
           pt: 15,
+          pb: 5,
         }}
       >
         <Button
           variant="contained"
-          sx={{ mb: 5, color: 'secondary.main' }}
+          sx={{ mr: 2, color: 'secondary.main' }}
           onClick={handleClickCreateEvent}
         >
           Créer mon évènement
@@ -81,7 +82,7 @@ function Landing() {
         <Button
           variant="contained"
           onClick={handleClickJoinEvent}
-          sx={{ mb: 5, color: 'secondary.main' }}
+          sx={{ ml: 2, color: 'secondary.main' }}
         >
           Rejoindre un évènement
         </Button>
@@ -104,7 +105,7 @@ function Landing() {
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
-            justifyContent: 'center',
+            justifyContent: 'space-evenly',
           }}
         >
           {eventFilteredFutur.map((event) => (
@@ -113,7 +114,6 @@ function Landing() {
               sx={{
                 width: 500,
                 height: 300,
-                mr: 10,
                 mb: 10,
               }}
               onClick={() => {
@@ -274,7 +274,7 @@ function Landing() {
         >
           <Container />
         </Box>
-        <Button
+        {/* <Button
           variant="contained"
           sx={{ mb: 5, color: 'secondary.main' }}
           onClick={handleClickCreateEvent}
@@ -287,7 +287,7 @@ function Landing() {
           sx={{ mb: 5, color: 'secondary.main' }}
         >
           Rejoindre un évènement
-        </Button>
+        </Button> */}
       </Box>
     </ThemeProvider>
   );
