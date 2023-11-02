@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, FormEvent } from 'react';
-import Cookies from 'js-cookie';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -18,18 +17,15 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
-import { login, logout } from '../../store/reducers/user';
+import { login } from '../../store/reducers/user';
 import { getCookie } from '../../utils/cookieUtils';
 
 const defaultTheme = createTheme(themeOptions);
 
 function SignIn() {
-  // ! JEREMY
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   console.log('isAuthenticated', isAuthenticated);
   const isLogged = useAppSelector((state) => state.user.logged);
-  console.log('isLogged', isLogged);
-  // ! JEREMY
 
   const navigate = useNavigate();
 
@@ -39,12 +35,10 @@ function SignIn() {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-    // console.log('form', form);
-    // console.log('formData', formData);
 
     dispatch(login(formData));
   };
-  console.log('isLogged', isLogged);
+
   useEffect(() => {
     if (isLogged) {
       getCookie('token');

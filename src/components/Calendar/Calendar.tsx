@@ -19,9 +19,13 @@ const StyledDay = styled(PickersDay)(({ theme }) => ({
       : theme.palette.secondary.light,
 }));
 
-function Calendar() {
+type CalendarProps = {
+  startDateReceived: (date: string | null) => void;
+  endDateReceived: (date: string | null) => void;
+};
+
+function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
   const [startDate, setStartDate] = useState<Date | null>(null);
-  console.log('startDate', startDate);
 
   const [endDate, setEndDate] = useState<Date | null>(null);
   console.log('endDate', endDate);
@@ -30,23 +34,33 @@ function Calendar() {
   console.log('error', error);
 
   const handleStartDateChange = (date) => {
+    if (endDate && date > endDate) {
+      setError(
+        'La date de fin ne peut pas être antérieure à la date de début.'
+      );
+      alert('La date de fin ne peut pas être antérieure à la date de début.');
+      return;
+    }
     setStartDate(date);
     setError(null);
+
+    startDateReceived(date);
   };
 
   const handleEndDateChange = (date) => {
     // compare if date is before startDate
-    if (startDate && date <= startDate) {
+    if (startDate && date < startDate) {
       setError(
         'La date de fin ne peut pas être antérieure à la date de début.'
       );
+      alert('La date de fin ne peut pas être antérieure à la date de début.');
       return;
     }
     setEndDate(date);
     setError(null);
-  };
 
-  console.log('error', error);
+    endDateReceived(date);
+  };
 
   const defaultTheme = createTheme(themeOptions);
 

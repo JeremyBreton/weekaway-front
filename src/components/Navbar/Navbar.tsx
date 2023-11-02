@@ -16,8 +16,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from '@mui/material/Link';
+import { ButtonBase } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { themeOptions } from '../Theme/Theme';
 
@@ -30,6 +31,7 @@ interface Props {
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
+  // eslint-disable-next-line react/require-default-props
   window?: () => Window;
 }
 const drawerWidth = 240;
@@ -39,10 +41,11 @@ const navItems = [
 ];
 
 //! ICI
+const id = Cookies.get('id');
 const navItemsLogged = [
-  { name: 'Mes évènements', link: `events` },
-  { name: 'Créer un évènement', link: 'create' },
-  { name: 'Mon profil', link: 'profil' },
+  { name: 'MES ÉVÈNEMENTS', link: `/user/${id}/events` },
+  { name: 'CRÉER UN ÉVÈNEMENT', link: `/user/${id}/create` },
+  { name: 'MON PROFIL', link: `/user/${id}/profil` },
 ];
 
 function Navbar(props: Props) {
@@ -64,14 +67,10 @@ function Navbar(props: Props) {
   };
 
   const isLogged = useAppSelector((state) => state.user.logged);
-  console.log('isLogged', isLogged);
-  // ! JEREMY
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   console.log('isAuthenticated', isAuthenticated);
-  // ! JEREMY
 
   const firstname = useAppSelector((state) => state.user.firstname);
-  // console.log("firstname", firstname);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -174,11 +173,13 @@ function Navbar(props: Props) {
             </Box> */}
               <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 {navItemsLogged.map((item) => (
-                  <Button
+                  <ButtonBase
                     key={item.name}
                     href={item.link}
                     sx={{
                       color: '#001E1D',
+                      borderRadius: 1,
+                      p: 1,
                       '&:hover': {
                         backgroundColor: '#001E1D',
                         color: '#F9BC60',
@@ -186,12 +187,14 @@ function Navbar(props: Props) {
                     }}
                   >
                     {item.name}
-                  </Button>
+                  </ButtonBase>
                 ))}
-                <Button
+                <ButtonBase
                   href="/logout"
                   sx={{
                     color: '#001E1D',
+                    borderRadius: 1,
+                    p: 1,
                     '&:hover': {
                       backgroundColor: '#001E1D',
                       color: '#F9BC60',
@@ -199,8 +202,8 @@ function Navbar(props: Props) {
                   }}
                   onClick={handleLogout}
                 >
-                  Me déconnecter
-                </Button>
+                  ME DÉCONNECTER
+                </ButtonBase>
               </Box>
               <IconButton
                 color="inherit"
