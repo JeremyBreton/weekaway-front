@@ -55,13 +55,14 @@ function EventForm() {
         },
       })
       .then((response) => {
-        // const dataPromise = promise.then((response) => response.data);
-        return JSON.parse(JSON.stringify(response.data));
+        const dataEventId = JSON.parse(JSON.stringify(response.data));
+        Cookies.set('eventId', response.data.id);
+        return dataEventId;
       });
     //! important : il faut rediriger vers la page de l'event
+    const idEvent = Cookies.get('eventId');
     const id = Cookies.get('id');
-
-    navigate(`/user/${id}}/event/${eventId.id}`);
+    navigate(`/user/${id}}/event/${idEvent}`);
   };
 
   useEffect(() => {
@@ -104,7 +105,9 @@ function EventForm() {
         <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
           <CssBaseline />
 
-          <Box sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}>
+          <Box
+            sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5, mb: 8 }}
+          >
             <Box
               sx={{
                 marginTop: 20,
@@ -136,15 +139,14 @@ function EventForm() {
                   name="name"
                   autoFocus
                 />
-                {/* <TextField
+                <TextField
                   margin="normal"
                   required
                   fullWidth
-                  name="Theme"
+                  name="theme"
                   label="Thème de l'évènement"
-                  type="Theme"
-                  id="Theme"
-                /> */}
+                  id="theme"
+                />
                 {/* <TextField
                   margin="normal"
                   required
@@ -180,8 +182,8 @@ function EventForm() {
 
                 <VisuallyHiddenInput
                   type="input"
-                  id="ownerId"
-                  name="ownerId"
+                  id="owner_id"
+                  name="owner_id"
                   defaultValue={handleOwnerId}
                 />
                 <VisuallyHiddenInput

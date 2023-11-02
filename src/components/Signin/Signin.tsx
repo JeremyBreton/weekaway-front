@@ -76,7 +76,7 @@ function SignIn() {
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h5">
-                Me connecter test@testeur.fr Testsauvage1!
+                Me connecter
               </Typography>
               <Box
                 component="form"

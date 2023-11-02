@@ -61,6 +61,7 @@ function Presentation() {
                 lineHeight: '27px',
               }}
             >
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
               Simplifiez vos évènements avec WeekAway : l'art de planifier
               ensemble des weekends inoubliables !
             </Typography>
@@ -80,6 +81,7 @@ function Presentation() {
                 my: 3,
               }}
             >
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
               Adieu les tracas de l'organisation
             </Typography>
 
@@ -90,6 +92,7 @@ function Presentation() {
                 lineHeight: '27px',
               }}
             >
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
               Simplifiez l'organisation de vos évènements avec WeekAway : l'art
               de planifier ensemble des weekends inoubliables !
             </Typography>
