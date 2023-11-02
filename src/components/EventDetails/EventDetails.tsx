@@ -20,21 +20,12 @@ function EventDetails() {
   const dispatch = useAppDispatch();
   const defaultTheme = createTheme(themeOptions);
   const { idEvent } = useParams();
-  // const eventId: any = idEventParams.idEvent;
-
-  console.log('EventId', idEvent);
-  // ICI
-  // const oneEvent: any | undefined = useAppSelector((state) =>
-  //   findEventId(state.events.eventsArray, +idEvent)
-  // );
 
   const eventsArray = useAppSelector((state) => state.events.eventsArray);
-  console.log('eventsArray', eventsArray);
 
   const oneEvent = eventsArray.filter(
     (event) => event.eventId.toString() === idEvent
   );
-  console.log('oneEvent', oneEvent);
 
   useEffect(() => {
     dispatch(fetchEvents());

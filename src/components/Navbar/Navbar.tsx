@@ -67,14 +67,10 @@ function Navbar(props: Props) {
   };
 
   const isLogged = useAppSelector((state) => state.user.logged);
-  console.log('isLogged', isLogged);
-  // ! JEREMY
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   console.log('isAuthenticated', isAuthenticated);
-  // ! JEREMY
 
   const firstname = useAppSelector((state) => state.user.firstname);
-  // console.log("firstname", firstname);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>

@@ -7,7 +7,6 @@ import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
-import dayjs from 'dayjs';
 import { themeOptions } from '../Theme/Theme';
 
 const StyledButton = styled(IconButton)(({ theme }) => ({
@@ -26,44 +25,35 @@ type CalendarProps = {
 };
 
 function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
-  // YYYY-MM-DDTHH:mm:ssZ[Z]'
-  // dayjs(date).format(YYYY-MM-DDTHH:mm:ssZ[Z]')
-  // {
-  //   "name": "fete du spourme",
-  //   "ownerId": 12,
-  //   "status": false,
-  //   "datesOfEvent": {
-  //     "date1": {
-  //       "startDate": "2023-12-27 15:30:00+03:00",
-  //       "endDate": "2023-12-27 15:30:00+03:00"
-  //     }
-  // }
   const [startDate, setStartDate] = useState<Date | null>(null);
-  console.log('startDate', startDate);
-  // console.log('startDate $d', startDate.$d.toISOString());
-  // const formatedDate = new AdapterDayjs(startDate as any);
-  // console.log(formatedDate);
 
   const [endDate, setEndDate] = useState<Date | null>(null);
   console.log('endDate', endDate);
 
   const [error, setError] = useState(null);
   console.log('error', error);
-  // const formattedStartDate = dayjs(startDate).format('YYYY-MM-DD HH:mm:ssZ');
+
   const handleStartDateChange = (date) => {
+    if (endDate && date > endDate) {
+      setError(
+        'La date de fin ne peut pas être antérieure à la date de début.'
+      );
+      alert('La date de fin ne peut pas être antérieure à la date de début.');
+      return;
+    }
     setStartDate(date);
     setError(null);
 
     startDateReceived(date);
-    console.log(startDateReceived(date));
   };
-  // const formattedEndDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
+
   const handleEndDateChange = (date) => {
     // compare if date is before startDate
-    if (startDate && date <= startDate) {
+    if (startDate && date < startDate) {
       setError(
         'La date de fin ne peut pas être antérieure à la date de début.'
       );
+      alert('La date de fin ne peut pas être antérieure à la date de début.');
       return;
     }
     setEndDate(date);
@@ -72,19 +62,7 @@ function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
     endDateReceived(date);
   };
 
-  console.log('error', error);
-
   const defaultTheme = createTheme(themeOptions);
-
-  // const formattedStartDate = dayjs(startDate).format('YYYY-MM-DD HH:mm:ssZ');
-
-  // const formattedEndDate = dayjs(endDate).format('YYYY-MM-DD HH:mm:ssZ');
-
-  // function passDataCalendar() {
-  //   const dataCalendar = { formattedStartDate, formattedEndDate };
-  // }
-
-  const sendWithForm = () => {};
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

@@ -35,7 +35,7 @@ function EventForm() {
     }
   }, [isAuthenticated, navigate]);
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const form = event.currentTarget;
@@ -43,23 +43,25 @@ function EventForm() {
 
     const formObj = Object.fromEntries(formData);
     const eventPicture = formObj.event.toString();
+
     formData.append('event', eventPicture);
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
 
-    console.log('Je suis le formbobj', formObj);
-
-    console.log('formObj', formObj);
-
-    axios.post('http://caca-boudin.fr/api/event', formObj, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const eventId = await axios
+      .post('http://caca-boudin.fr/api/event', formObj, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((response) => {
+        // const dataPromise = promise.then((response) => response.data);
+        return JSON.parse(JSON.stringify(response.data));
+      });
     //! important : il faut rediriger vers la page de l'event
-    // const id = Cookies.get('id');
+    const id = Cookies.get('id');
 
-    // navigate(`/user/${id}/event/${idEvent}`);
+    navigate(`/user/${id}}/event/${eventId.id}`);
   };
 
   useEffect(() => {
@@ -161,43 +163,44 @@ function EventForm() {
                   type="Description"
                   id="description"
                 />
+                <Calendar
+                  startDateReceived={startDateReceived}
+                  endDateReceived={endDateReceived}
+                />
                 <Button
                   component="label"
                   variant="contained"
                   startIcon={<CloudUploadIcon />}
-                  sx={{ mb: 2 }}
+                  sx={{ mt: 2 }}
                 >
                   {/* eslint-disable-next-line react/no-unescaped-entities */}
                   Bannière de l'évènement
                   <VisuallyHiddenInput type="file" id="event" name="event" />
                 </Button>
-                <Calendar
-                  startDateReceived={startDateReceived}
-                  endDateReceived={endDateReceived}
-                />
+
                 <VisuallyHiddenInput
                   type="input"
                   id="ownerId"
                   name="ownerId"
-                  value={handleOwnerId}
+                  defaultValue={handleOwnerId}
                 />
                 <VisuallyHiddenInput
                   type="input"
                   id="status"
                   name="status"
-                  value="true"
+                  defaultValue="true"
                 />
                 <VisuallyHiddenInput
                   type="input"
                   id="startDate"
                   name="startDate"
-                  value={startDate}
+                  defaultValue={startDate}
                 />
                 <VisuallyHiddenInput
                   type="input"
                   id="endDate"
                   name="endDate"
-                  value={endDate}
+                  defaultValue={endDate}
                 />
                 <Button
                   type="submit"

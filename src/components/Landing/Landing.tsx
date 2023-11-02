@@ -20,7 +20,6 @@ import { fetchEvents } from '../../store/reducers/events';
 
 function Landing() {
   const eventsArray = useAppSelector((state) => state.events.eventsArray);
-  // console.log('eventsArray', eventsArray);
 
   const CustomBox = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -92,6 +91,7 @@ function Landing() {
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
+
           backgroundColor: 'background.default',
           // pt: 15,
           minHeight: '100vh',
@@ -105,7 +105,8 @@ function Landing() {
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
-            justifyContent: 'space-evenly',
+            justifyContent: 'center',
+            gap: 10,
           }}
         >
           {eventFilteredFutur.map((event) => (

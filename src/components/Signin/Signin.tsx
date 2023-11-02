@@ -23,12 +23,9 @@ import { getCookie } from '../../utils/cookieUtils';
 const defaultTheme = createTheme(themeOptions);
 
 function SignIn() {
-  // ! JEREMY
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   console.log('isAuthenticated', isAuthenticated);
   const isLogged = useAppSelector((state) => state.user.logged);
-  console.log('isLogged', isLogged);
-  // ! JEREMY
 
   const navigate = useNavigate();
 
@@ -38,12 +35,10 @@ function SignIn() {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-    // console.log('form', form);
-    // console.log('formData', formData);
 
     dispatch(login(formData));
   };
-  console.log('isLogged', isLogged);
+
   useEffect(() => {
     if (isLogged) {
       getCookie('token');
