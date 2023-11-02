@@ -22,7 +22,7 @@ import { ButtonBase } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { themeOptions } from '../Theme/Theme';
 
-import logo from '../../assets/1-removebg-preview.png';
+import logo from '../../assets/LOGO_HORIZONTAL__ONLY_VERT_-removebg-RESIZE.png';
 import { logout } from '../../store/reducers/user';
 import { getCookie } from '../../utils/cookieUtils';
 
@@ -42,6 +42,7 @@ const navItems = [
 
 //! ICI
 const id = Cookies.get('id');
+
 const navItemsLogged = [
   { name: 'MES ÉVÈNEMENTS', link: `/user/${id}/events` },
   { name: 'CRÉER UN ÉVÈNEMENT', link: `/user/${id}/create` },
@@ -153,8 +154,9 @@ function Navbar(props: Props) {
                     alt="logo-weekaway"
                     src={logo}
                     style={{
-                      width: 150,
-                      height: 150,
+                      // maxWidth: 150,
+                      maxHeight: 130,
+                      padding: 10,
                     }}
                   />
                 </Link>
@@ -255,8 +257,9 @@ function Navbar(props: Props) {
                     alt="logo-weekaway"
                     src={logo}
                     style={{
-                      width: 150,
-                      height: 150,
+                      // maxWidth: 150,
+                      maxHeight: 130,
+                      padding: 10,
                     }}
                   />
                 </Link>

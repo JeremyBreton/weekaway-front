@@ -34,15 +34,17 @@ function JoinEventForm() {
     const formObj = Object.fromEntries(formData);
     const eventtoJoin = { password: formObj.password, id };
 
-    const eventId = await axios
+    const eventFetched = await axios
       .post('http://caca-boudin.fr/api/joinEvent', eventtoJoin)
       .then((response) => {
         // const dataPromise = promise.then((response) => response.data);
+        Cookies.set('eventId', response.data.eventId);
+        console.log('je suis ici fraté', response.data);
         return JSON.parse(JSON.stringify(response.data));
       });
-
+    const eventId = Cookies.get('eventId');
     //! important : il faut rediriger vers la page de l'event
-    navigate(`/user/${id}/event/${eventId.eventId}`);
+    navigate(`/user/${id}/event/${eventId}`);
   };
   useEffect(() => {
     if (isAuthenticated) {

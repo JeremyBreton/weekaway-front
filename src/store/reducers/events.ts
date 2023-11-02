@@ -26,13 +26,13 @@ interface EventsState {
   // loading: boolean;
   list: Event[];
   eventsArray: Event[];
-  oneEventArray: Event[];
+  oneEvent: Event[];
 }
 export const initialState: EventsState = {
   // loading: true,
   list: [],
   eventsArray: [],
-  oneEventArray: [],
+  oneEvent: [],
 };
 
 export const fetchEvents = createAsyncThunk('event/fetch', async () => {
@@ -46,13 +46,12 @@ export const fetchEvents = createAsyncThunk('event/fetch', async () => {
   return { data, eventsArray };
 });
 
-// export const fetchOneEvent = createAsyncThunk('oneEvent/fetch', async () => {
-//   const eventId = Cookies.get('eventId');
-//   const { data } = await axiosInstance.get(`/event/${eventId}`);
-
-//   const oneEventArray = data.events;
-//   return { data, oneEventArray };
-// });
+export const fetchOneEvent = createAsyncThunk('oneEvent/fetch', async () => {
+  const eventId = Cookies.get('eventId');
+  const { data } = await axiosInstance.get(`/event/${eventId}`);
+  console.log('data de fetchOneEvent', data);
+  return { data };
+});
 
 const eventsReducer = createReducer(initialState, (builder) => {
   builder
@@ -66,10 +65,11 @@ const eventsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchEvents.rejected, (state) => {
       state.list = [];
+    })
+    .addCase(fetchOneEvent.fulfilled, (state, action) => {
+      state.oneEvent = action.payload.data;
+      console.log('action.payload.data', action.payload.data);
     });
-  // .addCase(fetchOneEvent.fulfilled, (state, action) => {
-  //   state.oneEventArray = action.payload.oneEventArray;
-  // });
 });
 
 export default eventsReducer;

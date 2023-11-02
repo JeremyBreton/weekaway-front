@@ -35,7 +35,7 @@ function Landing() {
   const defaultTheme = createTheme(themeOptions);
 
   const navigate = useNavigate();
-
+  Cookies.remove('eventId');
   const id = Cookies.get('id');
 
   const handleClickCreateEvent = () => {
@@ -46,13 +46,12 @@ function Landing() {
     navigate(`/user/${id}/join`);
   };
 
-  const eventFilteredPast = eventsArray.filter(
+  const eventFilteredPast = eventsArray?.filter(
     (event) => event.status === false
   );
-  const eventFilteredFutur = eventsArray.filter(
+  const eventFilteredFutur = eventsArray?.filter(
     (event) => event.status === true
   );
-
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -100,6 +99,20 @@ function Landing() {
         <Typography sx={{ fontSize: 30, color: 'secondary.main', mb: 5 }}>
           Mes évènements à venir
         </Typography>
+        {!eventFilteredFutur && (
+          <Box
+            sx={{
+              backgroundColor: 'background.paper',
+              borderRadius: 1,
+              p: 2,
+              mb: 5,
+            }}
+          >
+            <Typography sx={{ color: 'primary.main' }}>
+              Vous n'avez pas encore d'évènements à venir
+            </Typography>
+          </Box>
+        )}
         <Box
           sx={{
             display: 'flex',
@@ -109,7 +122,7 @@ function Landing() {
             gap: 10,
           }}
         >
-          {eventFilteredFutur.map((event) => (
+          {eventFilteredFutur?.map((event) => (
             <Card
               key={event.eventId}
               sx={{
@@ -129,7 +142,7 @@ function Landing() {
                   height="140"
                   image={event.picture}
                   alt="banniere de l'évènement"
-                  sx={{ objectFit: 'cover', objectPosition: 'center' }}
+                  sx={{ objectFit: 'fit', objectPosition: 'center' }}
                 />
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="div">
@@ -140,8 +153,8 @@ function Landing() {
                   </Typography>
                 </CardContent>
               </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary" sx={{ mt: 10 }}>
+              <CardActions sx={{ display: 'flex', justifyContent: 'end' }}>
+                <Button size="small" color="primary" sx={{ mt: 2 }}>
                   {/* eslint-disable-next-line react/no-unescaped-entities */}
                   Voir l'évènement
                 </Button>
@@ -187,6 +200,15 @@ function Landing() {
         <Typography sx={{ fontSize: 30, color: 'secondary.main', mb: 5 }}>
           Mes évènements passés
         </Typography>
+        {!eventFilteredPast && (
+          <Box
+            sx={{ backgroundColor: 'background.paper', borderRadius: 1, p: 2 }}
+          >
+            <Typography sx={{ color: 'primary.main' }}>
+              Vous n'avez pas encore d'évènements passés
+            </Typography>
+          </Box>
+        )}
         <Box
           sx={{
             display: 'flex',
@@ -195,7 +217,7 @@ function Landing() {
             justifyContent: 'center',
           }}
         >
-          {eventFilteredPast.map((event) => (
+          {eventFilteredPast?.map((event) => (
             <Card
               key={event.eventId}
               sx={{
@@ -222,12 +244,12 @@ function Landing() {
                   </Typography>
                 </CardContent>
               </CardActionArea>
-              <CardActions>
-                <Button size="small" color="primary" sx={{ mt: 10 }}>
+              {/* <CardActions>
+                <Button size="small" color="primary" sx={{ mt: 1 }}>
                   {/* eslint-disable-next-line react/no-unescaped-entities */}
-                  Voir l'évènement
-                </Button>
-              </CardActions>
+              {/* Voir l'évènement */}
+              {/* </Button>
+              </CardActions>  */}
             </Card>
             //   <Box
             //     sx={{

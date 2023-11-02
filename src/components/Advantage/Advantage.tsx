@@ -85,6 +85,7 @@ function Advantage() {
               my: 1,
             }}
           >
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
             Éliminez les conflits d'emploi du temps avec un calendrier
             collaboratif
           </Typography>
