@@ -7,16 +7,19 @@ import {
 import axiosInstance from '../../utils/axios';
 
 import { setCookie, removeCookie, getCookie } from '../../utils/cookieUtils'; // Importez les fonctions
+import { User } from '../../@types/User';
 
 interface UserState {
   logged: boolean;
   firstname: string;
   token: string;
+  user: User[];
 }
 export const initialState: UserState = {
   logged: false,
   firstname: '',
   token: '',
+  user: [],
 };
 
 export const logout = createAction('user/logout');
@@ -63,6 +66,12 @@ export const login = createAsyncThunk(
   }
 );
 
+export const fetchUser = createAsyncThunk('user/fetch', async () => {
+  const id = getCookie('id');
+  const { data } = await axiosInstance.get(`/user/${id}`);
+  return { data };
+});
+
 const userReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(login.fulfilled, (state, action) => {
@@ -84,7 +93,9 @@ const userReducer = createReducer(initialState, (builder) => {
       removeCookie('token');
       removeCookie('id');
       // Cookies.remove('isLogged');
+    })
+    .addCase(fetchUser.fulfilled, (state, action) => {
+      state.user = action.payload.data;
     });
 });
-
 export default userReducer;

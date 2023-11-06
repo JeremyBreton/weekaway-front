@@ -254,7 +254,6 @@ function EventDetails() {
               </Button>
             </Box>
             <BarChart
-              sx={{ color: 'f0f' }}
               xAxis={[
                 {
                   id: 'barCategories',

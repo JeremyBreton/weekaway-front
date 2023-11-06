@@ -109,6 +109,7 @@ function Landing() {
             }}
           >
             <Typography sx={{ color: 'primary.main' }}>
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
               Vous n'avez pas encore d'évènements à venir
             </Typography>
           </Box>
@@ -160,40 +161,6 @@ function Landing() {
                 </Button>
               </CardActions>
             </Card>
-
-            // <Box
-            //   sx={{
-            //     backgroundColor: 'background.paper',
-            //     borderRadius: 5,
-            //     px: 5,
-            //     width: '30%',
-            //     justifyContent: 'center',
-            //     mb: 5,
-            //   }}
-            //   key={event.eventId}
-            // >
-            //   <Container>
-            //     <CustomBox
-            //       sx={{
-            //         bgcolor: 'background.paper',
-            //         justifyContent: 'center',
-            //         width: 'md',
-            //         mb: 5,
-            //       }}
-            //     >
-            //       <Typography
-            //         sx={{
-            //           fontSize: '35px',
-            //           color: '#001E1D',
-            //           fontWeight: '700',
-            //           my: 10,
-            //         }}
-            //       >
-            //         {event.name}
-            //       </Typography>
-            //     </CustomBox>
-            //   </Container>
-            // </Box>
           ))}
         </Box>
 
@@ -205,6 +172,7 @@ function Landing() {
             sx={{ backgroundColor: 'background.paper', borderRadius: 1, p: 2 }}
           >
             <Typography sx={{ color: 'primary.main' }}>
+              {/* eslint-disable-next-line react/no-unescaped-entities */}
               Vous n'avez pas encore d'évènements passés
             </Typography>
           </Box>
@@ -244,46 +212,7 @@ function Landing() {
                   </Typography>
                 </CardContent>
               </CardActionArea>
-              {/* <CardActions>
-                <Button size="small" color="primary" sx={{ mt: 1 }}>
-                  {/* eslint-disable-next-line react/no-unescaped-entities */}
-              {/* Voir l'évènement */}
-              {/* </Button>
-              </CardActions>  */}
             </Card>
-            //   <Box
-            //     sx={{
-            //       backgroundColor: 'background.paper',
-            //       borderRadius: 5,
-            //       px: 5,
-            //       width: '30%',
-            //       justifyContent: 'center',
-            //       mb: 5,
-            //     }}
-            //     key={event.eventId}
-            //   >
-            //     <Container>
-            //       <CustomBox
-            //         sx={{
-            //           bgcolor: 'background.paper',
-            //           justifyContent: 'center',
-            //           width: 'md',
-            //           mb: 5,
-            //         }}
-            //       >
-            //         <Typography
-            //           sx={{
-            //             fontSize: '35px',
-            //             color: '#001E1D',
-            //             fontWeight: '700',
-            //             my: 10,
-            //           }}
-            //         >
-            //           {event.name}
-            //         </Typography>
-            //       </CustomBox>
-            //     </Container>
-            //   </Box>
           ))}
         </Box>
         <Box
@@ -297,20 +226,6 @@ function Landing() {
         >
           <Container />
         </Box>
-        {/* <Button
-          variant="contained"
-          sx={{ mb: 5, color: 'secondary.main' }}
-          onClick={handleClickCreateEvent}
-        >
-          Créer mon évènement
-        </Button>
-        <Button
-          variant="contained"
-          onClick={handleClickJoinEvent}
-          sx={{ mb: 5, color: 'secondary.main' }}
-        >
-          Rejoindre un évènement
-        </Button> */}
       </Box>
     </ThemeProvider>
   );
