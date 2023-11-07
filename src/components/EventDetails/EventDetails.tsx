@@ -23,6 +23,7 @@ import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
 import { fetchOneEvent } from '../../store/reducers/events';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+import Loading from '../Loading/Loading';
 
 function EventDetails() {
   const [startDate, setStartDate] = useState('');
@@ -31,6 +32,14 @@ function EventDetails() {
   const dispatch = useAppDispatch();
   const defaultTheme = createTheme(themeOptions);
   const { idEvent } = useParams();
+
+  useEffect(() => {
+    // Crée un state isLoading
+    console.log('JE SUIS UN USEEFFECT');
+    const jeFetch = dispatch(fetchOneEvent());
+    console.log('JeFetch', jeFetch);
+    // Changer le status de isLoading
+  }, [dispatch]);
 
   const OneEvent = useAppSelector((state) => state.events.oneEvent);
   console.log('OneEvent dans eventDetails', OneEvent);
@@ -92,8 +101,6 @@ function EventDetails() {
       });
   };
 
-  const dataToDisplay = OneEvent.eventDetails;
-
   const handleUserId = Cookies.get('id');
 
   const style = {
@@ -122,10 +129,47 @@ function EventDetails() {
     axios.post('http://caca-boudin.fr/api/inviteLink', formObj);
     setOpen(false);
   };
-  useEffect(() => {
-    dispatch(fetchOneEvent());
-  }, [dispatch]);
+  const loading = useAppSelector((state) => state.events.loading);
+  // Créer une condition qui retourne soit l'un soit l'autre suivant le state de isLoading
+  if (loading) {
+    setTimeout(() => {}, 1000);
 
+    return <Loading />;
+  }
+
+  // useEffect(() => {
+  //   // Utilisez useEffect pour gérer le timeout
+  //   const timer = setTimeout(() => {
+  //     loading(true);
+  //   }, 3000);
+
+  //   // Assurez-vous de nettoyer le timer lorsque le composant est démonté
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [loading]); // Le tableau vide [] signifie que ce code s'exécutera une seule fois après le rendu initial
+  // OneEvent.eventDetails.userChoice.map(
+  //   (date) => `${date.start_date_choice}-${date.end_date_choice}`
+  // );
+
+  const numberVote = OneEvent.eventDetails.numberVote.map((vote) => vote);
+
+  const userChoice = OneEvent.eventDetails.userChoice.map(
+    (date) =>
+      `${dayjs(date.start_date_choice).format('DD-MM-YYYY')}-${dayjs(
+        date.end_date_choice
+      ).format('DD-MM-YYYY')}`
+  );
+  console.log('regarde la', userChoice);
+
+  const userChoiceName = OneEvent.eventDetails.usershasChoices?.map((user) =>
+    Object.fromEntries(user)
+  );
+
+  console.log(userChoiceName);
+
+  const userChoiceNameFormatted = Object.fromEntries(userChoiceName);
+  console.log('userChoiceNameFormatted', userChoiceNameFormatted);
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
@@ -252,28 +296,29 @@ function EventDetails() {
                 Valider mes dates
               </Button>
             </Box>
-            <BarChart
-              xAxis={[
-                {
-                  id: 'barCategories',
-                  // data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
-                  data: OneEvent.eventDatereport.userChoice.map(
-                    (date) => date.startDate
-                  ),
-                  scaleType: 'band',
-                },
-              ]}
-              series={[
-                {
-                  // data: [2, 15, 3],
-                  data: OneEvent.eventDatereport.numberVote,
-                  color: '#004643',
-                },
-              ]}
-              width={500}
-              height={500}
-            />
-            {OneEvent.owner_id == handleUserId && (
+            {OneEvent.eventDetails.userChoice && (
+              <BarChart
+                xAxis={[
+                  {
+                    id: 'barCategories',
+                    // data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
+                    data: userChoice.map((date) => date),
+
+                    scaleType: 'band',
+                  },
+                ]}
+                series={[
+                  {
+                    // data: [2, 15, 3],
+                    data: numberVote,
+                    color: '#004643',
+                  },
+                ]}
+                width={800}
+                height={800}
+              />
+            )}
+            {OneEvent.eventDetails.owner_id == handleUserId && (
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Button
                   onClick={handleOpen}

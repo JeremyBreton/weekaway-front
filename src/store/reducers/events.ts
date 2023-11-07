@@ -23,13 +23,13 @@ import { Event } from '../../@types/Event';
 // import type { RootState } from '..';
 
 interface EventsState {
-  // loading: boolean;
+  loading: boolean;
   list: Event[];
   eventsArray: Event[];
   oneEvent: Event[];
 }
 export const initialState: EventsState = {
-  // loading: true,
+  loading: true,
   list: [],
   eventsArray: [],
   oneEvent: [],
@@ -71,7 +71,11 @@ const eventsReducer = createReducer(initialState, (builder) => {
     })
     .addCase(fetchOneEvent.fulfilled, (state, action) => {
       state.oneEvent = action.payload.data;
+      state.loading = false;
       console.log('action.payload.data', action.payload.data);
+    })
+    .addCase(fetchOneEvent.pending, (state) => {
+      state.loading = true;
     });
 });
 
