@@ -13,19 +13,21 @@
 // }
 
 export interface Event {
-  eventId: number;
-  id: number;
-  name: string;
-  owner_id: number;
-  status: boolean;
-  description: string;
-  picture: string;
-  theme: string;
-  password: string;
-  dates_of_event: DateEvent[];
-  users: UserEvent[];
-  created_at: string;
-  updated_at: string;
+  eventDetails: {
+    eventId: number;
+    id: number;
+    name: string;
+    owner_id: number;
+    status: boolean;
+    description: string;
+    picture: string;
+    theme: string;
+    password: string;
+    dates_of_event: DateEvent[];
+    users: UserEvent[];
+    created_at: string;
+    updated_at: string;
+  };
 }
 
 export interface DateEvent {

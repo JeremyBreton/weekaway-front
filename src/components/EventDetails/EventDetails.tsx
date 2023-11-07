@@ -34,20 +34,16 @@ function EventDetails() {
 
   const OneEvent = useAppSelector((state) => state.events.oneEvent);
   console.log('OneEvent dans eventDetails', OneEvent);
-  console.log(
-    'OneEvent.dates_of_event dans eventDetails',
-    OneEvent.dates_of_event
-  );
+  // console.log(
+  //   'OneEvent.dates_of_event dans eventDetails',
+  //   OneEvent.dates_of_event
+  // );
   // const oneEvent = eventsArray.filter(
   //   (event) => event.eventId.toString() === idEvent
   // );
 
   // console.log('OneEvent', oneEvent);
   // const monevent = Cookies.get('eventId');
-
-  useEffect(() => {
-    dispatch(fetchOneEvent());
-  }, [dispatch]);
 
   // function handleClickAddUserChoice(
   //   event: MouseEvent<HTMLButtonElement, MouseEvent>
@@ -69,14 +65,14 @@ function EventDetails() {
 
   const endDateReceived = (date: string | null) => {
     const formattedEndDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
-    console.log('cest la date de fin dans EventDetails', formattedEndDate);
+    console.log("c'est la date de fin dans EventDetails", formattedEndDate);
     setEndDate(formattedEndDate);
   };
 
   const startDateReceived = (date: string | null) => {
     const formattedStartDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
     setStartDate(formattedStartDate);
-    console.log('cest la date de début dans le parent', formattedStartDate);
+    console.log("c'est la date de début dans le parent", formattedStartDate);
   };
 
   const handleSubmitAddUserChoice = (event: FormEvent<HTMLFormElement>) => {
@@ -84,7 +80,6 @@ function EventDetails() {
     const form = event.currentTarget;
 
     const formData = new FormData(form);
-    console.log('formData', formData);
     const formObj = Object.fromEntries(formData);
 
     formData.append('startDate', startDate);
@@ -96,6 +91,8 @@ function EventDetails() {
         return JSON.parse(JSON.stringify(response.data));
       });
   };
+
+  const dataToDisplay = OneEvent.eventDetails;
 
   const handleUserId = Cookies.get('id');
 
@@ -120,12 +117,14 @@ function EventDetails() {
     const form = event.currentTarget;
 
     const formData = new FormData(form);
-    console.log('formData', formData);
     const formObj = Object.fromEntries(formData);
 
     axios.post('http://caca-boudin.fr/api/inviteLink', formObj);
     setOpen(false);
   };
+  useEffect(() => {
+    dispatch(fetchOneEvent());
+  }, [dispatch]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -157,7 +156,7 @@ function EventDetails() {
             <CardMedia
               component="img"
               height="200"
-              image={OneEvent.picture}
+              image={OneEvent.eventDetails.picture}
               alt="banniere de l'évènement"
               sx={{
                 objectFit: 'cover',
@@ -185,7 +184,7 @@ function EventDetails() {
                 component="h1"
                 sx={{ textAlign: 'center', mb: 2 }}
               >
-                {OneEvent.name}
+                {OneEvent.eventDetails.name}
               </Typography>
             </Box>
             <Box
@@ -203,7 +202,7 @@ function EventDetails() {
               }}
             >
               <Typography sx={{ textAlign: 'center', mb: 5 }}>
-                {OneEvent.description}
+                {OneEvent.eventDetails.description}
               </Typography>
             </Box>
             <Box
@@ -257,13 +256,17 @@ function EventDetails() {
               xAxis={[
                 {
                   id: 'barCategories',
-                  data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
+                  // data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
+                  data: OneEvent.eventDatereport.userChoice.map(
+                    (date) => date.startDate
+                  ),
                   scaleType: 'band',
                 },
               ]}
               series={[
                 {
-                  data: [2, 15, 3],
+                  // data: [2, 15, 3],
+                  data: OneEvent.eventDatereport.numberVote,
                   color: '#004643',
                 },
               ]}

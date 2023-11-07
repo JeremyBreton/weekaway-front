@@ -17,6 +17,9 @@ import EditIcon from '@mui/icons-material/Edit';
 import * as React from 'react';
 
 import axios from 'axios';
+import dayjs from 'dayjs';
+import { DateField, LocalizationProvider, frFR } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { getCookie } from '../../utils/cookieUtils';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -63,28 +66,41 @@ function ProfileSettings() {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: '50vh',
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '2px solid #f9bc60',
     boxShadow: 24,
-    p: 4,
+    px: 5,
+    pt: 2,
+    borderRadius: 5,
   };
 
+  const dateFromBackend = dayjs(userfetch.birth_date).format('DD-MM-YYYY');
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    //! should we let the prevent default or not ? that is the question
+    // event.preventDefault();
 
     const id = Cookies.get('id');
     const form = event.currentTarget;
     const formData = new FormData(form);
-
+    const formattedDate = dayjs(birth_date).format('YYYY-MM-DD HH:mm:ssZ');
+    formData.set('birth_date', formattedDate);
     // Supprimez les champs vides ou nuls de FormData
     formData.forEach((value, key) => {
       if (value === '' || value === null) {
         formData.delete(key);
       }
     });
-
-    // Vous n'avez pas besoin de supprimer gender ou address séparément car vous l'avez déjà fait ci-dessus
+    if (address == null) {
+      formData.delete('address');
+    }
+    if (profile_desc == null) {
+      formData.delete('profile_desc');
+    }
+    if (gender == null) {
+      formData.delete('gender');
+    }
     const formObj = Object.fromEntries(formData);
 
     const patchUser = await axios.patch(
@@ -98,16 +114,31 @@ function ProfileSettings() {
     );
   };
 
-  // const dispatch = useAppDispatch();
-
-  // useEffect(() => {
-  //   dispatch(fetchUser());
-  // }, [dispatch]);
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
+    height: 1,
+    overflow: 'hidden',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    whiteSpace: 'nowrap',
+    width: 1,
+  });
 
   return (
     <ThemeProvider theme={defaultTheme}>
       {isAuthenticated && (
-        <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
+        <Container
+          component="main"
+          maxWidth="sm"
+          sx={{
+            minHeight: '76vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
           <CssBaseline />
 
           <Box
@@ -115,7 +146,7 @@ function ProfileSettings() {
               backgroundColor: '#ABD1C6',
               borderRadius: 5,
               px: 5,
-              mt: 20,
+              mt: 15,
               mb: 5,
               height: '50%',
               width: '50vh',
@@ -139,7 +170,7 @@ function ProfileSettings() {
             >
               <Typography>Nom: {userfetch.lastname}</Typography>
               <Typography>Prénom: {userfetch.firstname}</Typography>
-              <Typography>Date de naissance: {userfetch.birth_date}</Typography>
+              <Typography>Date de naissance: {dateFromBackend}</Typography>
               <Typography>Genre: {userfetch.gender}</Typography>
             </Box>
             <Box
@@ -171,6 +202,11 @@ function ProfileSettings() {
               onClose={handleClose}
               aria-labelledby="modal-modal-title"
               aria-describedby="modal-modal-description"
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
             >
               <Box sx={style}>
                 <Typography
@@ -215,13 +251,26 @@ function ProfileSettings() {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
-                        fullWidth
-                        name="birth_date"
-                        label="Date d'anniversaire"
+                      <LocalizationProvider
+                        dateAdapter={AdapterDayjs}
+                        localeText={
+                          frFR.components.MuiLocalizationProvider.defaultProps
+                            .localeText
+                        }
+                      >
+                        {/* <Container components={['DateField']}> */}
+                        <DateField
+                          label="Date de naissance"
+                          format="DD/MM/YYYY"
+                          onChange={setBirth_date}
+                        />
+                        {/* </Container> */}
+                      </LocalizationProvider>
+                      <VisuallyHiddenInput
+                        type="input"
                         id="birth_date"
-                        value={birth_date}
-                        onChange={({ target }) => setBirth_date(target.value)}
+                        name="birth_date"
+                        defaultValue={birth_date}
                       />
                     </Grid>
                     <Grid item xs={12}>

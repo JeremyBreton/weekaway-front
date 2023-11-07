@@ -147,7 +147,7 @@ function EventForm() {
                   label="Thème de l'évènement"
                   id="theme"
                 />
-                <TextField
+                {/* <TextField
                   margin="normal"
                   required
                   fullWidth
@@ -155,7 +155,7 @@ function EventForm() {
                   label="Lieu de l'évènement"
                   type="Lieu"
                   id="Lieu"
-                />
+                /> */}
                 <TextField
                   margin="normal"
                   required
