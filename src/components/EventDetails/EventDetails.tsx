@@ -85,7 +85,7 @@ function EventDetails() {
   };
 
   const handleSubmitAddUserChoice = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    // event.preventDefault();
     const form = event.currentTarget;
 
     const formData = new FormData(form);
@@ -152,24 +152,251 @@ function EventDetails() {
   //   (date) => `${date.start_date_choice}-${date.end_date_choice}`
   // );
 
-  const numberVote = OneEvent.eventDetails.numberVote.map((vote) => vote);
+  if (!OneEvent.eventDetails.users.includes(null)) {
+    const numberVote = OneEvent.eventDetails.numberVote.map((vote) => vote);
 
-  const userChoice = OneEvent.eventDetails.userChoice.map(
-    (date) =>
-      `${dayjs(date.start_date_choice).format('DD-MM-YYYY')}-${dayjs(
-        date.end_date_choice
-      ).format('DD-MM-YYYY')}`
-  );
-  console.log('regarde la', userChoice);
+    const userChoice = OneEvent.eventDetails.userChoice.map(
+      (date) =>
+        `${dayjs(date.start_date_choice).format('DD-MM-YYYY')}-${dayjs(
+          date.end_date_choice
+        ).format('DD-MM-YYYY')}`
+    );
 
-  const userChoiceName = OneEvent.eventDetails.usershasChoices?.map((user) =>
-    Object.fromEntries(user)
-  );
+    return (
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
+          <CssBaseline />
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+              backgroundColor: 'background.default',
+              pt: 11,
+              minHeight: '100vh',
+            }}
+          >
+            <Box
+              sx={{
+                backgroundColor: '#ABD1C6',
+                borderRadius: 5,
+                // px: 5,
+                my: 20,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100vh',
+              }}
+            >
+              <CardMedia
+                component="img"
+                height="200"
+                image={OneEvent.eventDetails.picture}
+                alt="banniere de l'évènement"
+                sx={{
+                  objectFit: 'cover',
+                  mb: 5,
+                  borderTopLeftRadius: 5,
+                  borderTopRightRadius: 5,
+                }}
+              />
+              <Box
+                sx={{
+                  backgroundColor: '#004643',
+                  color: 'secondary.main',
+                  borderRadius: 2,
+                  py: 2,
+                  my: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '80%',
+                }}
+              >
+                <Typography
+                  variant="h3"
+                  component="h1"
+                  sx={{ textAlign: 'center', mb: 2 }}
+                >
+                  {OneEvent.eventDetails.name}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  backgroundColor: '#004643',
+                  color: 'secondary.main',
+                  borderRadius: 2,
+                  py: 2,
+                  my: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '60%',
+                }}
+              >
+                <Typography sx={{ textAlign: 'center', mb: 5 }}>
+                  {OneEvent.eventDetails.description}
+                </Typography>
+              </Box>
+              <Box
+                component="form"
+                onSubmit={handleSubmitAddUserChoice}
+                noValidate
+                sx={{
+                  mt: 1,
+                  justifyContent: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Calendar
+                  startDateReceived={startDateReceived}
+                  endDateReceived={endDateReceived}
+                />
+                <VisuallyHiddenInput
+                  type="input"
+                  id="userId"
+                  name="userId"
+                  defaultValue={handleUserId}
+                />
+                <VisuallyHiddenInput
+                  type="input"
+                  id="eventId"
+                  name="eventId"
+                  defaultValue={idEvent}
+                />
+                <VisuallyHiddenInput
+                  type="input"
+                  id="startDate"
+                  name="startDate"
+                  defaultValue={startDate}
+                />
+                <VisuallyHiddenInput
+                  type="input"
+                  id="endDate"
+                  name="endDate"
+                  defaultValue={endDate}
+                />
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{ mt: 2, mb: 5, color: 'secondary.main' }}
+                >
+                  Valider mes dates
+                </Button>
+              </Box>
+              {!OneEvent.eventDetails.users.includes(null) && (
+                <BarChart
+                  xAxis={[
+                    {
+                      id: 'barCategories',
+                      // data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
 
-  console.log(userChoiceName);
+                      data: userChoice.map((date) => date),
 
-  const userChoiceNameFormatted = Object.fromEntries(userChoiceName);
-  console.log('userChoiceNameFormatted', userChoiceNameFormatted);
+                      scaleType: 'band',
+                    },
+                  ]}
+                  series={[
+                    {
+                      // data: [2, 15, 3],
+                      data: numberVote,
+                      color: '#004643',
+                    },
+                  ]}
+                  width={800}
+                  height={800}
+                />
+              )}
+              {OneEvent.eventDetails.owner_id == handleUserId && (
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Button
+                    onClick={handleOpen}
+                    variant="contained"
+                    sx={{ mt: 2, mb: 5, color: 'secondary.main' }}
+                  >
+                    Ajouter des invités
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    sx={{
+                      mb: 2,
+                      color: 'primary.main',
+                      '&:hover': {
+                        backgroundColor: '#e16162',
+                        color: '#001E1D',
+                      },
+                    }}
+                  >
+                    Delete
+                  </Button>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        Ajouter des invités
+                      </Typography>
+                      {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Duis mollis, est non commodo luctus, nisi erat porttitor
+                    ligula.
+                  </Typography> */}
+                      <Box
+                        component="form"
+                        onSubmit={handleSubmit}
+                        noValidate
+                        sx={{
+                          mt: 1,
+                          justifyContent: 'center',
+                          display: 'flex',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <TextField
+                          margin="normal"
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email de l'invité"
+                          name="email"
+                          autoFocus
+                        />
+                        <VisuallyHiddenInput
+                          type="input"
+                          id="eventId"
+                          name="eventId"
+                          defaultValue={idEvent}
+                        />
+
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          sx={{ mt: 1, color: 'secondary.main' }}
+                        >
+                          Valider
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Modal>
+                </Box>
+              )}
+            </Box>
+          </Box>
+        </Container>
+      </ThemeProvider>
+    );
+  }
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
@@ -296,28 +523,6 @@ function EventDetails() {
                 Valider mes dates
               </Button>
             </Box>
-            {OneEvent.eventDetails.userChoice && (
-              <BarChart
-                xAxis={[
-                  {
-                    id: 'barCategories',
-                    // data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
-                    data: userChoice.map((date) => date),
-
-                    scaleType: 'band',
-                  },
-                ]}
-                series={[
-                  {
-                    // data: [2, 15, 3],
-                    data: numberVote,
-                    color: '#004643',
-                  },
-                ]}
-                width={800}
-                height={800}
-              />
-            )}
             {OneEvent.eventDetails.owner_id == handleUserId && (
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Button
@@ -356,9 +561,9 @@ function EventDetails() {
                       Ajouter des invités
                     </Typography>
                     {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  Duis mollis, est non commodo luctus, nisi erat porttitor
-                  ligula.
-                </Typography> */}
+                          Duis mollis, est non commodo luctus, nisi erat porttitor
+                          ligula.
+                        </Typography> */}
                     <Box
                       component="form"
                       onSubmit={handleSubmit}
