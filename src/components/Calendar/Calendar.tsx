@@ -7,7 +7,9 @@ import EditCalendarRoundedIcon from '@mui/icons-material/EditCalendarRounded';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
+import { frFR } from '@mui/x-date-pickers/locales';
 import { themeOptions } from '../Theme/Theme';
+import 'dayjs/locale/fr';
 
 const StyledButton = styled(IconButton)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
@@ -65,7 +67,13 @@ function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
   const defaultTheme = createTheme(themeOptions);
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider
+      dateAdapter={AdapterDayjs}
+      localeText={
+        frFR.components.MuiLocalizationProvider.defaultProps.localeText
+      }
+      adapterLocale="fr"
+    >
       <Box
         sx={{
           backgroundColor: '#ABD1C6',
@@ -93,7 +101,6 @@ function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
                 variant: 'filled',
                 focused: true,
                 color: 'primary',
-                placeholder: 'JJ/MM/AAAA',
               },
             }}
           />
@@ -114,7 +121,6 @@ function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
                 variant: 'filled',
                 focused: true,
                 color: 'primary',
-                placeholder: 'JJ/MM/AAAA',
               },
             }}
           />

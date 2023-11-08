@@ -1,3 +1,4 @@
+/* eslint-disable import/prefer-default-export */
 import { ThemeOptions } from '@mui/material/styles';
 
 export const themeOptions: ThemeOptions = {

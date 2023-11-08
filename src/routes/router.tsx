@@ -4,7 +4,7 @@ import Root from './Root/Root';
 import App from '../components/App/App';
 import SignIn from '../components/Signin/Signin';
 import SignUp from '../components/Signup/Signup';
-import Error from './Root/Error/Error';
+import Error from '../components/Error/Error';
 import Landing from '../components/Landing/Landing';
 import EventForm from '../components/EventForm/EventForm';
 import Presentation from '../components/Presentation/Presentation';

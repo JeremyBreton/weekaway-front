@@ -23,6 +23,7 @@ import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
 import { fetchOneEvent } from '../../store/reducers/events';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
+import Loading from '../Loading/Loading';
 
 function EventDetails() {
   const [startDate, setStartDate] = useState('');
@@ -32,22 +33,26 @@ function EventDetails() {
   const defaultTheme = createTheme(themeOptions);
   const { idEvent } = useParams();
 
+  useEffect(() => {
+    // Crée un state isLoading
+    console.log('JE SUIS UN USEEFFECT');
+    const jeFetch = dispatch(fetchOneEvent());
+    console.log('JeFetch', jeFetch);
+    // Changer le status de isLoading
+  }, [dispatch]);
+
   const OneEvent = useAppSelector((state) => state.events.oneEvent);
   console.log('OneEvent dans eventDetails', OneEvent);
-  console.log(
-    'OneEvent.dates_of_event dans eventDetails',
-    OneEvent.dates_of_event
-  );
+  // console.log(
+  //   'OneEvent.dates_of_event dans eventDetails',
+  //   OneEvent.dates_of_event
+  // );
   // const oneEvent = eventsArray.filter(
   //   (event) => event.eventId.toString() === idEvent
   // );
 
   // console.log('OneEvent', oneEvent);
   // const monevent = Cookies.get('eventId');
-
-  useEffect(() => {
-    dispatch(fetchOneEvent());
-  }, [dispatch]);
 
   // function handleClickAddUserChoice(
   //   event: MouseEvent<HTMLButtonElement, MouseEvent>
@@ -69,22 +74,21 @@ function EventDetails() {
 
   const endDateReceived = (date: string | null) => {
     const formattedEndDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
-    console.log('cest la date de fin dans EventDetails', formattedEndDate);
+    console.log("c'est la date de fin dans EventDetails", formattedEndDate);
     setEndDate(formattedEndDate);
   };
 
   const startDateReceived = (date: string | null) => {
     const formattedStartDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
     setStartDate(formattedStartDate);
-    console.log('cest la date de début dans le parent', formattedStartDate);
+    console.log("c'est la date de début dans le parent", formattedStartDate);
   };
 
   const handleSubmitAddUserChoice = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    // event.preventDefault();
     const form = event.currentTarget;
 
     const formData = new FormData(form);
-    console.log('formData', formData);
     const formObj = Object.fromEntries(formData);
 
     formData.append('startDate', startDate);
@@ -120,13 +124,279 @@ function EventDetails() {
     const form = event.currentTarget;
 
     const formData = new FormData(form);
-    console.log('formData', formData);
     const formObj = Object.fromEntries(formData);
 
     axios.post('http://caca-boudin.fr/api/inviteLink', formObj);
     setOpen(false);
   };
+  const loading = useAppSelector((state) => state.events.loading);
+  // Créer une condition qui retourne soit l'un soit l'autre suivant le state de isLoading
+  if (loading) {
+    setTimeout(() => {}, 1000);
 
+    return <Loading />;
+  }
+
+  // useEffect(() => {
+  //   // Utilisez useEffect pour gérer le timeout
+  //   const timer = setTimeout(() => {
+  //     loading(true);
+  //   }, 3000);
+
+  //   // Assurez-vous de nettoyer le timer lorsque le composant est démonté
+  //   return () => {
+  //     clearTimeout(timer);
+  //   };
+  // }, [loading]); // Le tableau vide [] signifie que ce code s'exécutera une seule fois après le rendu initial
+  // OneEvent.eventDetails.userChoice.map(
+  //   (date) => `${date.start_date_choice}-${date.end_date_choice}`
+  // );
+
+  if (!OneEvent.eventDetails.users.includes(null)) {
+    const numberVote = OneEvent.eventDetails.numberVote.map((vote) => vote);
+
+    const userChoice = OneEvent.eventDetails.userChoice.map(
+      (date) =>
+        `${dayjs(date.start_date_choice).format('DD-MM-YYYY')}-${dayjs(
+          date.end_date_choice
+        ).format('DD-MM-YYYY')}`
+    );
+
+    return (
+      <ThemeProvider theme={defaultTheme}>
+        <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
+          <CssBaseline />
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+              backgroundColor: 'background.default',
+              pt: 11,
+              minHeight: '100vh',
+            }}
+          >
+            <Box
+              sx={{
+                backgroundColor: '#ABD1C6',
+                borderRadius: 5,
+                // px: 5,
+                my: 20,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '100vh',
+              }}
+            >
+              <CardMedia
+                component="img"
+                height="200"
+                image={OneEvent.eventDetails.picture}
+                alt="banniere de l'évènement"
+                sx={{
+                  objectFit: 'cover',
+                  mb: 5,
+                  borderTopLeftRadius: 5,
+                  borderTopRightRadius: 5,
+                }}
+              />
+              <Box
+                sx={{
+                  backgroundColor: '#004643',
+                  color: 'secondary.main',
+                  borderRadius: 2,
+                  py: 2,
+                  my: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '80%',
+                }}
+              >
+                <Typography
+                  variant="h3"
+                  component="h1"
+                  sx={{ textAlign: 'center', mb: 2 }}
+                >
+                  {OneEvent.eventDetails.name}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  backgroundColor: '#004643',
+                  color: 'secondary.main',
+                  borderRadius: 2,
+                  py: 2,
+                  my: 2,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '60%',
+                }}
+              >
+                <Typography sx={{ textAlign: 'center', mb: 5 }}>
+                  {OneEvent.eventDetails.description}
+                </Typography>
+              </Box>
+              <Box
+                component="form"
+                onSubmit={handleSubmitAddUserChoice}
+                noValidate
+                sx={{
+                  mt: 1,
+                  justifyContent: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                <Calendar
+                  startDateReceived={startDateReceived}
+                  endDateReceived={endDateReceived}
+                />
+                <VisuallyHiddenInput
+                  type="input"
+                  id="userId"
+                  name="userId"
+                  defaultValue={handleUserId}
+                />
+                <VisuallyHiddenInput
+                  type="input"
+                  id="eventId"
+                  name="eventId"
+                  defaultValue={idEvent}
+                />
+                <VisuallyHiddenInput
+                  type="input"
+                  id="startDate"
+                  name="startDate"
+                  defaultValue={startDate}
+                />
+                <VisuallyHiddenInput
+                  type="input"
+                  id="endDate"
+                  name="endDate"
+                  defaultValue={endDate}
+                />
+                <Button
+                  variant="contained"
+                  type="submit"
+                  sx={{ mt: 2, mb: 5, color: 'secondary.main' }}
+                >
+                  Valider mes dates
+                </Button>
+              </Box>
+              {!OneEvent.eventDetails.users.includes(null) && (
+                <BarChart
+                  xAxis={[
+                    {
+                      id: 'barCategories',
+                      // data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
+
+                      data: userChoice.map((date) => date),
+
+                      scaleType: 'band',
+                    },
+                  ]}
+                  series={[
+                    {
+                      // data: [2, 15, 3],
+                      data: numberVote,
+                      color: '#004643',
+                    },
+                  ]}
+                  width={800}
+                  height={800}
+                />
+              )}
+              {OneEvent.eventDetails.owner_id == handleUserId && (
+                <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <Button
+                    onClick={handleOpen}
+                    variant="contained"
+                    sx={{ mt: 2, mb: 5, color: 'secondary.main' }}
+                  >
+                    Ajouter des invités
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    sx={{
+                      mb: 2,
+                      color: 'primary.main',
+                      '&:hover': {
+                        backgroundColor: '#e16162',
+                        color: '#001E1D',
+                      },
+                    }}
+                  >
+                    Delete
+                  </Button>
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        Ajouter des invités
+                      </Typography>
+                      {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+                    Duis mollis, est non commodo luctus, nisi erat porttitor
+                    ligula.
+                  </Typography> */}
+                      <Box
+                        component="form"
+                        onSubmit={handleSubmit}
+                        noValidate
+                        sx={{
+                          mt: 1,
+                          justifyContent: 'center',
+                          display: 'flex',
+                          flexDirection: 'column',
+                        }}
+                      >
+                        <TextField
+                          margin="normal"
+                          required
+                          fullWidth
+                          id="email"
+                          label="Email de l'invité"
+                          name="email"
+                          autoFocus
+                        />
+                        <VisuallyHiddenInput
+                          type="input"
+                          id="eventId"
+                          name="eventId"
+                          defaultValue={idEvent}
+                        />
+
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          sx={{ mt: 1, color: 'secondary.main' }}
+                        >
+                          Valider
+                        </Button>
+                      </Box>
+                    </Box>
+                  </Modal>
+                </Box>
+              )}
+            </Box>
+          </Box>
+        </Container>
+      </ThemeProvider>
+    );
+  }
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
@@ -157,7 +427,7 @@ function EventDetails() {
             <CardMedia
               component="img"
               height="200"
-              image={OneEvent.picture}
+              image={OneEvent.eventDetails.picture}
               alt="banniere de l'évènement"
               sx={{
                 objectFit: 'cover',
@@ -185,7 +455,7 @@ function EventDetails() {
                 component="h1"
                 sx={{ textAlign: 'center', mb: 2 }}
               >
-                {OneEvent.name}
+                {OneEvent.eventDetails.name}
               </Typography>
             </Box>
             <Box
@@ -203,7 +473,7 @@ function EventDetails() {
               }}
             >
               <Typography sx={{ textAlign: 'center', mb: 5 }}>
-                {OneEvent.description}
+                {OneEvent.eventDetails.description}
               </Typography>
             </Box>
             <Box
@@ -253,25 +523,7 @@ function EventDetails() {
                 Valider mes dates
               </Button>
             </Box>
-            <BarChart
-              sx={{ color: 'f0f' }}
-              xAxis={[
-                {
-                  id: 'barCategories',
-                  data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
-                  scaleType: 'band',
-                },
-              ]}
-              series={[
-                {
-                  data: [2, 15, 3],
-                  color: '#004643',
-                },
-              ]}
-              width={500}
-              height={500}
-            />
-            {OneEvent.owner_id == handleUserId && (
+            {OneEvent.eventDetails.owner_id == handleUserId && (
               <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                 <Button
                   onClick={handleOpen}
@@ -309,9 +561,9 @@ function EventDetails() {
                       Ajouter des invités
                     </Typography>
                     {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  Duis mollis, est non commodo luctus, nisi erat porttitor
-                  ligula.
-                </Typography> */}
+                          Duis mollis, est non commodo luctus, nisi erat porttitor
+                          ligula.
+                        </Typography> */}
                     <Box
                       component="form"
                       onSubmit={handleSubmit}
