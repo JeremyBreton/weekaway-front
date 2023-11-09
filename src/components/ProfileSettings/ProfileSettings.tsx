@@ -267,6 +267,7 @@ function ProfileSettings() {
                           label="Date de naissance"
                           format="DD/MM/YYYY"
                           onChange={setBirth_date}
+                          sx={{ width: '100%' }}
                         />
                         {/* </Container> */}
                       </LocalizationProvider>

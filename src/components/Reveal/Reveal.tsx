@@ -89,6 +89,7 @@ function Reveal() {
             backgroundColor: '#f9bc60',
             color: '#001E1D',
             width: '50%',
+            '&:hover': { color: '#f9bc60', backgroundColor: '#001E1D' },
           }}
         >
           Je m'inscris pour créer une évènement !
