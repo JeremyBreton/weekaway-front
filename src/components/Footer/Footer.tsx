@@ -3,7 +3,7 @@ import { Box, Container } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from '../Theme/Theme';
 
-import logo from '../../assets/1-removebg-preview.png';
+import logo from '../../assets/LOGO_HORIZONTAL__ONLY_VERT___RESIZE-NEWpng.png';
 
 function Footer() {
   const CustomContainer = styled(Container)(({ theme }) => ({
@@ -40,7 +40,7 @@ function Footer() {
             <Box>
               <Typography
                 sx={{
-                  fontSize: '18px',
+                  fontSize: '1.5rem',
                   fontWeight: '700',
                   mb: 2,
                 }}
@@ -57,15 +57,14 @@ function Footer() {
               <FooterLink>Mention légales</FooterLink>
             </Box>
 
-            <Box>
-              <img
-                alt="logo-weekaway"
-                src={logo}
-                style={{
-                  width: 150,
-                  height: 150,
-                }}
-              />
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <img alt="logo-weekaway" src={logo} style={{ width: '70%' }} />
             </Box>
           </CustomContainer>
         </CustomContainer>
