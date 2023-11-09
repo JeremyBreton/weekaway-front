@@ -1,6 +1,8 @@
 import { Box, styled, Typography } from '@mui/material';
 
-import logo from '../../assets/1-removebg-preview.png';
+import OrganisationWE from '../../assets/1-OrganisationWE.png';
+import CalendrierCollaboratif from '../../assets/2-CalendrierCollaboratif.png';
+import VoyagesATheme from '../../assets/3-VoyagesATheme.png';
 
 function Advantage() {
   const GuidesBox = styled(Box)(({ theme }) => ({
@@ -22,8 +24,8 @@ function Advantage() {
 
   const GuideBox = styled(Box)(({ theme }) => ({
     display: 'flex',
-    width: '30%',
-    flexDirection: 'row',
+    width: '20%',
+    flexDirection: 'column',
     alignItems: 'center',
     marginTop: theme.spacing(5),
     [theme.breakpoints.down('md')]: {
@@ -34,6 +36,16 @@ function Advantage() {
       margin: theme.spacing(2, 0, 2, 0),
       width: '100%',
       flexDirection: 'column',
+    },
+  }));
+
+  const Divider = styled('div')(({ theme }) => ({
+    width: '5%',
+    height: '5px',
+    backgroundColor: '#001E1D',
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 'auto',
+      marginRight: 'auto',
     },
   }));
 
@@ -48,23 +60,30 @@ function Advantage() {
         pt: 5,
       }}
     >
-      <div
-        style={{
-          width: '5%',
-          height: '5px',
-          backgroundColor: '#001E1D',
-          margin: '0 auto',
+      <Divider />
+      <Typography
+        sx={{
+          fontSize: '2rem',
+          color: '#004643',
+          fontWeight: '700',
+          mt: 2,
         }}
-      />
+      >
+        WeekAway en 3 points :
+      </Typography>
 
       <GuidesBox>
         <GuideBox>
-          <img src={logo} alt="buyIcon" style={{ width: 300, height: 300 }} />
+          <img
+            src={OrganisationWE}
+            alt="buyIcon"
+            style={{ width: 200, height: 200 }}
+          />
           <Typography
             variant="body2"
             sx={{
               fontWeight: '500',
-              fontSize: '18px',
+              fontSize: '1.1rem',
               color: '#001E1D',
               my: 1,
             }}
@@ -75,12 +94,16 @@ function Advantage() {
         </GuideBox>
 
         <GuideBox>
-          <img src={logo} alt="buyIcon" style={{ width: 300, height: 300 }} />
+          <img
+            src={CalendrierCollaboratif}
+            alt="buyIcon"
+            style={{ width: 200, height: 200 }}
+          />
           <Typography
             variant="body2"
             sx={{
               fontWeight: '500',
-              fontSize: '18px',
+              fontSize: '1.1rem',
               color: '#00E1E1D',
               my: 1,
             }}
@@ -92,12 +115,16 @@ function Advantage() {
         </GuideBox>
 
         <GuideBox>
-          <img src={logo} alt="buyIcon" style={{ width: 300, height: 300 }} />
+          <img
+            src={VoyagesATheme}
+            alt="buyIcon"
+            style={{ width: 200, height: 200 }}
+          />
           <Typography
             variant="body2"
             sx={{
               fontWeight: '500',
-              fontSize: '18px',
+              fontSize: '1.1rem',
               color: '#001E1D',
               my: 1,
             }}

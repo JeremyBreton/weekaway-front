@@ -1,5 +1,6 @@
-import { Typography } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import { Box, Container, styled } from '@mui/system';
+import image2 from '../../assets/DESSIN-CAR.png';
 
 function Reveal() {
   const CustomBox = styled(Box)(({ theme }) => ({
@@ -15,10 +16,13 @@ function Reveal() {
 
   const ImgContainer = styled(Box)(({ theme }) => ({
     width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
     [theme.breakpoints.down('md')]: {
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
     },
   }));
 
@@ -32,66 +36,63 @@ function Reveal() {
     },
   }));
   return (
-    <Box sx={{ py: 10, bgcolor: '#004643', pt: 20 }}>
+    <Box sx={{ py: 10, bgcolor: '#004643', pt: 20, display: 'flex' }}>
+      <ImgContainer>
+        <img src={image2} alt="illustration" style={{ maxWidth: '80%' }} />
+      </ImgContainer>
       <Container>
         <CustomBox sx={{ mb: 10 }}>
           <Box>
             <Divider />
             <Typography
               sx={{
-                fontSize: '35px',
+                fontSize: '2rem',
                 color: '#F9BC60',
                 fontWeight: '700',
-                my: 3,
+                my: 2,
               }}
             >
-              Organisez des évènements mémorables
+              Des week-ends inoubliables, en toute simplicité !
             </Typography>
 
             <Typography
               sx={{
-                fontSize: '16px',
+                fontSize: '1rem',
                 color: '#ABD1C6',
-                lineHeight: '27px',
+                lineHeight: '2rem',
               }}
             >
               {/* eslint-disable-next-line react/no-unescaped-entities */}
-              Simplifiez vos évènements avec WeekAway : l'art de planifier
-              ensemble des weekends inoubliables !
+              Avec WeekAway, la{' '}
+              <strong>
+                planification de week-ends entre amis n'a jamais été aussi
+                simple !
+              </strong>
+              <ol>
+                <li>Créez un évènement</li>
+                <li>Invitez vos amis</li>
+                <li>Choisissez une plage de dates</li>
+                <li>Choisissez vos dates de disponiblités</li>
+                <li>
+                  Laissez-nous vous trouvez la meilleure date pour votre
+                  week-end
+                </li>
+              </ol>
             </Typography>
           </Box>
         </CustomBox>
-      </Container>
-
-      <Container>
-        <CustomBox>
-          <Box>
-            <Divider />
-            <Typography
-              sx={{
-                fontSize: '35px',
-                color: '#F9BC60',
-                fontWeight: '700',
-                my: 3,
-              }}
-            >
-              {/* eslint-disable-next-line react/no-unescaped-entities */}
-              Adieu les tracas de l'organisation
-            </Typography>
-
-            <Typography
-              sx={{
-                fontSize: '16px',
-                color: '#ABD1C6',
-                lineHeight: '27px',
-              }}
-            >
-              {/* eslint-disable-next-line react/no-unescaped-entities */}
-              Simplifiez l'organisation de vos évènements avec WeekAway : l'art
-              de planifier ensemble des weekends inoubliables !
-            </Typography>
-          </Box>
-        </CustomBox>
+        <Button
+          type="submit"
+          // fullWidth
+          variant="contained"
+          sx={{
+            backgroundColor: '#f9bc60',
+            color: '#001E1D',
+            width: '50%',
+          }}
+        >
+          Je m'inscris pour créer une évènement !
+        </Button>
       </Container>
     </Box>
   );
