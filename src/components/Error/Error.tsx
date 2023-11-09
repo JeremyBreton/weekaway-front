@@ -14,13 +14,14 @@ function Error() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          backgroundColor: '#fafbef',
+          backgroundColor: '#FBFDF0',
         }}
       >
         <Box
           sx={{
             backgroundImage: `url(${logohangover})`,
             backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
             height: '899px',
             width: '899px',
             display: 'flex',

@@ -19,11 +19,17 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
 import { login } from '../../store/reducers/user';
 import { getCookie } from '../../utils/cookieUtils';
+import {
+  NotificationType,
+  showNotification,
+} from '../../store/reducers/notification';
 
 const defaultTheme = createTheme(themeOptions);
 
 function SignIn() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   console.log('isAuthenticated', isAuthenticated);
   const isLogged = useAppSelector((state) => state.user.logged);
 
@@ -31,13 +37,28 @@ function SignIn() {
 
   const dispatch = useAppDispatch();
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    dispatch(login(formData));
+    const formData: FormData = new FormData(form);
+    if (formData) {
+      try {
+        await dispatch(login(formData)).unwrap();
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      dispatch(
+        showNotification({
+          message: 'Please provide email and password',
+          type: NotificationType.Error,
+        })
+      );
+    }
+    // Show an error message.
   };
+
+  // dispatch(login(formData));
 
   useEffect(() => {
     if (isLogged) {
@@ -93,6 +114,8 @@ function SignIn() {
                   name="email"
                   autoComplete="email"
                   autoFocus
+                  value={email}
+                  onChange={({ target }) => setEmail(target.value)}
                 />
                 <TextField
                   margin="normal"
@@ -103,6 +126,8 @@ function SignIn() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  value={password}
+                  onChange={({ target }) => setPassword(target.value)}
                 />
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
