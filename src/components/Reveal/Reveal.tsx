@@ -68,6 +68,14 @@ function Reveal() {
                 planification de week-ends entre amis n'a jamais été aussi
                 simple !
               </strong>
+            </Typography>
+            <Box
+              sx={{
+                fontSize: '1rem',
+                color: '#ABD1C6',
+                lineHeight: '2rem',
+              }}
+            >
               <ol>
                 <li>Créez un évènement</li>
                 <li>Invitez vos amis</li>
@@ -78,7 +86,7 @@ function Reveal() {
                   week-end
                 </li>
               </ol>
-            </Typography>
+            </Box>
           </Box>
         </CustomBox>
         <Button

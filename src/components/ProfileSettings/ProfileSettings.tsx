@@ -86,7 +86,6 @@ function ProfileSettings() {
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-
     event.preventDefault();
 
     const id = Cookies.get('id');

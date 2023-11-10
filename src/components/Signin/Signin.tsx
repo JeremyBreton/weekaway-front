@@ -23,6 +23,7 @@ import {
   NotificationType,
   showNotification,
 } from '../../store/reducers/notification';
+import NotificationBar from '../NotificationBar/NotificationBar';
 
 const defaultTheme = createTheme(themeOptions);
 
@@ -51,7 +52,7 @@ function SignIn() {
       console.log('triple coucou');
       dispatch(
         showNotification({
-          message: 'Please provide email and password',
+          message: 'Merci de remplir tous les champs',
           type: NotificationType.Error,
         })
       );
@@ -80,7 +81,7 @@ function SignIn() {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
         <CssBaseline />
-
+        <NotificationBar />
         <Box sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}>
           {!isAuthenticated && (
             <Box

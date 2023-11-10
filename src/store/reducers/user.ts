@@ -51,8 +51,6 @@ export const login = createAsyncThunk(
       setCookie('id', data.user_id);
       console.log('je suis le cookie id', getCookie('id'));
     }
-
-    dispatch(showNotification({ message: data || 'success' }));
     // Dès que j'ai le JWT, je l'ajoute à mon instance Axios :
     // toutes mes prochaines requêtes l'auront (et l'enverront)
     // axiosInstance.defaults.headers.common.Authorization = `Bearer ${data.token}`;
