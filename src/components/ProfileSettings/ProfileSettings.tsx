@@ -13,6 +13,9 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import EditIcon from '@mui/icons-material/Edit';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
 
 import * as React from 'react';
 
@@ -20,6 +23,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { DateField, LocalizationProvider, frFR } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { getCookie } from '../../utils/cookieUtils';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
@@ -41,7 +45,7 @@ function ProfileSettings() {
   const [lastname, setLastname] = useState(userfetch.lastname);
   const [profile_desc, setProfile_desc] = useState(userfetch.profile_desc);
   const [address, setAddress] = useState(userfetch.address);
-  const [gender, setGender] = useState(userfetch.gender);
+  const [gender, setGender] = useState('');
   const [birth_date, setBirth_date] = useState(userfetch.birth_date);
 
   const [open, setOpen] = React.useState(false);
@@ -82,6 +86,7 @@ function ProfileSettings() {
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+
     event.preventDefault();
 
     const id = Cookies.get('id');
@@ -174,23 +179,11 @@ function ProfileSettings() {
                 mb: 5,
               }}
             >
+              <Typography>Genre: {userfetch.gender}</Typography>
               <Typography>Nom: {userfetch.lastname}</Typography>
               <Typography>Prénom: {userfetch.firstname}</Typography>
               <Typography>Date de naissance: {dateFromBackend}</Typography>
-              <Typography>Genre: {userfetch.gender}</Typography>
-            </Box>
-            <Box
-              sx={{
-                backgroundColor: '#004643',
-                color: '#ABD1C6',
-                borderRadius: 1,
-                p: 2,
-                mb: 5,
-              }}
-            >
               <Typography>Adresse: {userfetch.address}</Typography>
-              <Typography>Email: {userfetch.email}</Typography>
-              <Typography>Mot de passe: ******</Typography>
             </Box>
             <Box
               sx={{
@@ -202,6 +195,18 @@ function ProfileSettings() {
               }}
             >
               <Typography>Bio: {userfetch.profile_desc}</Typography>
+            </Box>
+            <Box
+              sx={{
+                backgroundColor: '#004643',
+                color: '#ABD1C6',
+                borderRadius: 1,
+                p: 2,
+                mb: 5,
+              }}
+            >
+              <Typography>Email: {userfetch.email}</Typography>
+              <Typography>Mot de passe: ******</Typography>
             </Box>
             <Modal
               open={open}
@@ -232,6 +237,35 @@ function ProfileSettings() {
                   }}
                 >
                   <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      {/* <TextField
+                        fullWidth
+                        name="gender"
+                        label="Genre"
+                        id="gender"
+                        value={gender}
+                        onChange={({ target }) => setGender(target.value)}
+                      /> */}
+                      <FormControl fullWidth>
+                        <InputLabel id="gender">Genre</InputLabel>
+                        <Select
+                          labelId="gender"
+                          id="gender"
+                          value={gender}
+                          label="Genre"
+                          onChange={({ target }) => setGender(target.value)}
+                        >
+                          <MenuItem value="Homme">Homme</MenuItem>
+                          <MenuItem value="Femme">Femme</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <VisuallyHiddenInput
+                        type="gender"
+                        id="gender"
+                        name="gender"
+                        defaultValue={gender}
+                      />
+                    </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         autoComplete="given-name"
@@ -269,6 +303,7 @@ function ProfileSettings() {
                           label="Date de naissance"
                           format="DD/MM/YYYY"
                           onChange={setBirth_date}
+                          fullWidth
                         />
                         {/* </Container> */}
                       </LocalizationProvider>
@@ -279,16 +314,7 @@ function ProfileSettings() {
                         defaultValue={birth_date}
                       />
                     </Grid>
-                    <Grid item xs={12}>
-                      <TextField
-                        fullWidth
-                        name="gender"
-                        label="Genre"
-                        id="gender"
-                        value={gender}
-                        onChange={({ target }) => setGender(target.value)}
-                      />
-                    </Grid>
+
                     <Grid item xs={12}>
                       <TextField
                         fullWidth
@@ -297,6 +323,16 @@ function ProfileSettings() {
                         id="address"
                         value={address}
                         onChange={({ target }) => setAddress(target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        fullWidth
+                        name="profile_desc"
+                        label="Bio"
+                        id="profile_desc"
+                        value={profile_desc}
+                        onChange={({ target }) => setProfile_desc(target.value)}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -321,17 +357,6 @@ function ProfileSettings() {
                         id="password"
                         value={password}
                         onChange={({ target }) => setPassword(target.value)}
-                      />
-                    </Grid>
-
-                    <Grid item xs={12}>
-                      <TextField
-                        fullWidth
-                        name="profile_desc"
-                        label="Bio"
-                        id="profile_desc"
-                        value={profile_desc}
-                        onChange={({ target }) => setProfile_desc(target.value)}
                       />
                     </Grid>
                   </Grid>

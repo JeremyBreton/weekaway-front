@@ -22,7 +22,7 @@ import { ButtonBase } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { themeOptions } from '../Theme/Theme';
 
-import logo from '../../assets/LOGO_HORIZONTAL__ONLY_VERT_-removebg-RESIZE.png';
+import logo from '../../assets/LOGO_HORIZONTAL__ONLY_VERT___RESIZE-NEWpng.png';
 import { logout } from '../../store/reducers/user';
 import { getCookie } from '../../utils/cookieUtils';
 
