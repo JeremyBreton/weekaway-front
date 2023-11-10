@@ -15,7 +15,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 function NotificationBar() {
   const dispatch = useAppDispatch();
   const { open, message, type } = useAppSelector((state) => state.notification);
-
+  console.log('open', open);
+  console.log('message', message);
+  console.log('type', type);
   const handleClose = (
     event?: React.SyntheticEvent | Event,
     reason?: string
@@ -26,6 +28,8 @@ function NotificationBar() {
 
     dispatch(hideNotification());
   };
+
+  console.log('hello', NotificationBar);
 
   return (
     <Stack spacing={2} sx={{ width: '100%' }}>

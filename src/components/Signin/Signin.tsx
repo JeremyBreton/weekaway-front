@@ -41,13 +41,14 @@ function SignIn() {
     event.preventDefault();
     const form = event.currentTarget;
     const formData: FormData = new FormData(form);
-    if (formData) {
+    if (email && password) {
       try {
         await dispatch(login(formData)).unwrap();
       } catch (e) {
         console.error(e);
       }
     } else {
+      console.log('triple coucou');
       dispatch(
         showNotification({
           message: 'Please provide email and password',
@@ -55,10 +56,7 @@ function SignIn() {
         })
       );
     }
-    // Show an error message.
   };
-
-  // dispatch(login(formData));
 
   useEffect(() => {
     if (isLogged) {

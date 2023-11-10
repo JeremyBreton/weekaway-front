@@ -86,7 +86,7 @@ function ProfileSettings() {
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    //! should we let the prevent default or not ? that is the question
+
     event.preventDefault();
 
     const id = Cookies.get('id');
@@ -120,6 +120,9 @@ function ProfileSettings() {
         },
       }
     );
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   const VisuallyHiddenInput = styled('input')({
