@@ -3,7 +3,7 @@ import './App.scss';
 import Presentation from '../Presentation/Presentation';
 import Advantage from '../Advantage/Advantage';
 import Reveal from '../Reveal/Reveal';
-import Snackbar from '../Snackbar/Snackbar';
+import NotificationBar from '../NotificationBar/NotificationBar';
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
       <Presentation />
       <Advantage />
       <Reveal />
-      <Snackbar />
+      <NotificationBar />
       {/* {body} */}
     </div>
   );

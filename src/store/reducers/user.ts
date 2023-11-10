@@ -8,6 +8,7 @@ import axiosInstance from '../../utils/axios';
 
 import { setCookie, removeCookie, getCookie } from '../../utils/cookieUtils'; // Importez les fonctions
 import { User } from '../../@types/User';
+import { showNotification } from './notification';
 
 interface UserState {
   logged: boolean;
@@ -51,6 +52,7 @@ export const login = createAsyncThunk(
       console.log('je suis le cookie id', getCookie('id'));
     }
 
+    dispatch(showNotification({ message: data || 'success' }));
     // Dès que j'ai le JWT, je l'ajoute à mon instance Axios :
     // toutes mes prochaines requêtes l'auront (et l'enverront)
     // axiosInstance.defaults.headers.common.Authorization = `Bearer ${data.token}`;

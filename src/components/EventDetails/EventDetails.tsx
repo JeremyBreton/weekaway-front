@@ -85,7 +85,7 @@ function EventDetails() {
   };
 
   const handleSubmitAddUserChoice = (event: FormEvent<HTMLFormElement>) => {
-    // event.preventDefault();
+    event.preventDefault();
     const form = event.currentTarget;
 
     const formData = new FormData(form);
@@ -99,6 +99,9 @@ function EventDetails() {
       .then((response) => {
         return JSON.parse(JSON.stringify(response.data));
       });
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   const handleUserId = Cookies.get('id');
