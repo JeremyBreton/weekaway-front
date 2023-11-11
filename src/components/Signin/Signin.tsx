@@ -49,7 +49,6 @@ function SignIn() {
         console.error(e);
       }
     } else {
-      console.log('triple coucou');
       dispatch(
         showNotification({
           message: 'Merci de remplir tous les champs',
@@ -63,7 +62,6 @@ function SignIn() {
     if (isLogged) {
       getCookie('token');
       const id = getCookie('id');
-      // //! important Needs to be debugged
 
       navigate(`/user/${id}/events`);
     }
@@ -79,7 +77,7 @@ function SignIn() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
+      <Container component="main" maxWidth="xs" sx={{ minHeight: '76vh' }}>
         <CssBaseline />
         <NotificationBar />
         <Box sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}>

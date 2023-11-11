@@ -13,7 +13,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useDispatch } from 'react-redux';
 import { themeOptions } from '../Theme/Theme';
+import {
+  NotificationType,
+  showNotification,
+} from '../../store/reducers/notification';
+import NotificationBar from '../NotificationBar/NotificationBar';
 
 const defaultTheme = createTheme(themeOptions);
 
@@ -25,20 +31,31 @@ export default function SignUp() {
   const [user, setUser] = useState();
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const user = { firstname, lastname, email, password };
+    const userData = { firstname, lastname, email, password };
     const data = new FormData(event.currentTarget);
-
-    const response = await axios.post(
-      'http://caca-boudin.fr/api/register',
-      user
-    );
-
-    setUser(response.data);
-
-    navigate('/Signin');
+    if (firstname && lastname && email && password) {
+      try {
+        const response = await axios.post(
+          'http://caca-boudin.fr/api/register',
+          userData
+        );
+        setUser(response.data);
+        navigate('/Signin');
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      dispatch(
+        showNotification({
+          message: 'Merci de remplir tous les champs',
+          type: NotificationType.Error,
+        })
+      );
+    }
   };
 
   return (
@@ -60,6 +77,7 @@ export default function SignUp() {
               alignItems: 'center',
             }}
           >
+            <NotificationBar />
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <LockOutlinedIcon />
             </Avatar>

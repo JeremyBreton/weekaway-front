@@ -59,7 +59,6 @@ function EventForm() {
         Cookies.set('eventId', response.data.id);
         return dataEventId;
       });
-    //! important : il faut rediriger vers la page de l'event
     const idEvent = Cookies.get('eventId');
     const id = Cookies.get('id');
     navigate(`/user/${id}}/event/${idEvent}`);
@@ -86,14 +85,14 @@ function EventForm() {
   const startDateReceived = (date: string | null) => {
     const formattedStartDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
     setStartDate(formattedStartDate);
-    console.log('cest la date de début dans le parent', formattedStartDate);
+    // console.log('cest la date de début dans le parent', formattedStartDate);
   };
 
   console.log('startDateReceived', startDateReceived);
 
   const endDateReceived = (date: string | null) => {
     const formattedEndDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
-    console.log('cest la date de fin dans le parent', formattedEndDate);
+    // console.log('cest la date de fin dans le parent', formattedEndDate);
     setEndDate(formattedEndDate);
   };
 

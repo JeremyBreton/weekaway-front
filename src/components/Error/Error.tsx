@@ -1,5 +1,5 @@
 import { Box } from '@mui/system';
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import logohangover from '../../assets/404LABONNE.png';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';

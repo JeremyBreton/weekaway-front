@@ -13,6 +13,11 @@
 // }
 
 export interface Event {
+  status: boolean;
+  eventId: Key | null | undefined;
+  picture: string | undefined;
+  name: ReactNode;
+  description: ReactNode;
   eventDetails: {
     eventId: number;
     id: number;

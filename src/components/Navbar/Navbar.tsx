@@ -109,16 +109,6 @@ function Navbar(props: Props) {
 
   const defaultTheme = createTheme(themeOptions);
 
-  // const coucouK = navItemsLogged.map((item) => {
-
-  //   const id = Cookies.get('id');
-  //   useEffect(() => {
-  //     const coucou = navigate(
-  //     `/user/${id}/${coucouK.link}}`
-  //   });
-  //   ) as unknown as string;
-  // }, [id, navigate]);
-
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />

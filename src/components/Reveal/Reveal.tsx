@@ -65,6 +65,7 @@ function Reveal() {
               {/* eslint-disable-next-line react/no-unescaped-entities */}
               Avec WeekAway, la{' '}
               <strong>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 planification de week-ends entre amis n'a jamais été aussi
                 simple !
               </strong>
@@ -100,6 +101,7 @@ function Reveal() {
             '&:hover': { color: '#f9bc60', backgroundColor: '#001E1D' },
           }}
         >
+          {/* eslint-disable-next-line react/no-unescaped-entities */}
           Je m'inscris pour créer une évènement !
         </Button>
       </Container>

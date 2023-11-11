@@ -13,7 +13,6 @@ function App() {
       <Advantage />
       <Reveal />
       <NotificationBar />
-      {/* {body} */}
     </div>
   );
 }

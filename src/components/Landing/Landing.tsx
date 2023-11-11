@@ -16,7 +16,6 @@ import Cookies from 'js-cookie';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchEvents } from '../../store/reducers/events';
-// import { findEventId } from '../../store/selectors/eventSelector';
 
 function Landing() {
   const eventsArray = useAppSelector((state) => state.events.eventsArray);

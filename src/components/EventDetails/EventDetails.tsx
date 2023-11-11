@@ -35,30 +35,13 @@ function EventDetails() {
 
   useEffect(() => {
     // Crée un state isLoading
-    console.log('JE SUIS UN USEEFFECT');
-    const jeFetch = dispatch(fetchOneEvent());
-    console.log('JeFetch', jeFetch);
+    // console.log('JE SUIS UN USEEFFECT');
+    dispatch(fetchOneEvent());
     // Changer le status de isLoading
   }, [dispatch]);
 
   const OneEvent = useAppSelector((state) => state.events.oneEvent);
-  console.log('OneEvent dans eventDetails', OneEvent);
-  // console.log(
-  //   'OneEvent.dates_of_event dans eventDetails',
-  //   OneEvent.dates_of_event
-  // );
-  // const oneEvent = eventsArray.filter(
-  //   (event) => event.eventId.toString() === idEvent
-  // );
-
-  // console.log('OneEvent', oneEvent);
-  // const monevent = Cookies.get('eventId');
-
-  // function handleClickAddUserChoice(
-  //   event: MouseEvent<HTMLButtonElement, MouseEvent>
-  // ): void {
-  //   console.log('handleClickAddUserChoice');
-  // }
+  // console.log('OneEvent dans eventDetails', OneEvent);
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -74,14 +57,14 @@ function EventDetails() {
 
   const endDateReceived = (date: string | null) => {
     const formattedEndDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
-    console.log("c'est la date de fin dans EventDetails", formattedEndDate);
+    // console.log("c'est la date de fin dans EventDetails", formattedEndDate);
     setEndDate(formattedEndDate);
   };
 
   const startDateReceived = (date: string | null) => {
     const formattedStartDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
     setStartDate(formattedStartDate);
-    console.log("c'est la date de début dans le parent", formattedStartDate);
+    // console.log("c'est la date de début dans le parent", formattedStartDate);
   };
 
   const handleSubmitAddUserChoice = (event: FormEvent<HTMLFormElement>) => {
@@ -140,23 +123,10 @@ function EventDetails() {
     return <Loading />;
   }
 
-  // useEffect(() => {
-  //   // Utilisez useEffect pour gérer le timeout
-  //   const timer = setTimeout(() => {
-  //     loading(true);
-  //   }, 3000);
-
-  //   // Assurez-vous de nettoyer le timer lorsque le composant est démonté
-  //   return () => {
-  //     clearTimeout(timer);
-  //   };
-  // }, [loading]); // Le tableau vide [] signifie que ce code s'exécutera une seule fois après le rendu initial
-  // OneEvent.eventDetails.userChoice.map(
-  //   (date) => `${date.start_date_choice}-${date.end_date_choice}`
-  // );
-
   if (!OneEvent.eventDetails.users.includes(null)) {
-    const numberVote = OneEvent.eventDetails.numberVote.map((vote) => vote);
+    const numberVote = OneEvent.eventDetails.numberVote.map(
+      (vote: any) => vote
+    );
 
     const userChoice = OneEvent.eventDetails.userChoice.map(
       (date) =>
@@ -298,7 +268,7 @@ function EventDetails() {
                       id: 'barCategories',
                       // data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
 
-                      data: userChoice.map((date) => date),
+                      data: userChoice.map((date: any) => date),
 
                       scaleType: 'band',
                     },
@@ -351,10 +321,7 @@ function EventDetails() {
                       >
                         Ajouter des invités
                       </Typography>
-                      {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                    Duis mollis, est non commodo luctus, nisi erat porttitor
-                    ligula.
-                  </Typography> */}
+
                       <Box
                         component="form"
                         onSubmit={handleSubmit}
@@ -563,10 +530,7 @@ function EventDetails() {
                     >
                       Ajouter des invités
                     </Typography>
-                    {/* <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                          Duis mollis, est non commodo luctus, nisi erat porttitor
-                          ligula.
-                        </Typography> */}
+
                     <Box
                       component="form"
                       onSubmit={handleSubmit}
