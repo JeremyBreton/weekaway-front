@@ -32,6 +32,7 @@ function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   console.log('isAuthenticated', isAuthenticated);
+
   const isLogged = useAppSelector((state) => state.user.logged);
 
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ function SignIn() {
     event.preventDefault();
     const form = event.currentTarget;
     const formData: FormData = new FormData(form);
+    // create conditional to check if email and password are not empty
     if (email && password) {
       try {
         await dispatch(login(formData)).unwrap();

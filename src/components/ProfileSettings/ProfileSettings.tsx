@@ -47,11 +47,12 @@ function ProfileSettings() {
   const [address, setAddress] = useState(userfetch.address);
   const [gender, setGender] = useState('');
   const [birth_date, setBirth_date] = useState(userfetch.birth_date);
-
   const [open, setOpen] = React.useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  //! A voir pour simplifier avec else ou else if + alert a passer en snackbar
   useEffect(() => {
     if (!isAuthenticated) {
       alert('Vous devez être connectés pour créer un évènement');
@@ -93,7 +94,8 @@ function ProfileSettings() {
     const formData = new FormData(form);
     const formattedDate = dayjs(birth_date).format('YYYY-MM-DD HH:mm:ssZ');
     formData.set('birth_date', formattedDate);
-    // Supprimez les champs vides ou nuls de FormData
+
+    // Remove empty fields from formData
     formData.forEach((value, key) => {
       if (value === '' || value === null) {
         formData.delete(key);

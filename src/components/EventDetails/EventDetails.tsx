@@ -28,10 +28,18 @@ import Loading from '../Loading/Loading';
 function EventDetails() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [open, setOpen] = React.useState(false);
 
-  const dispatch = useAppDispatch();
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const defaultTheme = createTheme(themeOptions);
+
   const { idEvent } = useParams();
+  const dispatch = useAppDispatch();
+
+  const OneEvent = useAppSelector((state) => state.events.oneEvent);
+  const loading = useAppSelector((state) => state.events.loading);
 
   useEffect(() => {
     // Crée un state isLoading
@@ -40,7 +48,6 @@ function EventDetails() {
     // Changer le status de isLoading
   }, [dispatch]);
 
-  const OneEvent = useAppSelector((state) => state.events.oneEvent);
   // console.log('OneEvent dans eventDetails', OneEvent);
 
   const VisuallyHiddenInput = styled('input')({
@@ -101,10 +108,6 @@ function EventDetails() {
     p: 4,
   };
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -115,7 +118,7 @@ function EventDetails() {
     axios.post('http://caca-boudin.fr/api/inviteLink', formObj);
     setOpen(false);
   };
-  const loading = useAppSelector((state) => state.events.loading);
+
   // Créer une condition qui retourne soit l'un soit l'autre suivant le state de isLoading
   if (loading) {
     setTimeout(() => {}, 1000);
@@ -123,6 +126,7 @@ function EventDetails() {
     return <Loading />;
   }
 
+  //! A commenter
   if (!OneEvent.eventDetails.users.includes(null)) {
     const numberVote = OneEvent.eventDetails.numberVote.map(
       (vote: any) => vote

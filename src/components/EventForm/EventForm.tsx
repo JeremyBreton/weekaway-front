@@ -22,9 +22,10 @@ function EventForm() {
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
 
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
+
   console.log('isAuthenticated', isAuthenticated);
 
   useEffect(() => {
@@ -43,6 +44,8 @@ function EventForm() {
 
     const formObj = Object.fromEntries(formData);
     const eventPicture = formObj.event.toString();
+
+    //! A commenter pour le dev
 
     formData.append('event', eventPicture);
     formData.append('startDate', startDate);
@@ -82,13 +85,14 @@ function EventForm() {
     width: 1,
   });
 
+  //! A commenter pour le dev
   const startDateReceived = (date: string | null) => {
     const formattedStartDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
     setStartDate(formattedStartDate);
     // console.log('cest la date de début dans le parent', formattedStartDate);
   };
 
-  console.log('startDateReceived', startDateReceived);
+  // console.log('startDateReceived', startDateReceived);
 
   const endDateReceived = (date: string | null) => {
     const formattedEndDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');

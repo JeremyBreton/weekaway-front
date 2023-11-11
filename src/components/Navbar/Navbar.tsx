@@ -50,26 +50,27 @@ const navItemsLogged = [
 ];
 
 function Navbar(props: Props) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
+  console.log('isAuthenticated', isAuthenticated);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const isLoggedIn = Cookies.get('token');
 
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
-
-  const dispatch = useAppDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/');
   };
 
+  //! A supprimer potentiellement puisque pas utilisé
+
   const isLogged = useAppSelector((state) => state.user.logged);
-  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
-  console.log('isAuthenticated', isAuthenticated);
 
   const firstname = useAppSelector((state) => state.user.firstname);
 

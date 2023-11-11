@@ -12,18 +12,9 @@ import { getCookie } from '../../utils/cookieUtils';
 
 function JoinEventForm() {
   const defaultTheme = createTheme(themeOptions);
-
-  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   console.log('isAuthenticated', isAuthenticated);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      // eslint-disable-next-line no-alert
-      alert('Vous devez être connectés pour créer un évènement');
-      navigate('/signin');
-    }
-  }, [isAuthenticated, navigate]);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -32,6 +23,7 @@ function JoinEventForm() {
     const id = Cookies.get('id');
     const formData = new FormData(form);
     const formObj = Object.fromEntries(formData);
+    //! A commenter pour le dev
     const eventtoJoin = { password: formObj.password, id };
 
     const eventFetched = await axios
@@ -44,11 +36,20 @@ function JoinEventForm() {
     const eventId = Cookies.get('eventId');
     navigate(`/user/${id}/event/${eventId}`);
   };
+
+  //! On peut surement simplifier avec un else ou else if
   useEffect(() => {
     if (isAuthenticated) {
       Cookies.get('token');
     }
   }, [isAuthenticated]);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      // eslint-disable-next-line no-alert
+      alert('Vous devez être connectés pour créer un évènement');
+      navigate('/signin');
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <ThemeProvider theme={defaultTheme}>

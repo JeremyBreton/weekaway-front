@@ -18,7 +18,10 @@ import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchEvents } from '../../store/reducers/events';
 
 function Landing() {
+  const defaultTheme = createTheme(themeOptions);
   const eventsArray = useAppSelector((state) => state.events.eventsArray);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const CustomBox = styled(Box)(({ theme }) => ({
     display: 'flex',
@@ -31,9 +34,6 @@ function Landing() {
     },
   }));
 
-  const defaultTheme = createTheme(themeOptions);
-
-  const navigate = useNavigate();
   Cookies.remove('eventId');
   const id = Cookies.get('id');
 
@@ -51,7 +51,6 @@ function Landing() {
   const eventFilteredFutur = eventsArray?.filter(
     (event) => event.status === true
   );
-  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchEvents());

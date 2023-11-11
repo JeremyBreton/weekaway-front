@@ -36,6 +36,7 @@ function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
   console.log('error', error);
 
   const handleStartDateChange = (date) => {
+    // compare if date is after endDate
     if (endDate && date > endDate) {
       setError(
         'La date de fin ne peut pas être antérieure à la date de début.'
