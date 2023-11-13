@@ -4,11 +4,9 @@ import { Box, Container } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-
 import axios from 'axios';
 import { themeOptions } from '../Theme/Theme';
-
-import { getCookie } from '../../utils/cookieUtils';
+import { getTokenId, getCookie } from '../../utils/cookieUtils';
 
 function JoinEventForm() {
   const defaultTheme = createTheme(themeOptions);
@@ -20,7 +18,7 @@ function JoinEventForm() {
     event.preventDefault();
 
     const form = event.currentTarget;
-    const id = Cookies.get('id');
+    const id = getTokenId();
     const formData = new FormData(form);
     const formObj = Object.fromEntries(formData);
     //! A commenter pour le dev
@@ -34,7 +32,7 @@ function JoinEventForm() {
         return JSON.parse(JSON.stringify(response.data));
       });
     const eventId = Cookies.get('eventId');
-    navigate(`/user/${id}/event/${eventId}`);
+    navigate(`/event/${eventId}`);
   };
 
   //! On peut surement simplifier avec un else ou else if

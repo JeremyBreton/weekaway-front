@@ -1,20 +1,13 @@
 /* eslint-disable react/no-unescaped-entities */
 import { styled, Typography } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import { Box, Container, useTheme } from '@mui/system';
+import CustomBox from '../CustomBox/CustomBox';
 import image1 from '../../assets/DESSIN-CHEMIN.png';
 import image2 from '../../assets/DESSIN-CAR.png';
+import Divider from '../Divider/Divider';
 
 function Presentation() {
-  const CustomBox = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    gap: theme.spacing(10),
-    alignItems: 'center',
-
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'column',
-      textAlign: 'center',
-    },
-  }));
+  const theme = useTheme();
 
   const ImgContainer = styled(Box)(({ theme }) => ({
     width: '100%',
@@ -28,22 +21,27 @@ function Presentation() {
     },
   }));
 
-  const Divider = styled('div')(({ theme }) => ({
-    width: '13%',
-    height: '5px',
-    backgroundColor: '#001E1D',
-    [theme.breakpoints.down('md')]: {
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  }));
-
   return (
-    <Box sx={{ py: 10, bgcolor: '#004643', pt: 15 }}>
+    <Box
+      sx={{
+        py: 10,
+        bgcolor: '#004643',
+        pt: 15,
+        [theme.breakpoints.down('md')]: {
+          flexDirection: 'column-reverse',
+          textAlign: 'center',
+          pt: 0,
+        },
+      }}
+    >
       <Container>
         <CustomBox sx={{ mb: 2 }}>
           <ImgContainer>
-            <img src={image1} alt="illustration" style={{ maxWidth: '70%' }} />
+            <img
+              src={image1}
+              alt="illustration_WeekAway"
+              style={{ maxWidth: '70%' }}
+            />
           </ImgContainer>
 
           <Box>
@@ -77,7 +75,14 @@ function Presentation() {
       </Container>
 
       <Container>
-        <CustomBox>
+        <CustomBox
+          sx={{
+            [theme.breakpoints.down('md')]: {
+              display: 'flex',
+              flexDirection: 'column-reverse',
+            },
+          }}
+        >
           <Box>
             <Divider />
             <Typography

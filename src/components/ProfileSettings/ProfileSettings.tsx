@@ -12,7 +12,6 @@ import { Box, Container } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import EditIcon from '@mui/icons-material/Edit';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -24,7 +23,7 @@ import dayjs from 'dayjs';
 import { DateField, LocalizationProvider, frFR } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { getCookie } from '../../utils/cookieUtils';
+import { getCookie, getTokenId } from '../../utils/cookieUtils';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchUser } from '../../store/reducers/user';
@@ -43,10 +42,10 @@ function ProfileSettings() {
   const [password, setPassword] = useState('');
   const [firstname, setFirstname] = useState(userfetch.firstname);
   const [lastname, setLastname] = useState(userfetch.lastname);
-  const [profile_desc, setProfile_desc] = useState(userfetch.profile_desc);
+  const [profileDesc, setProfileDesc] = useState(userfetch.profile_desc);
   const [address, setAddress] = useState(userfetch.address);
   const [gender, setGender] = useState('');
-  const [birth_date, setBirth_date] = useState(userfetch.birth_date);
+  const [birthDate, setBirthDate] = useState(userfetch.birth_date);
   const [open, setOpen] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
@@ -80,47 +79,40 @@ function ProfileSettings() {
     borderRadius: 5,
   };
 
-  const dateFromBackend = dayjs(userfetch.birth_date).format('DD-MM-YYYY');
-
-  if (birth_date === null) {
-    setBirth_date('');
+  // This is a trick for not showing Invalid Date must be reworked
+  let dateFromBackend = '';
+  if (userfetch.birth_date === null) {
+    dateFromBackend = '';
+  } else {
+    dateFromBackend = dayjs(userfetch.birth_date).format('DD-MM-YYYY');
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const id = Cookies.get('id');
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const formattedDate = dayjs(birth_date).format('YYYY-MM-DD HH:mm:ssZ');
+
+    const formattedDate = dayjs(birthDate).format('YYYY-MM-DD HH:mm:ssZ');
     formData.set('birth_date', formattedDate);
 
-    // Remove empty fields from formData
-    formData.forEach((value, key) => {
-      if (value === '' || value === null) {
-        formData.delete(key);
-      }
-    });
-    if (address == null) {
-      formData.delete('address');
-    }
-    if (profile_desc == null) {
-      formData.delete('profile_desc');
-    }
-    if (gender == null) {
-      formData.delete('gender');
-    }
     const formObj = Object.fromEntries(formData);
 
-    const patchUser = await axios.patch(
-      `http://caca-boudin.fr/api/user/${id}`,
-      formObj,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+    // Remove empty fields from formData
+    Object.keys(formObj).forEach((key) => {
+      const value = formObj[key];
+      if (value === '' || value === null) {
+        delete formObj[key];
       }
-    );
+    });
+
+    const id = getTokenId();
+
+    await axios.patch(`http://caca-boudin.fr/api/user/${id}`, formObj, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     setTimeout(() => {
       window.location.reload();
     }, 2000);
@@ -239,14 +231,6 @@ function ProfileSettings() {
                 >
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      {/* <TextField
-                        fullWidth
-                        name="gender"
-                        label="Genre"
-                        id="gender"
-                        value={gender}
-                        onChange={({ target }) => setGender(target.value)}
-                      /> */}
                       <FormControl fullWidth>
                         <InputLabel id="gender">Genre</InputLabel>
                         <Select
@@ -299,20 +283,18 @@ function ProfileSettings() {
                             .localeText
                         }
                       >
-                        {/* <Container components={['DateField']}> */}
                         <DateField
                           label="Date de naissance"
                           format="DD/MM/YYYY"
-                          onChange={setBirth_date}
+                          onChange={setBirthDate}
                           fullWidth
                         />
-                        {/* </Container> */}
                       </LocalizationProvider>
                       <VisuallyHiddenInput
                         type="input"
                         id="birth_date"
                         name="birth_date"
-                        defaultValue={birth_date}
+                        defaultValue={birthDate}
                       />
                     </Grid>
 
@@ -332,8 +314,8 @@ function ProfileSettings() {
                         name="profile_desc"
                         label="Bio"
                         id="profile_desc"
-                        value={profile_desc}
-                        onChange={({ target }) => setProfile_desc(target.value)}
+                        value={profileDesc}
+                        onChange={({ target }) => setProfileDesc(target.value)}
                       />
                     </Grid>
                     <Grid item xs={12}>

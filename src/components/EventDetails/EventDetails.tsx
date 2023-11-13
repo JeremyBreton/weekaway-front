@@ -19,6 +19,7 @@ import Cookies from 'js-cookie';
 import DeleteIcon from '@mui/icons-material/Delete';
 import * as React from 'react';
 import Modal from '@mui/material/Modal';
+import { jwtDecode } from 'jwt-decode';
 import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
 import { fetchOneEvent } from '../../store/reducers/events';
@@ -94,7 +95,10 @@ function EventDetails() {
     }, 2000);
   };
 
-  const handleUserId = Cookies.get('id');
+  const token = Cookies.get('token');
+  const decoded = jwtDecode(token);
+
+  const handleUserId = decoded.id;
 
   const style = {
     position: 'absolute' as const,
@@ -149,15 +153,14 @@ function EventDetails() {
               alignItems: 'center',
               flexDirection: 'column',
               backgroundColor: 'background.default',
-              pt: 11,
+              pt: 8,
               minHeight: '100vh',
             }}
           >
             <Box
               sx={{
                 backgroundColor: '#ABD1C6',
-                borderRadius: 5,
-                // px: 5,
+                borderRadius: 2,
                 my: 20,
                 display: 'flex',
                 flexDirection: 'column',
@@ -195,7 +198,7 @@ function EventDetails() {
                 <Typography
                   variant="h3"
                   component="h1"
-                  sx={{ textAlign: 'center', mb: 2 }}
+                  sx={{ textAlign: 'center', py: 2 }}
                 >
                   {OneEvent.eventDetails.name}
                 </Typography>
@@ -205,16 +208,16 @@ function EventDetails() {
                   backgroundColor: '#004643',
                   color: 'secondary.main',
                   borderRadius: 2,
-                  py: 2,
+                  p: 3,
                   my: 2,
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  width: '60%',
+                  width: '80%',
                 }}
               >
-                <Typography sx={{ textAlign: 'center', mb: 5 }}>
+                <Typography sx={{ textAlign: 'center' }}>
                   {OneEvent.eventDetails.description}
                 </Typography>
               </Box>
@@ -388,7 +391,7 @@ function EventDetails() {
           <Box
             sx={{
               backgroundColor: '#ABD1C6',
-              borderRadius: 5,
+              borderRadius: 2,
               // px: 5,
               my: 20,
               display: 'flex',

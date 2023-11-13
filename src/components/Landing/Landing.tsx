@@ -8,7 +8,7 @@ import {
   styled,
   Typography,
 } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import { Box, Container, useTheme } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useEffect } from 'react';
@@ -22,27 +22,16 @@ function Landing() {
   const eventsArray = useAppSelector((state) => state.events.eventsArray);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-
-  const CustomBox = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    gap: theme.spacing(10),
-    alignItems: 'center',
-
-    [theme.breakpoints.down('sm')]: {
-      flexDirection: 'column',
-      textAlign: 'center',
-    },
-  }));
+  const theme = useTheme();
 
   Cookies.remove('eventId');
-  const id = Cookies.get('id');
 
   const handleClickCreateEvent = () => {
-    navigate(`/user/${id}/create`);
+    navigate(`/create`);
   };
 
   const handleClickJoinEvent = () => {
-    navigate(`/user/${id}/join`);
+    navigate(`/join`);
   };
 
   const eventFilteredPast = eventsArray?.filter(
@@ -66,6 +55,10 @@ function Landing() {
           backgroundColor: 'background.default',
           pt: 15,
           pb: 5,
+          [theme.breakpoints.down('md')]: {
+            pt: 8,
+            px: 3,
+          },
         }}
       >
         <Button
@@ -88,13 +81,11 @@ function Landing() {
           display: 'flex',
           alignItems: 'center',
           flexDirection: 'column',
-
           backgroundColor: 'background.default',
-          // pt: 15,
           minHeight: '100vh',
         }}
       >
-        <Typography sx={{ fontSize: 30, color: 'secondary.main', mb: 5 }}>
+        <Typography sx={{ fontSize: '2rem', color: 'secondary.main', mb: 5 }}>
           Mes évènements à venir
         </Typography>
         {!eventFilteredFutur && (
@@ -119,20 +110,23 @@ function Landing() {
             flexWrap: 'wrap',
             justifyContent: 'center',
             gap: 10,
+            width: '100%',
           }}
         >
           {eventFilteredFutur?.map((event) => (
             <Card
               key={event.eventId}
               sx={{
-                width: 500,
+                width: '35%',
                 height: 300,
-                mb: 10,
+                [theme.breakpoints.down('md')]: {
+                  width: '80%',
+                },
               }}
               onClick={() => {
                 Cookies.remove('eventId', event.eventId as any);
                 Cookies.set('eventId', event.eventId as unknown as string);
-                navigate(`/user/${id}/event/${event.eventId}`);
+                navigate(`/event/${event.eventId}`);
               }}
             >
               <CardActionArea>
@@ -147,7 +141,16 @@ function Landing() {
                   <Typography gutterBottom variant="h5" component="div">
                     {event.name}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      maxWidth: '97%',
+                    }}
+                  >
                     {event.description}
                   </Typography>
                 </CardContent>
@@ -162,7 +165,7 @@ function Landing() {
           ))}
         </Box>
 
-        <Typography sx={{ fontSize: 30, color: 'secondary.main', mb: 5 }}>
+        <Typography sx={{ fontSize: 30, color: 'secondary.main', my: 5 }}>
           Mes évènements passés
         </Typography>
         {!eventFilteredPast && (

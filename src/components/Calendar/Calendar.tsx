@@ -30,10 +30,10 @@ function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
   const [startDate, setStartDate] = useState<Date | null>(null);
 
   const [endDate, setEndDate] = useState<Date | null>(null);
-  console.log('endDate', endDate);
+  // console.log('endDate', endDate);
 
-  const [error, setError] = useState(null);
-  console.log('error', error);
+  const [error, setError] = useState('');
+  // console.log('error', error);
 
   const handleStartDateChange = (date) => {
     // compare if date is after endDate
@@ -60,7 +60,7 @@ function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
       return;
     }
     setEndDate(date);
-    setError(null);
+    setError('');
 
     endDateReceived(date);
   };

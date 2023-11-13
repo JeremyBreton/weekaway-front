@@ -1,18 +1,13 @@
 import { Typography, Button } from '@mui/material';
-import { Box, Container, styled } from '@mui/system';
+import { Box, Container, styled, useTheme } from '@mui/system';
 import image2 from '../../assets/DESSIN-CAR.png';
+import GuidesBox from '../GuidesBox/GuidesBox';
+import GuideBox from '../GuideBox/GuideBox';
+import Divider from '../Divider/Divider';
+import CustomBox from '../CustomBox/CustomBox';
 
 function Reveal() {
-  const CustomBox = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    gap: theme.spacing(10),
-    alignItems: 'center',
-
-    [theme.breakpoints.down('md')]: {
-      flexDirection: 'column',
-      textAlign: 'center',
-    },
-  }));
+  const theme = useTheme();
 
   const ImgContainer = styled(Box)(({ theme }) => ({
     width: '100%',
@@ -26,85 +21,95 @@ function Reveal() {
     },
   }));
 
-  const Divider = styled('div')(({ theme }) => ({
-    width: '13%',
-    height: '5px',
-    backgroundColor: '#001E1D',
-    [theme.breakpoints.down('md')]: {
-      marginLeft: 'auto',
-      marginRight: 'auto',
-    },
-  }));
   return (
-    <Box sx={{ py: 10, bgcolor: '#004643', pt: 20, display: 'flex' }}>
-      <ImgContainer>
-        <img src={image2} alt="illustration" style={{ maxWidth: '80%' }} />
-      </ImgContainer>
-      <Container>
-        <CustomBox sx={{ mb: 10 }}>
-          <Box>
-            <Divider />
-            <Typography
-              sx={{
-                fontSize: '2rem',
-                color: '#F9BC60',
-                fontWeight: '700',
-                my: 2,
-              }}
-            >
-              Des week-ends inoubliables, en toute simplicité !
-            </Typography>
+    <Box
+      sx={{
+        bgcolor: '#004643',
+        display: 'flex',
+        pt: 10,
+        [theme.breakpoints.down('md')]: {
+          pt: 0,
+          mb: 5,
+        },
+      }}
+    >
+      <GuidesBox>
+        <ImgContainer>
+          <img src={image2} alt="illustration" style={{ maxWidth: '70%' }} />
+        </ImgContainer>
 
-            <Typography
-              sx={{
-                fontSize: '1rem',
-                color: '#ABD1C6',
-                lineHeight: '2rem',
-              }}
-            >
-              {/* eslint-disable-next-line react/no-unescaped-entities */}
-              Avec WeekAway, la{' '}
-              <strong>
+        <Container>
+          <CustomBox sx={{ mb: 10 }}>
+            <Box>
+              <Divider />
+              <Typography
+                sx={{
+                  fontSize: '2rem',
+                  color: '#F9BC60',
+                  fontWeight: '700',
+                  my: 2,
+                }}
+              >
+                Des week-ends inoubliables, en toute simplicité !
+              </Typography>
+
+              <Typography
+                sx={{
+                  fontSize: '1rem',
+                  color: '#ABD1C6',
+                  lineHeight: '2rem',
+                }}
+              >
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
-                planification de week-ends entre amis n'a jamais été aussi
-                simple !
-              </strong>
-            </Typography>
-            <Box
-              sx={{
-                fontSize: '1rem',
-                color: '#ABD1C6',
-                lineHeight: '2rem',
-              }}
-            >
-              <ol>
-                <li>Créez un évènement</li>
-                <li>Invitez vos amis</li>
-                <li>Choisissez une plage de dates</li>
-                <li>Choisissez vos dates de disponiblités</li>
-                <li>
-                  Laissez-nous vous trouvez la meilleure date pour votre
-                  week-end
-                </li>
-              </ol>
+                Avec WeekAway, la{' '}
+                <strong>
+                  {/* eslint-disable-next-line react/no-unescaped-entities */}
+                  planification de week-ends entre amis n'a jamais été aussi
+                  simple !
+                </strong>
+              </Typography>
+              <Box
+                sx={{
+                  fontSize: '1rem',
+                  color: '#ABD1C6',
+                  lineHeight: '2rem',
+                  mt: '2rem',
+                  textAlign: 'left',
+                }}
+              >
+                <ol>
+                  <li>Créez un évènement</li>
+                  <li>Invitez vos amis</li>
+                  <li>Choisissez une plage de dates</li>
+                  <li>Choisissez vos dates de disponiblités</li>
+                  <li>
+                    Laissez-nous vous trouvez la meilleure date pour votre
+                    week-end
+                  </li>
+                </ol>
+              </Box>
             </Box>
-          </Box>
-        </CustomBox>
-        <Button
-          type="submit"
-          // fullWidth
-          variant="contained"
-          sx={{
-            backgroundColor: '#f9bc60',
-            color: '#001E1D',
-            width: '50%',
-            '&:hover': { color: '#f9bc60', backgroundColor: '#001E1D' },
-          }}
-        >
-          {/* eslint-disable-next-line react/no-unescaped-entities */}
-          Je m'inscris pour créer une évènement !
-        </Button>
-      </Container>
+          </CustomBox>
+          <Button
+            type="submit"
+            // fullWidth
+            href="/signup"
+            variant="contained"
+            sx={{
+              backgroundColor: '#f9bc60',
+              color: '#001E1D',
+              width: '50%',
+              '&:hover': { color: '#f9bc60', backgroundColor: '#001E1D' },
+              [theme.breakpoints.down('md')]: {
+                width: '80%',
+              },
+            }}
+          >
+            {/* eslint-disable-next-line react/no-unescaped-entities */}
+            Je m'inscris pour créer une évènement !
+          </Button>
+        </Container>
+      </GuidesBox>
     </Box>
   );
 }

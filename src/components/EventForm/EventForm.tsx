@@ -15,7 +15,7 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
-import { getCookie } from '../../utils/cookieUtils';
+import { getTokenId, getCookie } from '../../utils/cookieUtils';
 
 function EventForm() {
   const defaultTheme = createTheme(themeOptions);
@@ -26,12 +26,10 @@ function EventForm() {
 
   const navigate = useNavigate();
 
-  console.log('isAuthenticated', isAuthenticated);
-
   useEffect(() => {
     if (!isAuthenticated) {
       // eslint-disable-next-line no-alert
-      alert('Vous devez être connectés pour créer un évènement');
+      alert('Vous devez être connecté pour créer un évènement');
       navigate('/signin');
     }
   }, [isAuthenticated, navigate]);
@@ -51,7 +49,7 @@ function EventForm() {
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
 
-    const eventId = await axios
+    await axios
       .post('http://caca-boudin.fr/api/event', formObj, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -63,8 +61,7 @@ function EventForm() {
         return dataEventId;
       });
     const idEvent = Cookies.get('eventId');
-    const id = Cookies.get('id');
-    navigate(`/user/${id}}/event/${idEvent}`);
+    navigate(`/event/${idEvent}`);
   };
 
   useEffect(() => {
@@ -100,7 +97,7 @@ function EventForm() {
     setEndDate(formattedEndDate);
   };
 
-  const handleOwnerId = Cookies.get('id');
+  const handleOwnerId = getTokenId();
 
   return (
     <ThemeProvider theme={defaultTheme}>

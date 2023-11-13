@@ -31,7 +31,6 @@ function SignIn() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  console.log('isAuthenticated', isAuthenticated);
 
   const isLogged = useAppSelector((state) => state.user.logged);
 
@@ -63,9 +62,8 @@ function SignIn() {
   useEffect(() => {
     if (isLogged) {
       getCookie('token');
-      const id = getCookie('id');
 
-      navigate(`/user/${id}/events`);
+      navigate(`/events`);
     }
   }, [isLogged, navigate]);
   // ! JEREMY

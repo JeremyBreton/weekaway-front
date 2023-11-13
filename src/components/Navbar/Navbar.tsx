@@ -24,7 +24,7 @@ import { themeOptions } from '../Theme/Theme';
 
 import logo from '../../assets/LOGO_HORIZONTAL__ONLY_VERT___RESIZE-NEWpng.png';
 import { logout } from '../../store/reducers/user';
-import { getCookie } from '../../utils/cookieUtils';
+import { getTokenId, getCookie } from '../../utils/cookieUtils';
 
 interface Props {
   /**
@@ -36,23 +36,19 @@ interface Props {
 }
 const drawerWidth = 240;
 const navItems = [
-  { name: 'Me connecter', link: 'signin' },
-  { name: "M'inscrire", link: 'signup' },
+  { name: 'ME CONNECTER', link: 'signin' },
+  { name: "M'INSCRIRE", link: 'signup' },
 ];
 
-//! ICI
-const id = Cookies.get('id');
-
 const navItemsLogged = [
-  { name: 'MES ÉVÈNEMENTS', link: `/user/${id}/events` },
-  { name: 'CRÉER UN ÉVÈNEMENT', link: `/user/${id}/create` },
-  { name: 'MON PROFIL', link: `/user/${id}/profil` },
+  { name: 'MES ÉVÈNEMENTS', link: `/events` },
+  { name: 'CRÉER UN ÉVÈNEMENT', link: `/create` },
+  { name: 'MON PROFIL', link: `/profil` },
 ];
 
 function Navbar(props: Props) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
-  console.log('isAuthenticated', isAuthenticated);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isLoggedIn = Cookies.get('token');
@@ -291,7 +287,8 @@ function Navbar(props: Props) {
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
               width: drawerWidth,
-              bgcolor: 'background.paper',
+              // bgcolor: 'background.paper',
+              bgcolor: '#004643',
             },
           }}
         >
