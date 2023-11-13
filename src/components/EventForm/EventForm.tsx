@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import { Box, Container, useTheme } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -18,6 +18,7 @@ import Calendar from '../Calendar/Calendar';
 import { getTokenId, getCookie } from '../../utils/cookieUtils';
 
 function EventForm() {
+  const theme = useTheme();
   const defaultTheme = createTheme(themeOptions);
 
   const [startDate, setStartDate] = useState('');
@@ -58,6 +59,7 @@ function EventForm() {
       .then((response) => {
         const dataEventId = JSON.parse(JSON.stringify(response.data));
         Cookies.set('eventId', response.data.id);
+        console.log('POUR TIM LE BG', dataEventId);
         return dataEventId;
       });
     const idEvent = Cookies.get('eventId');
@@ -102,18 +104,33 @@ function EventForm() {
   return (
     <ThemeProvider theme={defaultTheme}>
       {isAuthenticated && (
-        <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
+        <Container
+          component="main"
+          maxWidth="sm"
+          sx={{
+            minHeight: '62vh',
+          }}
+        >
           <CssBaseline />
 
           <Box
-            sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5, mb: 8 }}
+            sx={{
+              backgroundColor: '#ABD1C6',
+              borderRadius: 5,
+              px: 5,
+              mb: 8,
+            }}
           >
             <Box
               sx={{
-                marginTop: 20,
+                mt: 20,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                py: 2,
+                [theme.breakpoints.down('sm')]: {
+                  mt: 8,
+                },
               }}
             >
               <Typography component="h1" variant="h5">
@@ -128,6 +145,7 @@ function EventForm() {
                   justifyContent: 'center',
                   display: 'flex',
                   flexDirection: 'column',
+                  width: '100%',
                 }}
               >
                 <TextField
@@ -160,6 +178,8 @@ function EventForm() {
                   margin="normal"
                   required
                   fullWidth
+                  multiline
+                  rows={3}
                   name="description"
                   label="Description de l'évènement"
                   type="Description"

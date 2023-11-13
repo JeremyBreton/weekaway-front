@@ -142,24 +142,12 @@ function Navbar(props: Props) {
                     src={logo}
                     style={{
                       // maxWidth: 150,
-                      maxHeight: 130,
+                      maxHeight: 120,
                       padding: 10,
                     }}
                   />
                 </Link>
               </Typography>
-              {/* <Box>
-              <Typography
-                sx={{
-                  display: {
-                    xs: 'none',
-                    sm: 'block',
-                  },
-                }}
-              >
-                Bienvenue {firstname}, tu es connecté !
-              </Typography>
-            </Box> */}
               <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 {navItemsLogged.map((item) => (
                   <ButtonBase
@@ -179,7 +167,7 @@ function Navbar(props: Props) {
                   </ButtonBase>
                 ))}
                 <ButtonBase
-                  href="/logout"
+                  href="/"
                   sx={{
                     color: '#001E1D',
                     borderRadius: 1,
@@ -244,7 +232,6 @@ function Navbar(props: Props) {
                     alt="logo-weekaway"
                     src={logo}
                     style={{
-                      // maxWidth: 150,
                       maxHeight: 130,
                       padding: 10,
                     }}
@@ -272,29 +259,30 @@ function Navbar(props: Props) {
           </AppBar>
         </ThemeProvider>
       )}
-
-      <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-              // bgcolor: 'background.paper',
-              bgcolor: '#004643',
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
+      <ThemeProvider theme={defaultTheme}>
+        <nav>
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: drawerWidth,
+                bgcolor: 'background.paper',
+                color: 'text.primary',
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </nav>
+      </ThemeProvider>
 
       <Box component="main">
         <Toolbar />

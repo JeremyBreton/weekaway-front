@@ -4,11 +4,12 @@ import {
   CssBaseline,
   Grid,
   Modal,
+  Snackbar,
   styled,
   TextField,
   Typography,
 } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import { Box, Container, useTheme } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -26,9 +27,15 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { getCookie, getTokenId } from '../../utils/cookieUtils';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { fetchUser } from '../../store/reducers/user';
+import { fetchUser, login } from '../../store/reducers/user';
+import {
+  NotificationType,
+  showNotification,
+} from '../../store/reducers/notification';
+import NotificationBar from '../NotificationBar/NotificationBar';
 
 function ProfileSettings() {
+  const theme = useTheme();
   const userfetch = useAppSelector((state) => state.user.user);
   const defaultTheme = createTheme(themeOptions);
   const dispatch = useAppDispatch();
@@ -38,18 +45,22 @@ function ProfileSettings() {
 
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
-  const [email, setEmail] = useState(userfetch.email);
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [firstname, setFirstname] = useState(userfetch.firstname);
-  const [lastname, setLastname] = useState(userfetch.lastname);
-  const [profileDesc, setProfileDesc] = useState(userfetch.profile_desc);
-  const [address, setAddress] = useState(userfetch.address);
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
+  const [profileDesc, setProfileDesc] = useState('');
+  const [address, setAddress] = useState('');
   const [gender, setGender] = useState('');
-  const [birthDate, setBirthDate] = useState(userfetch.birth_date);
+  const [birthDate, setBirthDate] = useState('');
   const [open, setOpen] = React.useState(false);
+  const [openConnect, setOpenConnect] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleOpenConnect = () => setOpenConnect(true);
+  const handleCloseConnect = () => setOpenConnect(false);
 
   //! A voir pour simplifier avec else ou else if + alert a passer en snackbar
   useEffect(() => {
@@ -108,11 +119,24 @@ function ProfileSettings() {
 
     const id = getTokenId();
 
-    await axios.patch(`http://caca-boudin.fr/api/user/${id}`, formObj, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    if (formObj) {
+      try {
+        dispatch(
+          showNotification({
+            message: 'Votre profil à bien été mis à jour',
+            type: NotificationType.Success,
+          })
+        );
+        await axios.patch(`http://caca-boudin.fr/api/user/${id}`, formObj, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     setTimeout(() => {
       window.location.reload();
     }, 2000);
@@ -150,10 +174,17 @@ function ProfileSettings() {
               backgroundColor: '#ABD1C6',
               borderRadius: 5,
               px: 5,
+              pb: 2,
               mt: 15,
               mb: 5,
               height: '50%',
-              width: '50vh',
+              width: '100%',
+              [theme.breakpoints.down('md')]: {
+                mt: 5,
+              },
+              [theme.breakpoints.down('sm')]: {
+                mt: 8,
+              },
             }}
           >
             <Typography
@@ -169,33 +200,39 @@ function ProfileSettings() {
                 color: '#ABD1C6',
                 borderRadius: 1,
                 p: 2,
-                mb: 5,
+                mb: 3,
               }}
             >
-              <Typography>Genre: {userfetch.gender}</Typography>
-              <Typography>Nom: {userfetch.lastname}</Typography>
-              <Typography>Prénom: {userfetch.firstname}</Typography>
-              <Typography>Date de naissance: {dateFromBackend}</Typography>
-              <Typography>Adresse: {userfetch.address}</Typography>
+              <Typography>Nom : {userfetch.lastname}</Typography>
+              <Typography>Prénom : {userfetch.firstname}</Typography>
+              <Typography>Date de naissance : {dateFromBackend}</Typography>
+              <Typography>Genre : {userfetch.gender}</Typography>
+              <Typography>Adresse : {userfetch.address}</Typography>
+              Bio: {userfetch.profile_desc}
             </Box>
+
+            <Button
+              type="button"
+              onClick={handleOpen}
+              fullWidth
+              variant="contained"
+              sx={{
+                mt: 1,
+                mb: 4,
+                backgroundColor: '#f9bc60',
+                color: '#001E1D',
+                '&:hover': { color: 'secondary.main' },
+              }}
+            >
+              Mon profil
+            </Button>
             <Box
               sx={{
                 backgroundColor: '#004643',
                 color: '#ABD1C6',
                 borderRadius: 1,
                 p: 2,
-                mb: 5,
-              }}
-            >
-              <Typography>Bio: {userfetch.profile_desc}</Typography>
-            </Box>
-            <Box
-              sx={{
-                backgroundColor: '#004643',
-                color: '#ABD1C6',
-                borderRadius: 1,
-                p: 2,
-                mb: 5,
+                mb: 3,
               }}
             >
               <Typography>Email: {userfetch.email}</Typography>
@@ -213,6 +250,7 @@ function ProfileSettings() {
               }}
             >
               <Box sx={style}>
+                <NotificationBar />
                 <Typography
                   id="modal-modal-title"
                   variant="h6"
@@ -230,27 +268,6 @@ function ProfileSettings() {
                   }}
                 >
                   <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <FormControl fullWidth>
-                        <InputLabel id="gender">Genre</InputLabel>
-                        <Select
-                          labelId="gender"
-                          id="gender"
-                          value={gender}
-                          label="Genre"
-                          onChange={({ target }) => setGender(target.value)}
-                        >
-                          <MenuItem value="Homme">Homme</MenuItem>
-                          <MenuItem value="Femme">Femme</MenuItem>
-                        </Select>
-                      </FormControl>
-                      <VisuallyHiddenInput
-                        type="gender"
-                        id="gender"
-                        name="gender"
-                        defaultValue={gender}
-                      />
-                    </Grid>
                     <Grid item xs={12} sm={6}>
                       <TextField
                         autoComplete="given-name"
@@ -273,6 +290,27 @@ function ProfileSettings() {
                         autoComplete="family-name"
                         defaultValue={userfetch.lastname}
                         onChange={({ target }) => setLastname(target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <FormControl fullWidth>
+                        <InputLabel id="gender">Genre</InputLabel>
+                        <Select
+                          labelId="gender"
+                          id="gender"
+                          value={gender}
+                          label="Genre"
+                          onChange={({ target }) => setGender(target.value)}
+                        >
+                          <MenuItem value="Homme">Homme</MenuItem>
+                          <MenuItem value="Femme">Femme</MenuItem>
+                        </Select>
+                      </FormControl>
+                      <VisuallyHiddenInput
+                        type="gender"
+                        id="gender"
+                        name="gender"
+                        defaultValue={gender}
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -318,6 +356,54 @@ function ProfileSettings() {
                         onChange={({ target }) => setProfileDesc(target.value)}
                       />
                     </Grid>
+                  </Grid>
+                  <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                      mt: 3,
+                      mb: 2,
+                      backgroundColor: '#f9bc60',
+                      color: '#001E1D',
+                      '&:hover': { color: 'secondary.main' },
+                    }}
+                  >
+                    Mettre à jour mon profil
+                  </Button>
+                </Box>
+              </Box>
+            </Modal>
+            <Modal
+              open={openConnect}
+              onClose={handleCloseConnect}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Box sx={style}>
+                <NotificationBar />
+                <Typography
+                  id="modal-modal-title"
+                  variant="h6"
+                  component="h2"
+                />
+                <Box
+                  component="form"
+                  onSubmit={handleSubmit}
+                  noValidate
+                  sx={{
+                    mt: 1,
+                    justifyContent: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <Grid container spacing={2}>
                     <Grid item xs={12}>
                       <TextField
                         required
@@ -335,9 +421,21 @@ function ProfileSettings() {
                         required
                         fullWidth
                         name="password"
-                        label="Mot de passe"
+                        label="Mot de passe actuel"
                         type="password"
                         id="password"
+                        value={password}
+                        onChange={({ target }) => setPassword(target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        required
+                        fullWidth
+                        name="oldPassword"
+                        label="Nouveau mot de passe"
+                        type="password"
+                        id="oldPassword"
                         value={password}
                         onChange={({ target }) => setPassword(target.value)}
                       />
@@ -362,7 +460,7 @@ function ProfileSettings() {
             </Modal>
             <Button
               type="button"
-              onClick={handleOpen}
+              onClick={handleOpenConnect}
               fullWidth
               variant="contained"
               sx={{
@@ -373,7 +471,7 @@ function ProfileSettings() {
                 '&:hover': { color: 'secondary.main' },
               }}
             >
-              Mettre à jour mon profil
+              Mes informations de connexion
             </Button>
           </Box>
         </Container>

@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Button, CssBaseline, TextField, Typography } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import { Box, Container, useTheme } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -9,6 +9,7 @@ import { themeOptions } from '../Theme/Theme';
 import { getTokenId, getCookie } from '../../utils/cookieUtils';
 
 function JoinEventForm() {
+  const theme = useTheme();
   const defaultTheme = createTheme(themeOptions);
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   console.log('isAuthenticated', isAuthenticated);
@@ -62,6 +63,12 @@ function JoinEventForm() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                paddingTop: '1rem',
+                paddingBottom: '1rem',
+                [theme.breakpoints.down('md')]: {
+                  marginTop: 10,
+                  // marginBottom: 0,
+                },
               }}
             >
               <Typography component="h1" variant="h5">

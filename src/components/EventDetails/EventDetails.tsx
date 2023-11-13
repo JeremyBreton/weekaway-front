@@ -20,6 +20,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import * as React from 'react';
 import Modal from '@mui/material/Modal';
 import { jwtDecode } from 'jwt-decode';
+import { useTheme } from '@mui/system';
 import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
 import { fetchOneEvent } from '../../store/reducers/events';
@@ -27,6 +28,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import Loading from '../Loading/Loading';
 
 function EventDetails() {
+  const theme = useTheme();
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [open, setOpen] = React.useState(false);
@@ -145,7 +147,7 @@ function EventDetails() {
 
     return (
       <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
+        <Container component="main" sx={{ minHeight: '62vh' }}>
           <CssBaseline />
           <Box
             sx={{
@@ -153,7 +155,6 @@ function EventDetails() {
               alignItems: 'center',
               flexDirection: 'column',
               backgroundColor: 'background.default',
-              pt: 8,
               minHeight: '100vh',
             }}
           >
@@ -166,7 +167,14 @@ function EventDetails() {
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: '100vh',
+                width: '90%',
+                [theme.breakpoints.down('md')]: {
+                  width: '100%',
+                  my: 10,
+                },
+                [theme.breakpoints.down('sm')]: {
+                  my: 5,
+                },
               }}
             >
               <CardMedia
@@ -193,6 +201,9 @@ function EventDetails() {
                   justifyContent: 'center',
                   alignItems: 'center',
                   width: '80%',
+                  [theme.breakpoints.down('md')]: {
+                    width: '90%',
+                  },
                 }}
               >
                 <Typography
@@ -215,6 +226,9 @@ function EventDetails() {
                   justifyContent: 'center',
                   alignItems: 'center',
                   width: '80%',
+                  [theme.breakpoints.down('md')]: {
+                    width: '90%',
+                  },
                 }}
               >
                 <Typography sx={{ textAlign: 'center' }}>
@@ -226,7 +240,7 @@ function EventDetails() {
                 onSubmit={handleSubmitAddUserChoice}
                 noValidate
                 sx={{
-                  mt: 1,
+                  mt: 3,
                   justifyContent: 'center',
                   display: 'flex',
                   flexDirection: 'column',
@@ -269,27 +283,39 @@ function EventDetails() {
                 </Button>
               </Box>
               {!OneEvent.eventDetails.users.includes(null) && (
-                <BarChart
-                  xAxis={[
-                    {
-                      id: 'barCategories',
-                      // data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
-
-                      data: userChoice.map((date: any) => date),
-
-                      scaleType: 'band',
+                <Box
+                  sx={{
+                    width: '90%',
+                    display: 'flex',
+                    m: 0,
+                    [theme.breakpoints.down('md')]: {
+                      width: '90%',
+                      m: 0,
                     },
-                  ]}
-                  series={[
-                    {
-                      // data: [2, 15, 3],
-                      data: numberVote,
-                      color: '#004643',
-                    },
-                  ]}
-                  width={800}
-                  height={800}
-                />
+                  }}
+                >
+                  <BarChart
+                    xAxis={[
+                      {
+                        id: 'barCategories',
+                        // data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
+
+                        data: userChoice.map((date: any) => date),
+
+                        scaleType: 'band',
+                      },
+                    ]}
+                    series={[
+                      {
+                        // data: [2, 15, 3],
+                        data: numberVote,
+                        color: '#004643',
+                      },
+                    ]}
+                    style={{ maxWidth: '100%' }}
+                    height={500}
+                  />
+                </Box>
               )}
               {OneEvent.eventDetails.owner_id == handleUserId && (
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
