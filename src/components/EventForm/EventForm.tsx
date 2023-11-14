@@ -59,7 +59,6 @@ function EventForm() {
       .then((response) => {
         const dataEventId = JSON.parse(JSON.stringify(response.data));
         Cookies.set('eventId', response.data.id);
-        console.log('POUR TIM LE BG', dataEventId);
         return dataEventId;
       });
     const idEvent = Cookies.get('eventId');
