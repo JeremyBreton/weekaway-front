@@ -58,10 +58,10 @@ export default function SignUp() {
       );
     }
   };
-  const regex = /^(?=.[0-9])(?=.[a-z])(?=.[A-Z])(?=.W)(?!.* ).{8,16}$/;
 
   const handleValidation = (e) => {
-    const reg = new RegExp(regex);
+    const reg =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
     setValid(reg.test(e.target.value));
     setPassword(e.target.value);
   };
@@ -145,10 +145,10 @@ export default function SignUp() {
                   <TextField
                     required
                     fullWidth
-                    inputProps={{
-                      pattern:
-                        /^(?=.[0-9])(?=.[a-z])(?=.[A-Z])(?=.W)(?!.* ).{8,16}$/,
-                    }}
+                    // inputProps={{
+                    //   pattern:
+                    //     /^(?=.[0-9])(?=.[a-z])(?=.[A-Z])(?=.W)(?!.* ).{8,16}$/,
+                    // }}
                     onChange={(e) => handleValidation(e)}
                     error={!valid}
                     helperText={
