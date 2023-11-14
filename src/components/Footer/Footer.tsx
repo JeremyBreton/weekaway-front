@@ -50,10 +50,16 @@ function Footer() {
               </Typography>
 
               <FooterText>
-                <Link href="/aboutus">Qui sommes nous ?</Link>
+                <Link href="/aboutus" sx={{ textDecoration: 'none' }}>
+                  Qui sommes nous ?
+                </Link>
               </FooterText>
               <br />
-              <FooterText>Nous contacter</FooterText>
+              <FooterText>
+                <Link href="/contactus" sx={{ textDecoration: 'none' }}>
+                  Nous contacter
+                </Link>
+              </FooterText>
               <br />
               <FooterText>Plan du site</FooterText>
               <br />
