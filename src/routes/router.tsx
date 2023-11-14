@@ -11,6 +11,7 @@ import Presentation from '../components/Presentation/Presentation';
 import JoinEventForm from '../components/JoinEventForm/JoinEventForm';
 import ProfileSettings from '../components/ProfileSettings/ProfileSettings';
 import EventDetails from '../components/EventDetails/EventDetails';
+import AboutUs from '../components/AboutUs/AboutUs';
 
 // Router : 1. je crée le router avec `createBrowserRouter`
 const router = createBrowserRouter([
@@ -65,6 +66,10 @@ const router = createBrowserRouter([
           //   path: '/logout',
           //   element: <App />,
           // },
+          {
+            path: '/aboutus',
+            element: <AboutUs />,
+          },
         ],
       },
     ],
