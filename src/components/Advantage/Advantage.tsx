@@ -1,43 +1,47 @@
 import { Box, styled, Typography } from '@mui/material';
+import { useTheme } from '@mui/system';
+import GuideBox from '../GuideBox/GuideBox';
+import GuidesBox from '../GuidesBox/GuidesBox';
 
 import OrganisationWE from '../../assets/1-OrganisationWE.png';
 import CalendrierCollaboratif from '../../assets/2-CalendrierCollaboratif.png';
 import VoyagesATheme from '../../assets/3-VoyagesATheme.png';
 
 function Advantage() {
-  const GuidesBox = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    justifyContent: 'space-around',
-    width: '100%',
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(5),
-    textAlign: 'center',
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-    },
-    [theme.breakpoints.down('sm')]: {
-      marginBottom: '0',
-      flexDirection: 'column',
-      padding: '2rem',
-    },
-  }));
+  const theme = useTheme();
+  // const GuidesBox = styled(Box)(({ theme }) => ({
+  //   display: 'flex',
+  //   justifyContent: 'space-around',
+  //   width: '100%',
+  //   marginTop: theme.spacing(5),
+  //   marginBottom: theme.spacing(5),
+  //   textAlign: 'center',
+  //   [theme.breakpoints.down('md')]: {
+  //     width: '100%',
+  //   },
+  //   [theme.breakpoints.down('sm')]: {
+  //     marginBottom: '0',
+  //     flexDirection: 'column',
+  //     padding: '2rem',
+  //   },
+  // }));
 
-  const GuideBox = styled(Box)(({ theme }) => ({
-    display: 'flex',
-    width: '20%',
-    flexDirection: 'column',
-    alignItems: 'center',
-    marginTop: theme.spacing(5),
-    [theme.breakpoints.down('md')]: {
-      width: '100%',
-      flexDirection: 'column',
-    },
-    [theme.breakpoints.down('sm')]: {
-      margin: theme.spacing(2, 0, 2, 0),
-      width: '100%',
-      flexDirection: 'column',
-    },
-  }));
+  // const GuideBox = styled(Box)(({ theme }) => ({
+  //   display: 'flex',
+  //   width: '20%',
+  //   flexDirection: 'column',
+  //   alignItems: 'center',
+  //   marginTop: theme.spacing(5),
+  //   [theme.breakpoints.down('md')]: {
+  //     width: '100%',
+  //     flexDirection: 'column',
+  //   },
+  //   [theme.breakpoints.down('sm')]: {
+  //     margin: theme.spacing(2, 0, 2, 0),
+  //     width: '100%',
+  //     flexDirection: 'column',
+  //   },
+  // }));
 
   const Divider = styled('div')(({ theme }) => ({
     width: '5%',
@@ -76,14 +80,14 @@ function Advantage() {
         <GuideBox>
           <img
             src={OrganisationWE}
-            alt="buyIcon"
-            style={{ width: 200, height: 200 }}
+            alt="OrganisationWE"
+            style={{ width: 150, height: 150 }}
           />
           <Typography
             variant="body2"
             sx={{
               fontWeight: '500',
-              fontSize: '1.1rem',
+              fontSize: '1rem',
               color: '#001E1D',
               my: 1,
             }}
@@ -96,14 +100,14 @@ function Advantage() {
         <GuideBox>
           <img
             src={CalendrierCollaboratif}
-            alt="buyIcon"
-            style={{ width: 200, height: 200 }}
+            alt="CalendrierCollaboratif"
+            style={{ width: 150, height: 150 }}
           />
           <Typography
             variant="body2"
             sx={{
               fontWeight: '500',
-              fontSize: '1.1rem',
+              fontSize: '1rem',
               color: '#00E1E1D',
               my: 1,
             }}
@@ -117,14 +121,14 @@ function Advantage() {
         <GuideBox>
           <img
             src={VoyagesATheme}
-            alt="buyIcon"
-            style={{ width: 200, height: 200 }}
+            alt="VoyagesATheme"
+            style={{ width: 150, height: 150 }}
           />
           <Typography
             variant="body2"
             sx={{
               fontWeight: '500',
-              fontSize: '1.1rem',
+              fontSize: '1rem',
               color: '#001E1D',
               my: 1,
             }}

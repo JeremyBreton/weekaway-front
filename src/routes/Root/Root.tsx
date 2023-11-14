@@ -3,26 +3,9 @@ import { Outlet, useLocation } from 'react-router-dom';
 
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
-import { useAppDispatch } from '../../hooks/redux';
-import { fetchEvents } from '../../store/reducers/events';
-
-// import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-
-// import Menu from '../../components/Menu/Menu';
-// import Loading from './Loading';
-
-// import './Root.scss';
-// import { fetchRecipes } from '../../store/reducers/recipes';
 
 function Root() {
-  // const loading = useAppSelector((state) => state.recipes.loading);
-  const dispatch = useAppDispatch();
-
   const location = useLocation();
-
-  // useEffect(() => {
-  //   dispatch(fetchEvents());
-  // }, [dispatch]);
 
   useEffect(() => {
     // window.scrollTo({

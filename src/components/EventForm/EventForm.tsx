@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import { Box, Container, useTheme } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
@@ -15,22 +15,22 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
-import { getCookie } from '../../utils/cookieUtils';
+import { getTokenId, getCookie } from '../../utils/cookieUtils';
 
 function EventForm() {
+  const theme = useTheme();
   const defaultTheme = createTheme(themeOptions);
 
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
 
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
-  console.log('isAuthenticated', isAuthenticated);
 
   useEffect(() => {
     if (!isAuthenticated) {
       // eslint-disable-next-line no-alert
-      alert('Vous devez être connectés pour créer un évènement');
+      alert('Vous devez être connecté pour créer un évènement');
       navigate('/signin');
     }
   }, [isAuthenticated, navigate]);
@@ -44,11 +44,13 @@ function EventForm() {
     const formObj = Object.fromEntries(formData);
     const eventPicture = formObj.event.toString();
 
+    //! A commenter pour le dev
+
     formData.append('event', eventPicture);
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
 
-    const eventId = await axios
+    await axios
       .post('http://caca-boudin.fr/api/event', formObj, {
         headers: {
           'Content-Type': 'multipart/form-data',
@@ -57,11 +59,11 @@ function EventForm() {
       .then((response) => {
         const dataEventId = JSON.parse(JSON.stringify(response.data));
         Cookies.set('eventId', response.data.id);
+        console.log('POUR TIM LE BG', dataEventId);
         return dataEventId;
       });
     const idEvent = Cookies.get('eventId');
-    const id = Cookies.get('id');
-    navigate(`/user/${id}}/event/${idEvent}`);
+    navigate(`/event/${idEvent}`);
   };
 
   useEffect(() => {
@@ -82,13 +84,14 @@ function EventForm() {
     width: 1,
   });
 
+  //! A commenter pour le dev
   const startDateReceived = (date: string | null) => {
     const formattedStartDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
     setStartDate(formattedStartDate);
     // console.log('cest la date de début dans le parent', formattedStartDate);
   };
 
-  console.log('startDateReceived', startDateReceived);
+  // console.log('startDateReceived', startDateReceived);
 
   const endDateReceived = (date: string | null) => {
     const formattedEndDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
@@ -96,23 +99,38 @@ function EventForm() {
     setEndDate(formattedEndDate);
   };
 
-  const handleOwnerId = Cookies.get('id');
+  const handleOwnerId = getTokenId();
 
   return (
     <ThemeProvider theme={defaultTheme}>
       {isAuthenticated && (
-        <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
+        <Container
+          component="main"
+          maxWidth="sm"
+          sx={{
+            minHeight: '62vh',
+          }}
+        >
           <CssBaseline />
 
           <Box
-            sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5, mb: 8 }}
+            sx={{
+              backgroundColor: '#ABD1C6',
+              borderRadius: 5,
+              px: 5,
+              mb: 8,
+            }}
           >
             <Box
               sx={{
-                marginTop: 20,
+                mt: 20,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                py: 2,
+                [theme.breakpoints.down('sm')]: {
+                  mt: 8,
+                },
               }}
             >
               <Typography component="h1" variant="h5">
@@ -127,6 +145,7 @@ function EventForm() {
                   justifyContent: 'center',
                   display: 'flex',
                   flexDirection: 'column',
+                  width: '100%',
                 }}
               >
                 <TextField
@@ -159,6 +178,8 @@ function EventForm() {
                   margin="normal"
                   required
                   fullWidth
+                  multiline
+                  rows={3}
                   name="description"
                   label="Description de l'évènement"
                   type="Description"

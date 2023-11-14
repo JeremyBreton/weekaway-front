@@ -5,8 +5,7 @@ import {
 } from '@reduxjs/toolkit';
 // import axios from 'axios';
 import axiosInstance from '../../utils/axios';
-
-import { setCookie, removeCookie, getCookie } from '../../utils/cookieUtils'; // Importez les fonctions
+import { getTokenId, setCookie, removeCookie } from '../../utils/cookieUtils'; // Importez les fonctions
 import { User } from '../../@types/User';
 import { showNotification } from './notification';
 
@@ -38,18 +37,12 @@ export const login = createAsyncThunk(
   'user/login',
   async (formData: FormData) => {
     const formObj = Object.fromEntries(formData);
-    console.log('formObj', formObj);
-
     const { data } = await axiosInstance.post('/login', formObj, {
       withCredentials: true,
     });
-    console.log('data.user_id', data.user_id);
-
     if (data.token) {
       // ! JEREMY
       setCookie('token', data.token, { expires: 1 });
-      setCookie('id', data.user_id);
-      console.log('je suis le cookie id', getCookie('id'));
     }
     // Dès que j'ai le JWT, je l'ajoute à mon instance Axios :
     // toutes mes prochaines requêtes l'auront (et l'enverront)
@@ -60,14 +53,13 @@ export const login = createAsyncThunk(
     // );
     // le token n'est plus nécessaire ici, je le supprime de mes données
     // delete data.token;
-    console.log('data', data);
     return data as UserState;
     // return data;
   }
 );
 
 export const fetchUser = createAsyncThunk('user/fetch', async () => {
-  const id = getCookie('id');
+  const id = getTokenId();
   const { data } = await axiosInstance.get(`/user/${id}`);
   return { data };
 });
@@ -82,7 +74,6 @@ const userReducer = createReducer(initialState, (builder) => {
       setCookie('token', action.payload.token, { expires: 1 });
       // Cookies.set('token', action.payload.token);
       // ! JEREMY
-      console.log('je suis le token', state.token);
     })
     .addCase(logout, (state) => {
       state.logged = false;
@@ -91,7 +82,7 @@ const userReducer = createReducer(initialState, (builder) => {
       // on supprime le token de l'instance Axios
       delete axiosInstance.defaults.headers.common.Authorization;
       removeCookie('token');
-      removeCookie('id');
+      removeCookie('eventId');
       // Cookies.remove('isLogged');
     })
     .addCase(fetchUser.fulfilled, (state, action) => {

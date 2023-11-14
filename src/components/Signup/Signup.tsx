@@ -29,6 +29,7 @@ export default function SignUp() {
   const [firstname, setfirstname] = useState('');
   const [lastname, setlastname] = useState('');
   const [user, setUser] = useState();
+  const [valid, setValid] = useState(true);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -57,6 +58,15 @@ export default function SignUp() {
       );
     }
   };
+
+  const handleValidation = (e) => {
+    const reg =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+    setValid(reg.test(e.target.value));
+    setPassword(e.target.value);
+  };
+
+  console.log(valid);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -135,13 +145,23 @@ export default function SignUp() {
                   <TextField
                     required
                     fullWidth
+                    // inputProps={{
+                    //   pattern:
+                    //     /^(?=.[0-9])(?=.[a-z])(?=.[A-Z])(?=.W)(?!.* ).{8,16}$/,
+                    // }}
+                    onChange={(e) => handleValidation(e)}
+                    error={!valid}
+                    helperText={
+                      !valid &&
+                      'Le mot de passe doit contenir 8 caratères, 1 majuscule et 1 caractère spécial'
+                    }
                     name="password"
                     label="Mot de passe"
                     type="password"
                     id="password"
                     autoComplete="new-password"
                     value={password}
-                    onChange={({ target }) => setPassword(target.value)}
+                    // onChange={({ target }) => setPassword(target.value)}
                   />
                 </Grid>
               </Grid>

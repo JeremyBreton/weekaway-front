@@ -1,37 +1,28 @@
 import { FormEvent, useEffect, useState } from 'react';
 import { Button, CssBaseline, TextField, Typography } from '@mui/material';
-import { Box, Container } from '@mui/system';
+import { Box, Container, useTheme } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-
 import axios from 'axios';
 import { themeOptions } from '../Theme/Theme';
-
-import { getCookie } from '../../utils/cookieUtils';
+import { getTokenId, getCookie } from '../../utils/cookieUtils';
 
 function JoinEventForm() {
+  const theme = useTheme();
   const defaultTheme = createTheme(themeOptions);
-
-  const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   console.log('isAuthenticated', isAuthenticated);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      // eslint-disable-next-line no-alert
-      alert('Vous devez être connectés pour créer un évènement');
-      navigate('/signin');
-    }
-  }, [isAuthenticated, navigate]);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const form = event.currentTarget;
-    const id = Cookies.get('id');
+    const id = getTokenId();
     const formData = new FormData(form);
     const formObj = Object.fromEntries(formData);
+    //! A commenter pour le dev
     const eventtoJoin = { password: formObj.password, id };
 
     const eventFetched = await axios
@@ -42,13 +33,22 @@ function JoinEventForm() {
         return JSON.parse(JSON.stringify(response.data));
       });
     const eventId = Cookies.get('eventId');
-    navigate(`/user/${id}/event/${eventId}`);
+    navigate(`/event/${eventId}`);
   };
+
+  //! On peut surement simplifier avec un else ou else if
   useEffect(() => {
     if (isAuthenticated) {
       Cookies.get('token');
     }
   }, [isAuthenticated]);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      // eslint-disable-next-line no-alert
+      alert('Vous devez être connectés pour créer un évènement');
+      navigate('/signin');
+    }
+  }, [isAuthenticated, navigate]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -63,6 +63,12 @@ function JoinEventForm() {
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                paddingTop: '1rem',
+                paddingBottom: '1rem',
+                [theme.breakpoints.down('md')]: {
+                  marginTop: 10,
+                  // marginBottom: 0,
+                },
               }}
             >
               <Typography component="h1" variant="h5">

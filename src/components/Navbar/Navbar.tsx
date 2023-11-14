@@ -24,7 +24,7 @@ import { themeOptions } from '../Theme/Theme';
 
 import logo from '../../assets/LOGO_HORIZONTAL__ONLY_VERT___RESIZE-NEWpng.png';
 import { logout } from '../../store/reducers/user';
-import { getCookie } from '../../utils/cookieUtils';
+import { getTokenId, getCookie } from '../../utils/cookieUtils';
 
 interface Props {
   /**
@@ -36,40 +36,37 @@ interface Props {
 }
 const drawerWidth = 240;
 const navItems = [
-  { name: 'Me connecter', link: 'signin' },
-  { name: "M'inscrire", link: 'signup' },
+  { name: 'ME CONNECTER', link: 'signin' },
+  { name: "M'INSCRIRE", link: 'signup' },
 ];
 
-//! ICI
-const id = Cookies.get('id');
-
 const navItemsLogged = [
-  { name: 'MES ÉVÈNEMENTS', link: `/user/${id}/events` },
-  { name: 'CRÉER UN ÉVÈNEMENT', link: `/user/${id}/create` },
-  { name: 'MON PROFIL', link: `/user/${id}/profil` },
+  { name: 'MES ÉVÈNEMENTS', link: `/events` },
+  { name: 'CRÉER UN ÉVÈNEMENT', link: `/create` },
+  { name: 'MON PROFIL', link: `/profil` },
 ];
 
 function Navbar(props: Props) {
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const isLoggedIn = Cookies.get('token');
 
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const navigate = useNavigate();
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
-
-  const dispatch = useAppDispatch();
 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/');
   };
 
+  //! A supprimer potentiellement puisque pas utilisé
+
   const isLogged = useAppSelector((state) => state.user.logged);
-  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
-  console.log('isAuthenticated', isAuthenticated);
 
   const firstname = useAppSelector((state) => state.user.firstname);
 
@@ -145,24 +142,12 @@ function Navbar(props: Props) {
                     src={logo}
                     style={{
                       // maxWidth: 150,
-                      maxHeight: 130,
+                      maxHeight: 120,
                       padding: 10,
                     }}
                   />
                 </Link>
               </Typography>
-              {/* <Box>
-              <Typography
-                sx={{
-                  display: {
-                    xs: 'none',
-                    sm: 'block',
-                  },
-                }}
-              >
-                Bienvenue {firstname}, tu es connecté !
-              </Typography>
-            </Box> */}
               <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 {navItemsLogged.map((item) => (
                   <ButtonBase
@@ -182,7 +167,7 @@ function Navbar(props: Props) {
                   </ButtonBase>
                 ))}
                 <ButtonBase
-                  href="/logout"
+                  href="/"
                   sx={{
                     color: '#001E1D',
                     borderRadius: 1,
@@ -247,7 +232,6 @@ function Navbar(props: Props) {
                     alt="logo-weekaway"
                     src={logo}
                     style={{
-                      // maxWidth: 150,
                       maxHeight: 130,
                       padding: 10,
                     }}
@@ -275,28 +259,30 @@ function Navbar(props: Props) {
           </AppBar>
         </ThemeProvider>
       )}
-
-      <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-              bgcolor: 'background.paper',
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
+      <ThemeProvider theme={defaultTheme}>
+        <nav>
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: drawerWidth,
+                bgcolor: 'background.paper',
+                color: 'text.primary',
+              },
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </nav>
+      </ThemeProvider>
 
       <Box component="main">
         <Toolbar />

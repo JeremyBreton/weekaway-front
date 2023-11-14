@@ -1,9 +1,9 @@
 import { createAsyncThunk, createReducer } from '@reduxjs/toolkit';
 // import axios from 'axios';
 import Cookies from 'js-cookie';
-
 import axiosInstance from '../../utils/axios';
 import { Event } from '../../@types/Event';
+import { getTokenId } from '../../utils/cookieUtils';
 
 /*
   Erreur ESLint : « Dependency cycle »
@@ -36,18 +36,15 @@ export const initialState: EventsState = {
 };
 
 export const fetchEvents = createAsyncThunk('event/fetch', async () => {
-  const id = Cookies.get('id');
+  const id = getTokenId();
   const { data } = await axiosInstance.get(`/user/${id}/events`);
-  console.log('data', data);
 
   const eventsArray = data.events;
-  console.log('coucou ici', eventsArray);
 
   return { data, eventsArray };
 });
 
 export const fetchOneEvent = createAsyncThunk('oneEvent/fetch', async () => {
-  console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAA');
   const eventId = Cookies.get('eventId');
   const { data } = await axiosInstance.get(`/event/${eventId}`);
   console.log('data de fetchOneEvent', data);

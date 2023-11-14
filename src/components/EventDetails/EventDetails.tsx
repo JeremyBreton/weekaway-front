@@ -19,6 +19,8 @@ import Cookies from 'js-cookie';
 import DeleteIcon from '@mui/icons-material/Delete';
 import * as React from 'react';
 import Modal from '@mui/material/Modal';
+import { jwtDecode } from 'jwt-decode';
+import { useTheme } from '@mui/system';
 import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
 import { fetchOneEvent } from '../../store/reducers/events';
@@ -26,12 +28,21 @@ import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import Loading from '../Loading/Loading';
 
 function EventDetails() {
+  const theme = useTheme();
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [open, setOpen] = React.useState(false);
 
-  const dispatch = useAppDispatch();
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const defaultTheme = createTheme(themeOptions);
+
   const { idEvent } = useParams();
+  const dispatch = useAppDispatch();
+
+  const OneEvent = useAppSelector((state) => state.events.oneEvent);
+  const loading = useAppSelector((state) => state.events.loading);
 
   useEffect(() => {
     // Crée un state isLoading
@@ -40,7 +51,6 @@ function EventDetails() {
     // Changer le status de isLoading
   }, [dispatch]);
 
-  const OneEvent = useAppSelector((state) => state.events.oneEvent);
   // console.log('OneEvent dans eventDetails', OneEvent);
 
   const VisuallyHiddenInput = styled('input')({
@@ -87,7 +97,10 @@ function EventDetails() {
     }, 2000);
   };
 
-  const handleUserId = Cookies.get('id');
+  const token = Cookies.get('token');
+  const decoded = jwtDecode(token);
+
+  const handleUserId = decoded.id;
 
   const style = {
     position: 'absolute' as const,
@@ -101,10 +114,6 @@ function EventDetails() {
     p: 4,
   };
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -115,7 +124,7 @@ function EventDetails() {
     axios.post('http://caca-boudin.fr/api/inviteLink', formObj);
     setOpen(false);
   };
-  const loading = useAppSelector((state) => state.events.loading);
+
   // Créer une condition qui retourne soit l'un soit l'autre suivant le state de isLoading
   if (loading) {
     setTimeout(() => {}, 1000);
@@ -123,6 +132,7 @@ function EventDetails() {
     return <Loading />;
   }
 
+  //! A commenter
   if (!OneEvent.eventDetails.users.includes(null)) {
     const numberVote = OneEvent.eventDetails.numberVote.map(
       (vote: any) => vote
@@ -137,7 +147,7 @@ function EventDetails() {
 
     return (
       <ThemeProvider theme={defaultTheme}>
-        <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
+        <Container component="main" sx={{ minHeight: '62vh' }}>
           <CssBaseline />
           <Box
             sx={{
@@ -145,21 +155,26 @@ function EventDetails() {
               alignItems: 'center',
               flexDirection: 'column',
               backgroundColor: 'background.default',
-              pt: 11,
               minHeight: '100vh',
             }}
           >
             <Box
               sx={{
                 backgroundColor: '#ABD1C6',
-                borderRadius: 5,
-                // px: 5,
+                borderRadius: 2,
                 my: 20,
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'center',
                 alignItems: 'center',
-                width: '100vh',
+                width: '90%',
+                [theme.breakpoints.down('md')]: {
+                  width: '100%',
+                  my: 10,
+                },
+                [theme.breakpoints.down('sm')]: {
+                  my: 5,
+                },
               }}
             >
               <CardMedia
@@ -186,12 +201,15 @@ function EventDetails() {
                   justifyContent: 'center',
                   alignItems: 'center',
                   width: '80%',
+                  [theme.breakpoints.down('md')]: {
+                    width: '90%',
+                  },
                 }}
               >
                 <Typography
                   variant="h3"
                   component="h1"
-                  sx={{ textAlign: 'center', mb: 2 }}
+                  sx={{ textAlign: 'center', py: 2 }}
                 >
                   {OneEvent.eventDetails.name}
                 </Typography>
@@ -201,16 +219,19 @@ function EventDetails() {
                   backgroundColor: '#004643',
                   color: 'secondary.main',
                   borderRadius: 2,
-                  py: 2,
+                  p: 3,
                   my: 2,
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  width: '60%',
+                  width: '80%',
+                  [theme.breakpoints.down('md')]: {
+                    width: '90%',
+                  },
                 }}
               >
-                <Typography sx={{ textAlign: 'center', mb: 5 }}>
+                <Typography sx={{ textAlign: 'center' }}>
                   {OneEvent.eventDetails.description}
                 </Typography>
               </Box>
@@ -219,7 +240,7 @@ function EventDetails() {
                 onSubmit={handleSubmitAddUserChoice}
                 noValidate
                 sx={{
-                  mt: 1,
+                  mt: 3,
                   justifyContent: 'center',
                   display: 'flex',
                   flexDirection: 'column',
@@ -262,27 +283,39 @@ function EventDetails() {
                 </Button>
               </Box>
               {!OneEvent.eventDetails.users.includes(null) && (
-                <BarChart
-                  xAxis={[
-                    {
-                      id: 'barCategories',
-                      // data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
-
-                      data: userChoice.map((date: any) => date),
-
-                      scaleType: 'band',
+                <Box
+                  sx={{
+                    width: '90%',
+                    display: 'flex',
+                    m: 0,
+                    [theme.breakpoints.down('md')]: {
+                      width: '90%',
+                      m: 0,
                     },
-                  ]}
-                  series={[
-                    {
-                      // data: [2, 15, 3],
-                      data: numberVote,
-                      color: '#004643',
-                    },
-                  ]}
-                  width={800}
-                  height={800}
-                />
+                  }}
+                >
+                  <BarChart
+                    xAxis={[
+                      {
+                        id: 'barCategories',
+                        // data: ['22/05/24-26/05/24', '29/05/24', '06/06/24'],
+
+                        data: userChoice.map((date: any) => date),
+
+                        scaleType: 'band',
+                      },
+                    ]}
+                    series={[
+                      {
+                        // data: [2, 15, 3],
+                        data: numberVote,
+                        color: '#004643',
+                      },
+                    ]}
+                    style={{ maxWidth: '100%' }}
+                    height={500}
+                  />
+                </Box>
               )}
               {OneEvent.eventDetails.owner_id == handleUserId && (
                 <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -384,7 +417,7 @@ function EventDetails() {
           <Box
             sx={{
               backgroundColor: '#ABD1C6',
-              borderRadius: 5,
+              borderRadius: 2,
               // px: 5,
               my: 20,
               display: 'flex',
