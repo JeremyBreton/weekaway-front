@@ -37,7 +37,9 @@ export default function SignUp() {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const userData = { firstname, lastname, email, password };
+    // userData.email.toLowerCase();
     const data = new FormData(event.currentTarget);
     if (firstname && lastname && email && password) {
       try {

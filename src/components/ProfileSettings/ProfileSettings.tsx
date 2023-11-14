@@ -4,7 +4,6 @@ import {
   CssBaseline,
   Grid,
   Modal,
-  Snackbar,
   styled,
   TextField,
   Typography,
@@ -22,11 +21,11 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 import { DateField, LocalizationProvider, frFR } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import { getCookie, getTokenId } from '../../utils/cookieUtils';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { fetchUser, login } from '../../store/reducers/user';
+import { fetchUser } from '../../store/reducers/user';
 import {
   NotificationType,
   showNotification,
@@ -137,6 +136,9 @@ function ProfileSettings() {
             'Content-Type': 'multipart/form-data',
           },
         });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } catch (e) {
         console.error(e);
         dispatch(
@@ -154,10 +156,6 @@ function ProfileSettings() {
         })
       );
     }
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
   };
 
   const VisuallyHiddenInput = styled('input')({

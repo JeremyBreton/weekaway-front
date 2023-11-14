@@ -11,6 +11,12 @@ dependencies:
   '@emotion/styled':
     specifier: ^11.11.0
     version: 11.11.0(@emotion/react@11.11.1)(@types/react@18.2.21)(react@18.2.0)
+  '@fontsource-variable/comfortaa':
+    specifier: ^5.0.17
+    version: 5.0.17
+  '@fontsource/coming-soon':
+    specifier: ^5.0.8
+    version: 5.0.8
   '@mui/icons-material':
     specifier: ^5.14.14
     version: 5.14.14(@mui/material@5.14.14)(@types/react@18.2.21)(react@18.2.0)
@@ -730,6 +736,14 @@ packages:
 
   /@floating-ui/utils@0.1.6:
     resolution: {integrity: sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==}
+    dev: false
+
+  /@fontsource-variable/comfortaa@5.0.17:
+    resolution: {integrity: sha512-7kqvDL/nigE8O+TNbor/ouSe/xJhhTOIzYaLA+8hU1XTbMvOY+ksMxZwKEWumRSsIabOXzBjcdM2bWMctlua4g==}
+    dev: false
+
+  /@fontsource/coming-soon@5.0.8:
+    resolution: {integrity: sha512-eVhJmqQ11uQJNtB1diKeiuVvTXrXrS4AvLtGnqg6W5rzuFnvxvmgphoAFm/LgedWN2r7qqJNp2L4FUejq4BYjA==}
     dev: false
 
   /@humanwhocodes/config-array@0.6.0:

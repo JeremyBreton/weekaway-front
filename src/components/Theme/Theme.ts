@@ -1,5 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 import { ThemeOptions } from '@mui/material/styles';
+import '@fontsource-variable/comfortaa';
+import '@fontsource/coming-soon';
 
 export const themeOptions: ThemeOptions = {
   palette: {
@@ -22,25 +24,25 @@ export const themeOptions: ThemeOptions = {
   typography: {
     fontFamily: 'Coming Soon',
     h1: {
-      fontFamily: 'Comfortaa',
+      fontFamily: 'Comfortaa variable',
     },
     h2: {
-      fontFamily: 'Comfortaa',
+      fontFamily: 'Comfortaa variable',
     },
     h3: {
-      fontFamily: 'Comfortaa',
+      fontFamily: 'Comfortaa variable',
     },
     h4: {
-      fontFamily: 'Comfortaa',
+      fontFamily: 'Comfortaa variable',
     },
     h5: {
-      fontFamily: 'Comfortaa',
+      fontFamily: 'Comfortaa variable',
     },
     h6: {
-      fontFamily: 'Comfortaa',
+      fontFamily: 'Comfortaa variable',
     },
     button: {
-      fontFamily: 'Comfortaa',
+      fontFamily: 'Comfortaa variable',
     },
   },
 };

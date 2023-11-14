@@ -1,5 +1,6 @@
-import { Box, styled, Typography } from '@mui/material';
+import { Box, CssBaseline, styled, Typography } from '@mui/material';
 import { useTheme } from '@mui/system';
+import { Css } from '@mui/icons-material';
 import GuideBox from '../GuideBox/GuideBox';
 import GuidesBox from '../GuidesBox/GuidesBox';
 
@@ -42,6 +43,15 @@ function Advantage() {
   //     flexDirection: 'column',
   //   },
   // }));
+
+  // const CustomFont = styled(CssBaseline)`
+  //   @font-face {
+  //     font-family: 'Comfortaa';
+  //     src: url('../font/Comfortaa-VariableFont_wght.ttf') format('truetype');
+  //   }
+
+  //   font-family: 'Comfortaa', sans-serif;
+  // `;
 
   const Divider = styled('div')(({ theme }) => ({
     width: '5%',

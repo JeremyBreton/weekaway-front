@@ -39,9 +39,12 @@ function EventDetails() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [open, setOpen] = React.useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   const defaultTheme = createTheme(themeOptions);
 
@@ -64,11 +67,6 @@ function EventDetails() {
       Cookies.get('token');
     }
   }, [dispatch, isAuthenticated, navigate]);
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     Cookies.get('token');
-  //   }
-  // }, [isAuthenticated]);
 
   useEffect(() => {
     dispatch(fetchOneEvent());
@@ -154,13 +152,16 @@ function EventDetails() {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 500,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '2px solid #004643',
     boxShadow: 24,
     p: 4,
+    borderRadius: 5,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   };
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -197,6 +198,17 @@ function EventDetails() {
       );
       setOpen(false);
     }
+  };
+
+  const handleDeleteValidation = (event) => {
+    event.preventDefault();
+    axios.delete(`http://caca-boudin.fr/api/event/${idEvent}`);
+    navigate('/events');
+  };
+
+  const handleDeleteEvent = (event) => {
+    event.preventDefault();
+    handleOpenDeleteModal();
   };
 
   // Créer une condition qui retourne soit l'un soit l'autre suivant le state de isLoading
@@ -413,9 +425,27 @@ function EventDetails() {
                         color: '#001E1D',
                       },
                     }}
+                    onClick={handleDeleteEvent}
                   >
                     Delete
                   </Button>
+                  <Modal
+                    open={openDeleteModal}
+                    onClose={handleCloseDeleteModal}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        Coucou
+                      </Typography>
+                    </Box>
+                  </Modal>
+
                   <Modal
                     open={open}
                     onClose={handleClose}
@@ -427,6 +457,9 @@ function EventDetails() {
                         id="modal-modal-title"
                         variant="h6"
                         component="h2"
+                        sx={{
+                          mb: 3,
+                        }}
                       >
                         Ajouter des invités
                       </Typography>
@@ -623,9 +656,42 @@ function EventDetails() {
                       color: '#001E1D',
                     },
                   }}
+                  onClick={handleDeleteEvent}
                 >
                   Delete
                 </Button>
+                <Modal
+                  open={openDeleteModal}
+                  onClose={handleCloseDeleteModal}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
+                      sx={{ mb: 3 }}
+                    >
+                      Etes vous sur de voulour supprimer cet évènement ?
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      startIcon={<DeleteIcon />}
+                      sx={{
+                        mb: 2,
+                        color: 'primary.main',
+                        '&:hover': {
+                          backgroundColor: '#e16162',
+                          color: '#001E1D',
+                        },
+                      }}
+                      onClick={handleDeleteValidation}
+                    >
+                      Je veux supprimer cet évènement
+                    </Button>
+                  </Box>
+                </Modal>
                 <Modal
                   open={open}
                   onClose={handleClose}

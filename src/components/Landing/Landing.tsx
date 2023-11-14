@@ -21,6 +21,8 @@ import {
   showNotification,
 } from '../../store/reducers/notification';
 import { getCookie } from '../../utils/cookieUtils';
+import '@fontsource-variable/comfortaa';
+import '@fontsource/coming-soon';
 
 function Landing() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
@@ -105,7 +107,13 @@ function Landing() {
           minHeight: '100vh',
         }}
       >
-        <Typography sx={{ fontSize: '2rem', color: 'secondary.main', mb: 5 }}>
+        <Typography
+          sx={{
+            fontSize: '2rem',
+            color: 'secondary.main',
+            mb: 5,
+          }}
+        >
           Mes évènements à venir
         </Typography>
         {!eventFilteredFutur && (

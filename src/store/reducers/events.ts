@@ -47,9 +47,6 @@ export const fetchEvents = createAsyncThunk('event/fetch', async () => {
 export const fetchOneEvent = createAsyncThunk('oneEvent/fetch', async () => {
   const eventId = Cookies.get('eventId');
   const { data } = await axiosInstance.get(`/event/${eventId}`);
-  console.log('data de fetchOneEvent', data);
-  console.log('data.data');
-
   return { data };
 });
 

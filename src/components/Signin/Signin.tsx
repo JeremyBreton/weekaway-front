@@ -42,8 +42,8 @@ function SignIn() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-    const formEmail = form.email.value.toLowerCase();
-    form.email.value = formEmail;
+    // const formEmail = form.email.value.toLowerCase();
+    // form.email.value = formEmail;
     const formData: FormData = new FormData(form);
 
     // create conditional to check if email and password are not empty

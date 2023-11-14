@@ -72,11 +72,10 @@ function EventForm() {
             },
           })
           .then((response) => {
-            const dataEventId = JSON.parse(JSON.stringify(response.data));
-            return dataEventId;
+            // const dataEventId = JSON.parse(JSON.stringify(response.data));
+            Cookies.set('eventId', response.data.id);
+            navigate(`/event/${response.data.id}`);
           });
-        const idEvent = Cookies.get('eventId');
-        navigate(`/event/${idEvent}`);
       } catch (e) {
         console.error(e);
         dispatch(
