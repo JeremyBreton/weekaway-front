@@ -4,8 +4,15 @@ import {
   createReducer,
 } from '@reduxjs/toolkit';
 // import axios from 'axios';
+import Cookies from 'js-cookie';
+import { useState } from 'react';
 import axiosInstance from '../../utils/axios';
-import { getTokenId, setCookie, removeCookie } from '../../utils/cookieUtils'; // Importez les fonctions
+import {
+  getTokenId,
+  setCookie,
+  removeCookie,
+  getCookie,
+} from '../../utils/cookieUtils'; // Importez les fonctions
 import { User } from '../../@types/User';
 import { showNotification } from './notification';
 
@@ -23,6 +30,10 @@ export const initialState: UserState = {
 };
 
 export const logout = createAction('user/logout');
+
+export function Authenticated(): boolean {
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
+}
 
 /*
   on peut typer le thunk pour, notamment si on a des calculs

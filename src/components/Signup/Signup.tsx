@@ -30,6 +30,7 @@ export default function SignUp() {
   const [lastname, setlastname] = useState('');
   const [user, setUser] = useState();
   const [valid, setValid] = useState(true);
+  const [mailValid, setMailValid] = useState(true);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -57,6 +58,13 @@ export default function SignUp() {
         })
       );
     }
+  };
+
+  const handleMailValidation = (e) => {
+    const reg =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i;
+    setMailValid(reg.test(e.target.value));
+    setEmail(e.target.value);
   };
 
   const handleValidation = (e) => {
@@ -137,23 +145,22 @@ export default function SignUp() {
                     label="Email"
                     name="email"
                     autoComplete="email"
+                    error={!mailValid}
+                    helperText={
+                      !mailValid && 'Merci de rentrer un email valide'
+                    }
                     value={email}
-                    onChange={({ target }) => setEmail(target.value)}
+                    onChange={(e) => handleMailValidation(e)}
                   />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
                     required
                     fullWidth
-                    // inputProps={{
-                    //   pattern:
-                    //     /^(?=.[0-9])(?=.[a-z])(?=.[A-Z])(?=.W)(?!.* ).{8,16}$/,
-                    // }}
-                    onChange={(e) => handleValidation(e)}
                     error={!valid}
                     helperText={
                       !valid &&
-                      'Le mot de passe doit contenir 8 caratères, 1 majuscule et 1 caractère spécial'
+                      'Le mot de passe doit contenir au moins 8 caratères, 1 majuscule et 1 caractère spécial'
                     }
                     name="password"
                     label="Mot de passe"
@@ -161,7 +168,7 @@ export default function SignUp() {
                     id="password"
                     autoComplete="new-password"
                     value={password}
-                    // onChange={({ target }) => setPassword(target.value)}
+                    onChange={(e) => handleValidation(e)}
                   />
                 </Grid>
               </Grid>

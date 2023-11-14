@@ -16,6 +16,12 @@ import dayjs from 'dayjs';
 import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
 import { getTokenId, getCookie } from '../../utils/cookieUtils';
+import {
+  NotificationType,
+  showNotification,
+} from '../../store/reducers/notification';
+import { useAppDispatch } from '../../hooks/redux';
+import NotificationBar from '../NotificationBar/NotificationBar';
 
 function EventForm() {
   const theme = useTheme();
@@ -26,14 +32,21 @@ function EventForm() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!isAuthenticated) {
-      // eslint-disable-next-line no-alert
-      alert('Vous devez être connecté pour créer un évènement');
+      dispatch(
+        showNotification({
+          message: 'Vous devez être connecté !',
+          type: NotificationType.Error,
+        })
+      );
       navigate('/signin');
+    } else {
+      Cookies.get('token');
     }
-  }, [isAuthenticated, navigate]);
+  }, [dispatch, isAuthenticated, navigate]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -50,27 +63,31 @@ function EventForm() {
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
 
-    await axios
-      .post('http://caca-boudin.fr/api/event', formObj, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response) => {
-        const dataEventId = JSON.parse(JSON.stringify(response.data));
-        Cookies.set('eventId', response.data.id);
-        console.log('POUR TIM LE BG', dataEventId);
-        return dataEventId;
-      });
-    const idEvent = Cookies.get('eventId');
-    navigate(`/event/${idEvent}`);
-  };
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      Cookies.get('token');
+    if (formObj) {
+      try {
+        await axios
+          .post('http://caca-boudin.fr/api/event', formObj, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then((response) => {
+            const dataEventId = JSON.parse(JSON.stringify(response.data));
+            return dataEventId;
+          });
+        const idEvent = Cookies.get('eventId');
+        navigate(`/event/${idEvent}`);
+      } catch (e) {
+        console.error(e);
+        dispatch(
+          showNotification({
+            message: 'Merci de remplir tous les champs',
+            type: NotificationType.Error,
+          })
+        );
+      }
     }
-  }, [isAuthenticated]);
+  };
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -98,8 +115,10 @@ function EventForm() {
     // console.log('cest la date de fin dans le parent', formattedEndDate);
     setEndDate(formattedEndDate);
   };
-
-  const handleOwnerId = getTokenId();
+  let handleOwnerId = '';
+  if (isAuthenticated) {
+    handleOwnerId = getTokenId();
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -108,10 +127,11 @@ function EventForm() {
           component="main"
           maxWidth="sm"
           sx={{
-            minHeight: '62vh',
+            minHeight: '76vh',
           }}
         >
           <CssBaseline />
+          <NotificationBar />
 
           <Box
             sx={{

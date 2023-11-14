@@ -11,13 +11,19 @@ import {
 import { Box, Container, useTheme } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Cookies from 'js-cookie';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { fetchEvents } from '../../store/reducers/events';
+import {
+  NotificationType,
+  showNotification,
+} from '../../store/reducers/notification';
+import { getCookie } from '../../utils/cookieUtils';
 
 function Landing() {
+  const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   const defaultTheme = createTheme(themeOptions);
   const eventsArray = useAppSelector((state) => state.events.eventsArray);
   const navigate = useNavigate();
@@ -40,6 +46,20 @@ function Landing() {
   const eventFilteredFutur = eventsArray?.filter(
     (event) => event.status === true
   );
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      dispatch(
+        showNotification({
+          message: 'Vous devez être connecté !',
+          type: NotificationType.Error,
+        })
+      );
+      navigate('/signin');
+    } else {
+      Cookies.get('token');
+    }
+  }, [dispatch, isAuthenticated, navigate]);
 
   useEffect(() => {
     dispatch(fetchEvents());

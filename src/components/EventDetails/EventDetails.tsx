@@ -10,7 +10,7 @@ import {
   createTheme,
   styled,
 } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { BarChart } from '@mui/x-charts';
 import { FormEvent, useEffect, useState } from 'react';
 import axios from 'axios';
@@ -26,9 +26,16 @@ import Calendar from '../Calendar/Calendar';
 import { fetchOneEvent } from '../../store/reducers/events';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import Loading from '../Loading/Loading';
+import {
+  NotificationType,
+  showNotification,
+} from '../../store/reducers/notification';
+import NotificationBar from '../NotificationBar/NotificationBar';
+import { getCookie } from '../../utils/cookieUtils';
 
 function EventDetails() {
   const theme = useTheme();
+  const [isAuthenticated] = useState(!!getCookie('token'));
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [open, setOpen] = React.useState(false);
@@ -40,15 +47,31 @@ function EventDetails() {
 
   const { idEvent } = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const OneEvent = useAppSelector((state) => state.events.oneEvent);
   const loading = useAppSelector((state) => state.events.loading);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      dispatch(
+        showNotification({
+          message: 'Vous devez être connecté !',
+          type: NotificationType.Error,
+        })
+      );
+      navigate('/signin');
+    } else {
+      Cookies.get('token');
+    }
+  }, [dispatch, isAuthenticated, navigate]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     Cookies.get('token');
+  //   }
+  // }, [isAuthenticated]);
 
   useEffect(() => {
-    // Crée un state isLoading
-    // console.log('JE SUIS UN USEEFFECT');
     dispatch(fetchOneEvent());
-    // Changer le status de isLoading
   }, [dispatch]);
 
   // console.log('OneEvent dans eventDetails', OneEvent);
@@ -87,14 +110,38 @@ function EventDetails() {
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
 
-    axios
-      .post('http://caca-boudin.fr/api/userchoice', formObj)
-      .then((response) => {
-        return JSON.parse(JSON.stringify(response.data));
-      });
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
+    if (startDate && endDate) {
+      try {
+        axios
+          .post('http://caca-boudin.fr/api/userchoice', formObj)
+          .then((response) => {
+            return JSON.parse(JSON.stringify(response.data));
+          });
+        dispatch(
+          showNotification({
+            message: 'Votre date a bien été ajoutée',
+            type: NotificationType.Success,
+          })
+        );
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } catch (error: any) {
+        dispatch(
+          showNotification({
+            message: "Oops quelque chose s'est mal passé",
+            type: NotificationType.Error,
+          })
+        );
+      }
+    } else {
+      dispatch(
+        showNotification({
+          message: "Oops quelque chose s'est mal passé",
+          type: NotificationType.Error,
+        })
+      );
+    }
   };
 
   const token = Cookies.get('token');
@@ -120,9 +167,36 @@ function EventDetails() {
 
     const formData = new FormData(form);
     const formObj = Object.fromEntries(formData);
+    console.log(formObj);
 
-    axios.post('http://caca-boudin.fr/api/inviteLink', formObj);
-    setOpen(false);
+    if (formObj.email !== '') {
+      try {
+        axios.post('http://caca-boudin.fr/api/inviteLink', formObj);
+
+        dispatch(
+          showNotification({
+            message: 'Votre invité a bien été ajouté',
+            type: NotificationType.Success,
+          })
+        );
+        setOpen(false);
+      } catch (error: any) {
+        dispatch(
+          showNotification({
+            message: "Oops quelque chose s'est mal passé",
+            type: NotificationType.Error,
+          })
+        );
+      }
+    } else {
+      dispatch(
+        showNotification({
+          message: "Oops quelque chose s'est mal passé",
+          type: NotificationType.Error,
+        })
+      );
+      setOpen(false);
+    }
   };
 
   // Créer une condition qui retourne soit l'un soit l'autre suivant le state de isLoading
@@ -149,6 +223,7 @@ function EventDetails() {
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" sx={{ minHeight: '62vh' }}>
           <CssBaseline />
+          <NotificationBar />
           <Box
             sx={{
               display: 'flex',
@@ -235,6 +310,7 @@ function EventDetails() {
                   {OneEvent.eventDetails.description}
                 </Typography>
               </Box>
+
               <Box
                 component="form"
                 onSubmit={handleSubmitAddUserChoice}
@@ -404,6 +480,7 @@ function EventDetails() {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
         <CssBaseline />
+        <NotificationBar />
         <Box
           sx={{
             display: 'flex',

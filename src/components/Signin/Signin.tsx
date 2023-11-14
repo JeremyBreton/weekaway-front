@@ -14,6 +14,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { CoPresent } from '@mui/icons-material';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 
@@ -41,13 +42,21 @@ function SignIn() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
+    const formEmail = form.email.value.toLowerCase();
+    form.email.value = formEmail;
     const formData: FormData = new FormData(form);
+
     // create conditional to check if email and password are not empty
     if (email && password) {
       try {
         await dispatch(login(formData)).unwrap();
-      } catch (e) {
-        console.error(e);
+      } catch (error: any) {
+        dispatch(
+          showNotification({
+            message: "Oops quelque chose s'est mal passé",
+            type: NotificationType.Error,
+          })
+        );
       }
     } else {
       dispatch(
