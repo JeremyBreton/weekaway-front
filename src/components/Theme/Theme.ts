@@ -1,7 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import { ThemeOptions } from '@mui/material/styles';
-import '@fontsource-variable/comfortaa';
 import '@fontsource/coming-soon';
+import '@fontsource-variable/nunito';
+import { fontSize } from '@mui/system';
 
 export const themeOptions: ThemeOptions = {
   palette: {
@@ -22,27 +23,41 @@ export const themeOptions: ThemeOptions = {
     },
   },
   typography: {
-    fontFamily: 'Coming Soon',
+    fontFamily: 'Nunito Variable',
     h1: {
-      fontFamily: 'Comfortaa variable',
+      fontFamily: 'Nunito Variable',
+      fontWeight: 700,
     },
     h2: {
-      fontFamily: 'Comfortaa variable',
+      fontFamily: 'Nunito Variable',
+      fontWeight: 700,
     },
     h3: {
-      fontFamily: 'Comfortaa variable',
+      fontFamily: 'Nunito Variable',
+      fontWeight: 500,
+      fontSize: '2rem',
     },
     h4: {
-      fontFamily: 'Comfortaa variable',
+      fontFamily: 'Nunito Variable',
+      fontWeight: 500,
     },
     h5: {
-      fontFamily: 'Comfortaa variable',
+      fontFamily: 'Nunito Variable',
+      fontWeight: 500,
     },
     h6: {
-      fontFamily: 'Comfortaa variable',
+      fontFamily: 'Nunito Variable',
+      fontWeight: 500,
     },
     button: {
-      fontFamily: 'Comfortaa variable',
+      fontFamily: 'Nunito Variable',
+      fontWeight: 500,
+      fontSize: '1rem',
+    },
+    body1: {
+      fontFamily: 'Nunito Variable',
+      fontSize: '1.1rem',
+      fontWeight: 400,
     },
   },
 };

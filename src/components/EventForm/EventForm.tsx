@@ -30,6 +30,7 @@ function EventForm() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
+  const [fileChange, setFileChange] = useState<File>(null);
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -53,15 +54,16 @@ function EventForm() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const fileToSend = fileChange;
 
-    const formObj = Object.fromEntries(formData);
-    const eventPicture = formObj.event.toString();
-
-    //! A commenter pour le dev
-
+    const eventPicture = fileToSend as unknown as string;
     formData.append('event', eventPicture);
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
+
+    const formObj = Object.fromEntries(formData);
+
+    //! A commenter pour le dev
 
     if (formObj) {
       try {
@@ -118,6 +120,11 @@ function EventForm() {
   if (isAuthenticated) {
     handleOwnerId = getTokenId();
   }
+
+  const handleFileChange = (event: any) => {
+    setFileChange(event.target.files[0]);
+    console.log(fileChange?.name);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -212,13 +219,27 @@ function EventForm() {
                   component="label"
                   variant="contained"
                   startIcon={<CloudUploadIcon />}
-                  sx={{ mt: 2 }}
+                  sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}
                 >
                   {/* eslint-disable-next-line react/no-unescaped-entities */}
                   Bannière de l'évènement
-                  <VisuallyHiddenInput type="file" id="event" name="event" />
+                  <VisuallyHiddenInput
+                    type="file"
+                    id="event"
+                    name="event"
+                    onChange={(e) => setFileChange(e.target.files[0])}
+                  />
                 </Button>
-
+                <TextField
+                  margin="normal"
+                  fullWidth
+                  name="event"
+                  type="text"
+                  id="event"
+                  sx={{ bgcolor: '#ABD1C6', color: 'black', focus: 'none' }}
+                  placeholder={fileChange?.name}
+                  disabled
+                />
                 <VisuallyHiddenInput
                   type="input"
                   id="owner_id"

@@ -5,7 +5,6 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  styled,
   Typography,
 } from '@mui/material';
 import { Box, Container, useTheme } from '@mui/system';
@@ -113,6 +112,7 @@ function Landing() {
             color: 'secondary.main',
             mb: 5,
           }}
+          variant="h2"
         >
           Mes évènements à venir
         </Typography>
@@ -125,7 +125,7 @@ function Landing() {
               mb: 5,
             }}
           >
-            <Typography sx={{ color: 'primary.main' }}>
+            <Typography variant="h2" sx={{ color: 'primary.main' }}>
               {/* eslint-disable-next-line react/no-unescaped-entities */}
               Vous n'avez pas encore d'évènements à venir
             </Typography>
@@ -193,14 +193,17 @@ function Landing() {
           ))}
         </Box>
 
-        <Typography sx={{ fontSize: 30, color: 'secondary.main', my: 5 }}>
+        <Typography
+          sx={{ fontSize: 30, color: 'secondary.main', my: 5 }}
+          variant="h2"
+        >
           Mes évènements passés
         </Typography>
         {!eventFilteredPast && (
           <Box
             sx={{ backgroundColor: 'background.paper', borderRadius: 1, p: 2 }}
           >
-            <Typography sx={{ color: 'primary.main' }}>
+            <Typography sx={{ color: 'primary.main' }} variant="h2">
               {/* eslint-disable-next-line react/no-unescaped-entities */}
               Vous n'avez pas encore d'évènements passés
             </Typography>

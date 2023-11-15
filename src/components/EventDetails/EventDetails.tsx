@@ -5,9 +5,7 @@ import {
   Container,
   CssBaseline,
   TextField,
-  ThemeProvider,
   Typography,
-  createTheme,
   styled,
 } from '@mui/material';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -21,6 +19,7 @@ import * as React from 'react';
 import Modal from '@mui/material/Modal';
 import { jwtDecode } from 'jwt-decode';
 import { useTheme } from '@mui/system';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
 import { fetchOneEvent } from '../../store/reducers/events';
