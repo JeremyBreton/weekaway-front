@@ -61,7 +61,9 @@ function EventForm() {
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
 
+
     const formObj = Object.fromEntries(formData);
+
 
     //! A commenter pour le dev
 

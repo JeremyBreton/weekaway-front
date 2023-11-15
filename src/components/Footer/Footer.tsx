@@ -1,6 +1,7 @@
 import { styled, Typography } from '@mui/material';
 import { Box, Container } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Link from '@mui/material/Link';
 import { themeOptions } from '../Theme/Theme';
 
 import logo from '../../assets/LOGO_HORIZONTAL__ONLY_VERT___RESIZE-NEWpng.png';
@@ -16,7 +17,7 @@ function Footer() {
     },
   }));
 
-  const FooterLink = styled('span')(({ theme }) => ({
+  const FooterText = styled('span')(({ theme }) => ({
     fontSize: '14px',
     color: 'text.primary',
     fontWeight: '300',
@@ -48,13 +49,21 @@ function Footer() {
                 WeekAway
               </Typography>
 
-              <FooterLink>Qui sommes nous ?</FooterLink>
+              <FooterText>
+                <Link href="/aboutus" sx={{ textDecoration: 'none' }}>
+                  Qui sommes nous ?
+                </Link>
+              </FooterText>
               <br />
-              <FooterLink>Nous contacter</FooterLink>
+              <FooterText>
+                <Link href="/contactus" sx={{ textDecoration: 'none' }}>
+                  Nous contacter
+                </Link>
+              </FooterText>
               <br />
-              <FooterLink>Plan du site</FooterLink>
+              <FooterText>Plan du site</FooterText>
               <br />
-              <FooterLink>Mention légales</FooterLink>
+              <FooterText>Mention légales</FooterText>
             </Box>
 
             <Box

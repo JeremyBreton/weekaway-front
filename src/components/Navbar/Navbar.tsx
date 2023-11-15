@@ -1,8 +1,17 @@
 import * as React from 'react';
+import {
+  Box,
+  Link,
+  ThemeProvider,
+  Typography,
+  createTheme,
+  Chip,
+  useTheme,
+  ButtonBase,
+} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
@@ -13,12 +22,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
-import Link from '@mui/material/Link';
-import { ButtonBase } from '@mui/material';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { themeOptions } from '../Theme/Theme';
 
@@ -52,6 +57,9 @@ function Navbar(props: Props) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isLoggedIn = Cookies.get('token');
+
+  const theme = useTheme();
+  const defaultTheme = createTheme(themeOptions);
 
   const { window } = props;
   const defaultTheme = createTheme(themeOptions);
@@ -147,7 +155,14 @@ function Navbar(props: Props) {
                   />
                 </Link>
               </Typography>
-              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <Box
+                sx={{
+                  display: { xs: 'none', sm: 'block' },
+                  [theme.breakpoints.down('md')]: {
+                    textAlign: 'end',
+                  },
+                }}
+              >
                 {navItemsLogged.map((item) => (
                   <ButtonBase
                     key={item.name}
