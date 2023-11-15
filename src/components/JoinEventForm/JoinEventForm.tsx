@@ -35,7 +35,9 @@ function JoinEventForm() {
     if (formObj.password !== '') {
       try {
         await axiosInstance.post('/joinEvent', eventtoJoin).then((response) => {
-          Cookies.set('eventId', response.data.eventId);
+          Cookies.set('eventId', response.data.eventId, {
+            withCredentials: false,
+          });
 
           // console.log('je suis ici fraté', response.data);
           if (response.data.eventId) {

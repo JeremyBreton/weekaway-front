@@ -71,7 +71,9 @@ export const login = createAsyncThunk(
 
 export const fetchUser = createAsyncThunk('user/fetch', async () => {
   const id = getTokenId();
-  const { data } = await axiosInstance.get(`/user/${id}`);
+  const { data } = await axiosInstance.get(`/user/${id}`, {
+    withCredentials: false,
+  });
   return { data };
 });
 

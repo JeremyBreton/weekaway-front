@@ -44,7 +44,9 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
     if (firstname && lastname && email && password) {
       try {
-        const response = await axiosInstance.post('/register', userData);
+        const response = await axiosInstance.post('/register', userData, {
+          withCredentials: false,
+        });
         setUser(response.data);
         navigate('/Signin');
       } catch (e) {
