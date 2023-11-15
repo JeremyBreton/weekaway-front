@@ -133,6 +133,7 @@ function ProfileSettings() {
           })
         );
         await axiosInstance.patch(`/user/${id}`, formObj, {
+          withCredentials: false,
           headers: {
             'Content-Type': 'multipart/form-data',
           },
