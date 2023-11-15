@@ -117,7 +117,7 @@ function SignIn() {
                   id="email"
                   label="Adresse email"
                   name="email"
-                  autoComplete="email"
+                  // autoComplete="email"
                   autoFocus
                   value={email}
                   onChange={({ target }) => setEmail(target.value)}
@@ -130,7 +130,7 @@ function SignIn() {
                   label="Mot de passe"
                   type="password"
                   id="password"
-                  autoComplete="current-password"
+                  // autoComplete="current-password"
                   value={password}
                   onChange={({ target }) => setPassword(target.value)}
                 />
