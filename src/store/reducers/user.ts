@@ -49,7 +49,7 @@ export const login = createAsyncThunk(
   async (formData: FormData) => {
     const formObj = Object.fromEntries(formData);
     const { data } = await axiosInstance.post('/login', formObj, {
-      withCredentials: true,
+      withCredentials: false,
     });
     if (data.token) {
       // ! JEREMY
