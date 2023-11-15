@@ -62,6 +62,7 @@ function Navbar(props: Props) {
   const defaultTheme = createTheme(themeOptions);
 
   const { window } = props;
+  const defaultTheme = createTheme(themeOptions);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -113,10 +114,10 @@ function Navbar(props: Props) {
     window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      {isLoggedIn && (
-        <ThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={defaultTheme}>
+      <Box sx={{ display: 'flex' }}>
+        <CssBaseline />
+        {isLoggedIn && (
           <AppBar
             style={{
               backgroundColor: '#ABD1C6',
@@ -174,6 +175,8 @@ function Navbar(props: Props) {
                         backgroundColor: '#001E1D',
                         color: '#F9BC60',
                       },
+                      fontWeight: 500,
+                      fontSize: '1.07rem',
                     }}
                   >
                     {item.name}
@@ -189,6 +192,8 @@ function Navbar(props: Props) {
                       backgroundColor: '#001E1D',
                       color: '#F9BC60',
                     },
+                    fontWeight: 500,
+                    fontSize: '1.07rem',
                   }}
                   onClick={handleLogout}
                 >
@@ -206,10 +211,8 @@ function Navbar(props: Props) {
               </IconButton>
             </Toolbar>
           </AppBar>
-        </ThemeProvider>
-      )}
-      {!isLoggedIn && (
-        <ThemeProvider theme={defaultTheme}>
+        )}
+        {!isLoggedIn && (
           <AppBar
             style={{
               backgroundColor: '#ABD1C6',
@@ -262,6 +265,8 @@ function Navbar(props: Props) {
                         backgroundColor: 'primary.main',
                         color: 'secondary.main',
                       },
+                      fontWeight: 500,
+                      fontSize: '1.07rem',
                     }}
                   >
                     {item.name}
@@ -270,9 +275,8 @@ function Navbar(props: Props) {
               </Box>
             </Toolbar>
           </AppBar>
-        </ThemeProvider>
-      )}
-      <ThemeProvider theme={defaultTheme}>
+        )}
+
         <nav>
           <Drawer
             container={container}
@@ -295,12 +299,12 @@ function Navbar(props: Props) {
             {drawer}
           </Drawer>
         </nav>
-      </ThemeProvider>
 
-      <Box component="main">
-        <Toolbar />
+        <Box component="main">
+          <Toolbar />
+        </Box>
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 }
 

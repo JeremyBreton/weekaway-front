@@ -4,8 +4,6 @@ import { Provider } from 'react-redux';
 
 import { RouterProvider } from 'react-router-dom';
 
-import './styles/index.scss';
-
 import router from './routes/router';
 
 import store from './store';

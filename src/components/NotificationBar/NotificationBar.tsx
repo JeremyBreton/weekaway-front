@@ -2,8 +2,10 @@ import * as React from 'react';
 import Stack from '@mui/material/Stack';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import { hideNotification } from '../../store/reducers/notification';
+import { themeOptions } from '../Theme/Theme';
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   props,
@@ -27,19 +29,23 @@ function NotificationBar() {
     dispatch(hideNotification());
   };
 
+  const defaultTheme = createTheme(themeOptions);
+
   return (
-    <Stack spacing={2} sx={{ width: '100%' }}>
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert onClose={handleClose} severity={type} sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
-    </Stack>
+    <ThemeProvider theme={defaultTheme}>
+      <Stack spacing={2} sx={{ width: '100%' }}>
+        <Snackbar
+          open={open}
+          autoHideDuration={6000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert onClose={handleClose} severity={type} sx={{ width: '100%' }}>
+            {message}
+          </Alert>
+        </Snackbar>
+      </Stack>
+    </ThemeProvider>
   );
 }
 

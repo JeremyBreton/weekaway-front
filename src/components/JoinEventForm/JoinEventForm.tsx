@@ -7,12 +7,18 @@ import Cookies from 'js-cookie';
 import axios from 'axios';
 import { themeOptions } from '../Theme/Theme';
 import { getTokenId, getCookie } from '../../utils/cookieUtils';
+import {
+  NotificationType,
+  showNotification,
+} from '../../store/reducers/notification';
+import { useAppDispatch } from '../../hooks/redux';
+import NotificationBar from '../NotificationBar/NotificationBar';
 
 function JoinEventForm() {
   const theme = useTheme();
   const defaultTheme = createTheme(themeOptions);
+  const dispatch = useAppDispatch();
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
-  console.log('isAuthenticated', isAuthenticated);
   const navigate = useNavigate();
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -25,36 +31,65 @@ function JoinEventForm() {
     //! A commenter pour le dev
     const eventtoJoin = { password: formObj.password, id };
 
-    const eventFetched = await axios
-      .post('http://caca-boudin.fr/api/joinEvent', eventtoJoin)
-      .then((response) => {
-        Cookies.set('eventId', response.data.eventId);
-        // console.log('je suis ici fraté', response.data);
-        return JSON.parse(JSON.stringify(response.data));
-      });
-    const eventId = Cookies.get('eventId');
-    navigate(`/event/${eventId}`);
+    if (formObj.password !== '') {
+      try {
+        await axios
+          .post('http://caca-boudin.fr/api/joinEvent', eventtoJoin)
+          .then((response) => {
+            Cookies.set('eventId', response.data.eventId);
+
+            // console.log('je suis ici fraté', response.data);
+            if (response.data.eventId) {
+              const eventId = Cookies.get('eventId');
+              navigate(`/event/${eventId}`);
+            } else if (response.data.eventId === undefined) {
+              dispatch(
+                showNotification({
+                  message: "Oops quelque chose s'est mal passé !",
+                  type: NotificationType.Error,
+                })
+              );
+            }
+            return JSON.parse(JSON.stringify(response.data));
+          });
+      } catch (e) {
+        console.error(e);
+        dispatch(
+          showNotification({
+            message: "Oops quelque chose s'est mal passé !",
+            type: NotificationType.Error,
+          })
+        );
+      }
+    } else {
+      dispatch(
+        showNotification({
+          message: "Oops quelque chose s'est mal passé !",
+          type: NotificationType.Error,
+        })
+      );
+    }
   };
 
-  //! On peut surement simplifier avec un else ou else if
-  useEffect(() => {
-    if (isAuthenticated) {
-      Cookies.get('token');
-    }
-  }, [isAuthenticated]);
   useEffect(() => {
     if (!isAuthenticated) {
-      // eslint-disable-next-line no-alert
-      alert('Vous devez être connectés pour créer un évènement');
+      dispatch(
+        showNotification({
+          message: 'Vous devez être connecté !',
+          type: NotificationType.Error,
+        })
+      );
       navigate('/signin');
+    } else {
+      Cookies.get('token');
     }
-  }, [isAuthenticated, navigate]);
-
+  }, [dispatch, isAuthenticated, navigate]);
   return (
     <ThemeProvider theme={defaultTheme}>
       {isAuthenticated && (
-        <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
+        <Container component="main" maxWidth="xs" sx={{ minHeight: '76vh' }}>
           <CssBaseline />
+          <NotificationBar />
 
           <Box sx={{ backgroundColor: '#ABD1C6', borderRadius: 5, px: 5 }}>
             <Box

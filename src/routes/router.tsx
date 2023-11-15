@@ -63,10 +63,7 @@ const router = createBrowserRouter([
             path: '/event/:idEvent',
             element: <EventDetails />,
           },
-          // {
-          //   path: '/logout',
-          //   element: <App />,
-          // },
+
           {
             path: '/aboutus',
             element: <AboutUs />,
@@ -75,6 +72,7 @@ const router = createBrowserRouter([
             path: '/contactus',
             element: <ContactUs />,
           },
+
         ],
       },
     ],

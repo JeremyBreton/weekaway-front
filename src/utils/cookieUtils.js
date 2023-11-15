@@ -15,6 +15,9 @@ export const removeCookie = (name) => {
 
 export const getTokenId = () => {
   const token = Cookies.get('token');
-  const decode = Decode.jwtDecode(token);
-  return decode.id;
+  if (token) {
+    const decode = Decode.jwtDecode(token);
+    return decode.id;
+  }
+  return undefined;
 };

@@ -4,7 +4,6 @@ import {
   CssBaseline,
   Grid,
   Modal,
-  Snackbar,
   styled,
   TextField,
   Typography,
@@ -16,18 +15,17 @@ import Cookies from 'js-cookie';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-
 import * as React from 'react';
 
 import axios from 'axios';
 import dayjs from 'dayjs';
 import { DateField, LocalizationProvider, frFR } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Select from '@mui/material/Select';
 import { getCookie, getTokenId } from '../../utils/cookieUtils';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-import { fetchUser, login } from '../../store/reducers/user';
+import { fetchUser } from '../../store/reducers/user';
 import {
   NotificationType,
   showNotification,
@@ -47,6 +45,7 @@ function ProfileSettings() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
   const [firstname, setFirstname] = useState('');
   const [lastname, setLastname] = useState('');
   const [profileDesc, setProfileDesc] = useState('');
@@ -62,19 +61,24 @@ function ProfileSettings() {
   const handleOpenConnect = () => setOpenConnect(true);
   const handleCloseConnect = () => setOpenConnect(false);
 
-  //! A voir pour simplifier avec else ou else if + alert a passer en snackbar
   useEffect(() => {
     if (!isAuthenticated) {
-      alert('Vous devez être connectés pour créer un évènement');
+      dispatch(
+        showNotification({
+          message: 'Vous devez être connecté !',
+          type: NotificationType.Error,
+        })
+      );
       navigate('/signin');
-    }
-  }, [isAuthenticated, navigate]);
-
-  useEffect(() => {
-    if (isAuthenticated) {
+    } else {
       Cookies.get('token');
     }
-  }, [isAuthenticated]);
+  }, [dispatch, isAuthenticated, navigate]);
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     Cookies.get('token');
+  //   }
+  // }, [isAuthenticated]);
 
   const style = {
     position: 'absolute' as const,
@@ -112,7 +116,7 @@ function ProfileSettings() {
     // Remove empty fields from formData
     Object.keys(formObj).forEach((key) => {
       const value = formObj[key];
-      if (value === '' || value === null) {
+      if (value === '' || value === null || value === 'Invalid Date') {
         delete formObj[key];
       }
     });
@@ -132,14 +136,26 @@ function ProfileSettings() {
             'Content-Type': 'multipart/form-data',
           },
         });
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } catch (e) {
         console.error(e);
+        dispatch(
+          showNotification({
+            message: "Oops quelque chose s'est mal passé",
+            type: NotificationType.Error,
+          })
+        );
       }
+    } else {
+      dispatch(
+        showNotification({
+          message: "Oops quelque chose s'est mal passé",
+          type: NotificationType.Error,
+        })
+      );
     }
-
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
   };
 
   const VisuallyHiddenInput = styled('input')({
@@ -432,12 +448,12 @@ function ProfileSettings() {
                       <TextField
                         required
                         fullWidth
-                        name="oldPassword"
+                        name="newPassword"
                         label="Nouveau mot de passe"
                         type="password"
-                        id="oldPassword"
-                        value={password}
-                        onChange={({ target }) => setPassword(target.value)}
+                        id="newPassword"
+                        value={newPassword}
+                        onChange={({ target }) => setNewPassword(target.value)}
                       />
                     </Grid>
                   </Grid>

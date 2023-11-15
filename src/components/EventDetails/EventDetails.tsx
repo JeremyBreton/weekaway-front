@@ -5,12 +5,10 @@ import {
   Container,
   CssBaseline,
   TextField,
-  ThemeProvider,
   Typography,
-  createTheme,
   styled,
 } from '@mui/material';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { BarChart } from '@mui/x-charts';
 import { FormEvent, useEffect, useState } from 'react';
 import axios from 'axios';
@@ -21,34 +19,56 @@ import * as React from 'react';
 import Modal from '@mui/material/Modal';
 import { jwtDecode } from 'jwt-decode';
 import { useTheme } from '@mui/system';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
 import { fetchOneEvent } from '../../store/reducers/events';
 import { useAppSelector, useAppDispatch } from '../../hooks/redux';
 import Loading from '../Loading/Loading';
+import {
+  NotificationType,
+  showNotification,
+} from '../../store/reducers/notification';
+import NotificationBar from '../NotificationBar/NotificationBar';
+import { getCookie } from '../../utils/cookieUtils';
 
 function EventDetails() {
   const theme = useTheme();
+  const [isAuthenticated] = useState(!!getCookie('token'));
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [open, setOpen] = React.useState(false);
+  const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleOpenDeleteModal = () => setOpenDeleteModal(true);
+  const handleCloseDeleteModal = () => setOpenDeleteModal(false);
 
   const defaultTheme = createTheme(themeOptions);
 
   const { idEvent } = useParams();
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const OneEvent = useAppSelector((state) => state.events.oneEvent);
   const loading = useAppSelector((state) => state.events.loading);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      dispatch(
+        showNotification({
+          message: 'Vous devez être connecté !',
+          type: NotificationType.Error,
+        })
+      );
+      navigate('/signin');
+    } else {
+      Cookies.get('token');
+    }
+  }, [dispatch, isAuthenticated, navigate]);
 
   useEffect(() => {
-    // Crée un state isLoading
-    // console.log('JE SUIS UN USEEFFECT');
     dispatch(fetchOneEvent());
-    // Changer le status de isLoading
   }, [dispatch]);
 
   // console.log('OneEvent dans eventDetails', OneEvent);
@@ -87,14 +107,38 @@ function EventDetails() {
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
 
-    axios
-      .post('http://caca-boudin.fr/api/userchoice', formObj)
-      .then((response) => {
-        return JSON.parse(JSON.stringify(response.data));
-      });
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
+    if (startDate && endDate) {
+      try {
+        axios
+          .post('http://caca-boudin.fr/api/userchoice', formObj)
+          .then((response) => {
+            return JSON.parse(JSON.stringify(response.data));
+          });
+        dispatch(
+          showNotification({
+            message: 'Votre date a bien été ajoutée',
+            type: NotificationType.Success,
+          })
+        );
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } catch (error: any) {
+        dispatch(
+          showNotification({
+            message: "Oops quelque chose s'est mal passé",
+            type: NotificationType.Error,
+          })
+        );
+      }
+    } else {
+      dispatch(
+        showNotification({
+          message: "Oops quelque chose s'est mal passé",
+          type: NotificationType.Error,
+        })
+      );
+    }
   };
 
   const token = Cookies.get('token');
@@ -107,22 +151,63 @@ function EventDetails() {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 500,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
+    border: '2px solid #004643',
     boxShadow: 24,
     p: 4,
+    borderRadius: 5,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
   };
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
 
     const formData = new FormData(form);
     const formObj = Object.fromEntries(formData);
+    console.log(formObj);
 
-    axios.post('http://caca-boudin.fr/api/inviteLink', formObj);
-    setOpen(false);
+    if (formObj.email !== '') {
+      try {
+        axios.post('http://caca-boudin.fr/api/inviteLink', formObj);
+
+        dispatch(
+          showNotification({
+            message: 'Votre invité a bien été ajouté',
+            type: NotificationType.Success,
+          })
+        );
+        setOpen(false);
+      } catch (error: any) {
+        dispatch(
+          showNotification({
+            message: "Oops quelque chose s'est mal passé",
+            type: NotificationType.Error,
+          })
+        );
+      }
+    } else {
+      dispatch(
+        showNotification({
+          message: "Oops quelque chose s'est mal passé",
+          type: NotificationType.Error,
+        })
+      );
+      setOpen(false);
+    }
+  };
+
+  const handleDeleteValidation = (event) => {
+    event.preventDefault();
+    axios.delete(`http://caca-boudin.fr/api/event/${idEvent}`);
+    navigate('/events');
+  };
+
+  const handleDeleteEvent = (event) => {
+    event.preventDefault();
+    handleOpenDeleteModal();
   };
 
   // Créer une condition qui retourne soit l'un soit l'autre suivant le state de isLoading
@@ -149,6 +234,7 @@ function EventDetails() {
       <ThemeProvider theme={defaultTheme}>
         <Container component="main" sx={{ minHeight: '62vh' }}>
           <CssBaseline />
+          <NotificationBar />
           <Box
             sx={{
               display: 'flex',
@@ -235,6 +321,7 @@ function EventDetails() {
                   {OneEvent.eventDetails.description}
                 </Typography>
               </Box>
+
               <Box
                 component="form"
                 onSubmit={handleSubmitAddUserChoice}
@@ -337,9 +424,27 @@ function EventDetails() {
                         color: '#001E1D',
                       },
                     }}
+                    onClick={handleDeleteEvent}
                   >
                     Delete
                   </Button>
+                  <Modal
+                    open={openDeleteModal}
+                    onClose={handleCloseDeleteModal}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <Box sx={style}>
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        Coucou
+                      </Typography>
+                    </Box>
+                  </Modal>
+
                   <Modal
                     open={open}
                     onClose={handleClose}
@@ -351,6 +456,9 @@ function EventDetails() {
                         id="modal-modal-title"
                         variant="h6"
                         component="h2"
+                        sx={{
+                          mb: 3,
+                        }}
                       >
                         Ajouter des invités
                       </Typography>
@@ -404,6 +512,7 @@ function EventDetails() {
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
         <CssBaseline />
+        <NotificationBar />
         <Box
           sx={{
             display: 'flex',
@@ -546,9 +655,42 @@ function EventDetails() {
                       color: '#001E1D',
                     },
                   }}
+                  onClick={handleDeleteEvent}
                 >
                   Delete
                 </Button>
+                <Modal
+                  open={openDeleteModal}
+                  onClose={handleCloseDeleteModal}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box sx={style}>
+                    <Typography
+                      id="modal-modal-title"
+                      variant="h6"
+                      component="h2"
+                      sx={{ mb: 3 }}
+                    >
+                      Etes vous sur de voulour supprimer cet évènement ?
+                    </Typography>
+                    <Button
+                      variant="outlined"
+                      startIcon={<DeleteIcon />}
+                      sx={{
+                        mb: 2,
+                        color: 'primary.main',
+                        '&:hover': {
+                          backgroundColor: '#e16162',
+                          color: '#001E1D',
+                        },
+                      }}
+                      onClick={handleDeleteValidation}
+                    >
+                      Je veux supprimer cet évènement
+                    </Button>
+                  </Box>
+                </Modal>
                 <Modal
                   open={open}
                   onClose={handleClose}

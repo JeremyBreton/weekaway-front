@@ -16,6 +16,12 @@ import dayjs from 'dayjs';
 import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
 import { getTokenId, getCookie } from '../../utils/cookieUtils';
+import {
+  NotificationType,
+  showNotification,
+} from '../../store/reducers/notification';
+import { useAppDispatch } from '../../hooks/redux';
+import NotificationBar from '../NotificationBar/NotificationBar';
 
 function EventForm() {
   const theme = useTheme();
@@ -24,52 +30,67 @@ function EventForm() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
+  const [fileChange, setFileChange] = useState<File>(null);
 
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!isAuthenticated) {
-      // eslint-disable-next-line no-alert
-      alert('Vous devez être connecté pour créer un évènement');
+      dispatch(
+        showNotification({
+          message: 'Vous devez être connecté !',
+          type: NotificationType.Error,
+        })
+      );
       navigate('/signin');
+    } else {
+      Cookies.get('token');
     }
-  }, [isAuthenticated, navigate]);
+  }, [dispatch, isAuthenticated, navigate]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const fileToSend = fileChange;
 
-    const formObj = Object.fromEntries(formData);
-    const eventPicture = formObj.event.toString();
-
-    //! A commenter pour le dev
-
+    const eventPicture = fileToSend as unknown as string;
     formData.append('event', eventPicture);
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
 
-    await axios
-      .post('http://caca-boudin.fr/api/event', formObj, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      .then((response) => {
-        const dataEventId = JSON.parse(JSON.stringify(response.data));
-        Cookies.set('eventId', response.data.id);
-        return dataEventId;
-      });
-    const idEvent = Cookies.get('eventId');
-    navigate(`/event/${idEvent}`);
-  };
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      Cookies.get('token');
+    const formObj = Object.fromEntries(formData);
+
+
+    //! A commenter pour le dev
+
+    if (formObj) {
+      try {
+        await axios
+          .post('http://caca-boudin.fr/api/event', formObj, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          })
+          .then((response) => {
+            // const dataEventId = JSON.parse(JSON.stringify(response.data));
+            Cookies.set('eventId', response.data.id);
+            navigate(`/event/${response.data.id}`);
+          });
+      } catch (e) {
+        console.error(e);
+        dispatch(
+          showNotification({
+            message: 'Merci de remplir tous les champs',
+            type: NotificationType.Error,
+          })
+        );
+      }
     }
-  }, [isAuthenticated]);
+  };
 
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -97,8 +118,15 @@ function EventForm() {
     // console.log('cest la date de fin dans le parent', formattedEndDate);
     setEndDate(formattedEndDate);
   };
+  let handleOwnerId = '';
+  if (isAuthenticated) {
+    handleOwnerId = getTokenId();
+  }
 
-  const handleOwnerId = getTokenId();
+  const handleFileChange = (event: any) => {
+    setFileChange(event.target.files[0]);
+    console.log(fileChange?.name);
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -107,10 +135,11 @@ function EventForm() {
           component="main"
           maxWidth="sm"
           sx={{
-            minHeight: '62vh',
+            minHeight: '76vh',
           }}
         >
           <CssBaseline />
+          <NotificationBar />
 
           <Box
             sx={{
@@ -192,13 +221,27 @@ function EventForm() {
                   component="label"
                   variant="contained"
                   startIcon={<CloudUploadIcon />}
-                  sx={{ mt: 2 }}
+                  sx={{ mt: 2, display: 'flex', flexDirection: 'column' }}
                 >
                   {/* eslint-disable-next-line react/no-unescaped-entities */}
                   Bannière de l'évènement
-                  <VisuallyHiddenInput type="file" id="event" name="event" />
+                  <VisuallyHiddenInput
+                    type="file"
+                    id="event"
+                    name="event"
+                    onChange={(e) => setFileChange(e.target.files[0])}
+                  />
                 </Button>
-
+                <TextField
+                  margin="normal"
+                  fullWidth
+                  name="event"
+                  type="text"
+                  id="event"
+                  sx={{ bgcolor: '#ABD1C6', color: 'black', focus: 'none' }}
+                  placeholder={fileChange?.name}
+                  disabled
+                />
                 <VisuallyHiddenInput
                   type="input"
                   id="owner_id"

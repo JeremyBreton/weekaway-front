@@ -1,5 +1,4 @@
 import Navbar from '../Navbar/Navbar';
-import './App.scss';
 import Presentation from '../Presentation/Presentation';
 import Advantage from '../Advantage/Advantage';
 import Reveal from '../Reveal/Reveal';
