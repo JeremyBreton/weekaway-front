@@ -110,9 +110,13 @@ function EventDetails() {
 
     if (startDate && endDate) {
       try {
-        axiosInstance.post('userchoice', formObj).then((response) => {
-          return JSON.parse(JSON.stringify(response.data));
-        });
+        axiosInstance
+          .post('userchoice', formObj, {
+            withCredentials: false,
+          })
+          .then((response) => {
+            return JSON.parse(JSON.stringify(response.data));
+          });
         dispatch(
           showNotification({
             message: 'Votre date a bien été ajoutée',
@@ -170,7 +174,9 @@ function EventDetails() {
 
     if (formObj.email !== '') {
       try {
-        axiosInstance.post('/inviteLink', formObj);
+        axiosInstance.post('/inviteLink', formObj, {
+          withCredentials: false,
+        });
 
         dispatch(
           showNotification({
