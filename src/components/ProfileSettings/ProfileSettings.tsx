@@ -31,6 +31,7 @@ import {
   showNotification,
 } from '../../store/reducers/notification';
 import NotificationBar from '../NotificationBar/NotificationBar';
+import axiosInstance from '../../utils/axios';
 
 function ProfileSettings() {
   const theme = useTheme();
@@ -131,7 +132,7 @@ function ProfileSettings() {
             type: NotificationType.Success,
           })
         );
-        await axios.patch(`http://caca-boudin.fr/api/user/${id}`, formObj, {
+        await axiosInstance.patch(`/user/${id}`, formObj, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },

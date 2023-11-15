@@ -13,6 +13,7 @@ import {
 } from '../../store/reducers/notification';
 import { useAppDispatch } from '../../hooks/redux';
 import NotificationBar from '../NotificationBar/NotificationBar';
+import axiosInstance from '../../utils/axios';
 
 function JoinEventForm() {
   const theme = useTheme();
@@ -33,25 +34,23 @@ function JoinEventForm() {
 
     if (formObj.password !== '') {
       try {
-        await axios
-          .post('http://caca-boudin.fr/api/joinEvent', eventtoJoin)
-          .then((response) => {
-            Cookies.set('eventId', response.data.eventId);
+        await axiosInstance.post('/joinEvent', eventtoJoin).then((response) => {
+          Cookies.set('eventId', response.data.eventId);
 
-            // console.log('je suis ici fraté', response.data);
-            if (response.data.eventId) {
-              const eventId = Cookies.get('eventId');
-              navigate(`/event/${eventId}`);
-            } else if (response.data.eventId === undefined) {
-              dispatch(
-                showNotification({
-                  message: "Oops quelque chose s'est mal passé !",
-                  type: NotificationType.Error,
-                })
-              );
-            }
-            return JSON.parse(JSON.stringify(response.data));
-          });
+          // console.log('je suis ici fraté', response.data);
+          if (response.data.eventId) {
+            const eventId = Cookies.get('eventId');
+            navigate(`/event/${eventId}`);
+          } else if (response.data.eventId === undefined) {
+            dispatch(
+              showNotification({
+                message: "Oops quelque chose s'est mal passé !",
+                type: NotificationType.Error,
+              })
+            );
+          }
+          return JSON.parse(JSON.stringify(response.data));
+        });
       } catch (e) {
         console.error(e);
         dispatch(

@@ -66,7 +66,7 @@ const eventsReducer = createReducer(initialState, (builder) => {
     .addCase(fetchOneEvent.fulfilled, (state, action) => {
       state.oneEvent = action.payload.data;
       state.loading = false;
-      console.log('action.payload.data', action.payload.data);
+      // console.log('action.payload.data', action.payload.data);
     })
     .addCase(fetchOneEvent.pending, (state) => {
       state.loading = true;
