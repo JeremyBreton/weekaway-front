@@ -28,6 +28,7 @@ function AboutUs() {
           py: 5,
           bgcolor: '#004643',
           pt: 15,
+          minHeight: '28vh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',

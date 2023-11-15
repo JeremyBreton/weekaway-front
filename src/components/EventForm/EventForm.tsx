@@ -61,9 +61,7 @@ function EventForm() {
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
 
-
     const formObj = Object.fromEntries(formData);
-
 
     //! A commenter pour le dev
 
@@ -151,7 +149,8 @@ function EventForm() {
           >
             <Box
               sx={{
-                mt: 20,
+                mt: 15,
+                mb: 15,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',

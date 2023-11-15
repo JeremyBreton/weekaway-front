@@ -25,10 +25,14 @@ function ContactUs() {
       <Box
         sx={{
           bgcolor: '#004643',
-          pt: 15,
+          pt: 20,
           pb: 5,
           [theme.breakpoints.down('md')]: {
             height: '75vh',
+            pt: 5,
+          },
+          [theme.breakpoints.down('sm')]: {
+            pt: 0,
           },
         }}
       >

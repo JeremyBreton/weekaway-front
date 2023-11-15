@@ -62,7 +62,6 @@ function Navbar(props: Props) {
   const defaultTheme = createTheme(themeOptions);
 
   const { window } = props;
-  const defaultTheme = createTheme(themeOptions);
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
@@ -135,13 +134,13 @@ function Navbar(props: Props) {
                 variant="h6"
                 component="div"
                 sx={{
-                  display: { xs: 'none', sm: 'block' },
+                  display: { xs: 'none', sm: 'none', md: 'block' },
                 }}
               >
                 <Link
                   href="/"
                   sx={{
-                    display: { xs: 'none', sm: 'block' },
+                    display: { xs: 'none', sm: 'none', md: 'block' },
                   }}
                 >
                   <img
@@ -157,7 +156,11 @@ function Navbar(props: Props) {
               </Typography>
               <Box
                 sx={{
-                  display: { xs: 'none', sm: 'block' },
+                  display: {
+                    xs: 'none',
+                    sm: 'none',
+                    md: 'block',
+                  },
                   [theme.breakpoints.down('md')]: {
                     textAlign: 'end',
                   },
@@ -205,7 +208,7 @@ function Navbar(props: Props) {
                 aria-label="open drawer"
                 edge="start"
                 onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: 'none' } }}
+                sx={{ mr: 2, display: { sm: 'block', md: 'none' } }}
               >
                 <MenuIcon />
               </IconButton>
@@ -226,7 +229,7 @@ function Navbar(props: Props) {
                 aria-label="open drawer"
                 edge="start"
                 onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: 'none' } }}
+                sx={{ mr: 2, display: { sm: 'block', md: 'none' } }}
               >
                 <MenuIcon />
               </IconButton>
@@ -235,13 +238,13 @@ function Navbar(props: Props) {
                 component="div"
                 sx={{
                   flexGrow: 1,
-                  display: { xs: 'none', sm: 'block' },
+                  display: { xs: 'none', sm: 'none', md: 'block' },
                 }}
               >
                 <Link
                   href="/"
                   sx={{
-                    display: { xs: 'none', sm: 'block' },
+                    display: { xs: 'none', sm: 'none', md: 'block' },
                   }}
                 >
                   <img
@@ -254,7 +257,7 @@ function Navbar(props: Props) {
                   />
                 </Link>
               </Typography>
-              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <Box sx={{ display: { xs: 'none', sm: 'none', md: 'block' } }}>
                 {navItems.map((item) => (
                   <Button
                     key={item.name}
@@ -287,7 +290,7 @@ function Navbar(props: Props) {
               keepMounted: true, // Better open performance on mobile.
             }}
             sx={{
-              display: { xs: 'block', sm: 'none' },
+              display: { xs: 'block', sm: 'block' },
               '& .MuiDrawer-paper': {
                 boxSizing: 'border-box',
                 width: drawerWidth,
