@@ -74,8 +74,6 @@ export default function SignUp() {
     setPassword(e.target.value);
   };
 
-  console.log(valid);
-
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="sm" sx={{ minHeight: '62vh' }}>
