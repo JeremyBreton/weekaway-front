@@ -112,7 +112,7 @@ export default function SignUp() {
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    autoComplete="given-name"
+                    // autoComplete="given-name"
                     name="firstName"
                     required
                     fullWidth
@@ -130,7 +130,7 @@ export default function SignUp() {
                     id="lastName"
                     label="Nom"
                     name="lastName"
-                    autoComplete="family-name"
+                    // autoComplete="family-name"
                     value={lastname}
                     onChange={({ target }) => setlastname(target.value)}
                   />
@@ -142,7 +142,7 @@ export default function SignUp() {
                     id="email"
                     label="Email"
                     name="email"
-                    autoComplete="email"
+                    // autoComplete="email"
                     error={!mailValid}
                     helperText={
                       !mailValid && 'Merci de rentrer un email valide'
@@ -164,7 +164,7 @@ export default function SignUp() {
                     label="Mot de passe"
                     type="password"
                     id="password"
-                    autoComplete="new-password"
+                    // autoComplete="new-password"
                     value={password}
                     onChange={(e) => handleValidation(e)}
                   />

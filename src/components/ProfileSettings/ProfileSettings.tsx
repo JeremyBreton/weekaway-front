@@ -287,7 +287,7 @@ function ProfileSettings() {
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                       <TextField
-                        autoComplete="given-name"
+                        // autoComplete="given-name"
                         name="firstname"
                         required
                         fullWidth
@@ -304,7 +304,7 @@ function ProfileSettings() {
                         id="lastname"
                         label="Nom"
                         name="lastname"
-                        autoComplete="family-name"
+                        // autoComplete="family-name"
                         defaultValue={userfetch.lastname}
                         onChange={({ target }) => setLastname(target.value)}
                       />
@@ -428,7 +428,7 @@ function ProfileSettings() {
                         id="email"
                         label="Email"
                         name="email"
-                        autoComplete="email"
+                        // autoComplete="email"
                         defaultValue={userfetch.email}
                         onChange={({ target }) => setEmail(target.value)}
                       />
