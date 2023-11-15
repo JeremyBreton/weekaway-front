@@ -125,7 +125,7 @@ function Landing() {
               mb: 5,
             }}
           >
-            <Typography variant="h2" sx={{ color: 'primary.main' }}>
+            <Typography variant="h2" sx={{ color: 'primary.main', fontSize: '1.2rem' }}>
               {/* eslint-disable-next-line react/no-unescaped-entities */}
               Vous n'avez pas encore d'évènements à venir
             </Typography>
@@ -203,7 +203,7 @@ function Landing() {
           <Box
             sx={{ backgroundColor: 'background.paper', borderRadius: 1, p: 2 }}
           >
-            <Typography sx={{ color: 'primary.main' }} variant="h2">
+            <Typography sx={{ color: 'primary.main', fontSize: '1.2rem'  }} variant="h2">
               {/* eslint-disable-next-line react/no-unescaped-entities */}
               Vous n'avez pas encore d'évènements passés
             </Typography>
