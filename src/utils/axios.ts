@@ -7,5 +7,5 @@
 import axios from 'axios';
 
 export default axios.create({
-  baseURL: 'http://caca-boudin.fr/api',
+  baseURL: 'http://localhost:3000/api',
 });

@@ -31,6 +31,7 @@ import {
 } from '../../store/reducers/notification';
 import NotificationBar from '../NotificationBar/NotificationBar';
 import { getCookie } from '../../utils/cookieUtils';
+import axiosInstance from '../../utils/axios';
 
 function EventDetails() {
   const theme = useTheme();
@@ -109,11 +110,9 @@ function EventDetails() {
 
     if (startDate && endDate) {
       try {
-        axios
-          .post('http://caca-boudin.fr/api/userchoice', formObj)
-          .then((response) => {
-            return JSON.parse(JSON.stringify(response.data));
-          });
+        axiosInstance.post('userchoice', formObj).then((response) => {
+          return JSON.parse(JSON.stringify(response.data));
+        });
         dispatch(
           showNotification({
             message: 'Votre date a bien été ajoutée',
@@ -171,7 +170,7 @@ function EventDetails() {
 
     if (formObj.email !== '') {
       try {
-        axios.post('http://caca-boudin.fr/api/inviteLink', formObj);
+        axiosInstance.post('/inviteLink', formObj);
 
         dispatch(
           showNotification({
@@ -201,7 +200,7 @@ function EventDetails() {
 
   const handleDeleteValidation = (event) => {
     event.preventDefault();
-    axios.delete(`http://caca-boudin.fr/api/event/${idEvent}`);
+    axiosInstance.delete(`/event/${idEvent}`);
     navigate('/events');
   };
 

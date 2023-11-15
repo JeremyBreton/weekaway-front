@@ -20,6 +20,7 @@ import {
   showNotification,
 } from '../../store/reducers/notification';
 import NotificationBar from '../NotificationBar/NotificationBar';
+import axiosInstance from '../../utils/axios';
 
 const defaultTheme = createTheme(themeOptions);
 
@@ -43,10 +44,7 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
     if (firstname && lastname && email && password) {
       try {
-        const response = await axios.post(
-          'http://caca-boudin.fr/api/register',
-          userData
-        );
+        const response = await axiosInstance.post('/register', userData);
         setUser(response.data);
         navigate('/Signin');
       } catch (e) {

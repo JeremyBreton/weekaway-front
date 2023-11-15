@@ -22,6 +22,7 @@ import {
 } from '../../store/reducers/notification';
 import { useAppDispatch } from '../../hooks/redux';
 import NotificationBar from '../NotificationBar/NotificationBar';
+import axiosInstance from '../../utils/axios';
 
 function EventForm() {
   const theme = useTheme();
@@ -67,8 +68,8 @@ function EventForm() {
 
     if (formObj) {
       try {
-        await axios
-          .post('http://caca-boudin.fr/api/event', formObj, {
+        await axiosInstance
+          .post('/event', formObj, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -120,11 +121,6 @@ function EventForm() {
   if (isAuthenticated) {
     handleOwnerId = getTokenId();
   }
-
-  const handleFileChange = (event: any) => {
-    setFileChange(event.target.files[0]);
-    console.log(fileChange?.name);
-  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
