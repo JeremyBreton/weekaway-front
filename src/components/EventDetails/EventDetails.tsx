@@ -172,7 +172,7 @@ function EventDetails() {
     flexDirection: 'column',
     justifyContent: 'center',
   };
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
 
@@ -183,7 +183,7 @@ function EventDetails() {
 
     if (formObj.email !== '') {
       try {
-        axiosInstance.post('/inviteLink', formObj, {
+        await axiosInstance.post('/inviteLink', formObj, {
           withCredentials: false,
         });
 
@@ -213,9 +213,9 @@ function EventDetails() {
     }
   };
 
-  const handleDeleteValidation = (event) => {
+  const handleDeleteValidation = async (event) => {
     event.preventDefault();
-    axiosInstance.delete(`/event/${idEvent}`);
+    await axiosInstance.delete(`/event/${idEvent}`);
     navigate('/events');
   };
 
