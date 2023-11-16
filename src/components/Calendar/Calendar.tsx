@@ -45,7 +45,7 @@ function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
       dispatch(
         showNotification({
           message:
-            'La date de début ne peut pas être antérieure à la date de fin.',
+            'La date de début ne peut pas être postérieure à la date de fin.',
           type: NotificationType.Error,
         })
       );

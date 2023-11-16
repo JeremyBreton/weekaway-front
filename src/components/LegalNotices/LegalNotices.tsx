@@ -95,7 +95,7 @@ function LegalNotices() {
                 textAlign: 'center',
               }}
             >
-              Responsables du publications
+              Responsables des publications
             </Typography>
             <Typography
               sx={{
