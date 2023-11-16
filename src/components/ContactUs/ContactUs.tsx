@@ -33,6 +33,7 @@ function ContactUs() {
           },
           [theme.breakpoints.down('sm')]: {
             pt: 0,
+            marginBottom: 10,
           },
         }}
       >

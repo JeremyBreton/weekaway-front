@@ -13,10 +13,18 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import { VisibilityOff, Visibility } from '@mui/icons-material';
+import {
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+  FormHelperText,
+} from '@mui/material';
 import { themeOptions } from '../Theme/Theme';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
-
 import { login } from '../../store/reducers/user';
 import { getCookie } from '../../utils/cookieUtils';
 import {
@@ -31,12 +39,22 @@ function SignIn() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const isLogged = useAppSelector((state) => state.user.logged);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [valid, setValid] = useState(true);
 
   const navigate = useNavigate();
-
   const dispatch = useAppDispatch();
+
+  const theme = useTheme();
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -73,6 +91,13 @@ function SignIn() {
     }
   }, [isLogged, navigate]);
 
+  const handleValidation = (e) => {
+    const reg =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%?&])[A-Za-z\d@$!%?&]{8,}$/;
+    setValid(reg.test(e.target.value));
+    setPassword(e.target.value);
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs" sx={{ minHeight: '76vh' }}>
@@ -82,10 +107,13 @@ function SignIn() {
           {!isAuthenticated && (
             <Box
               sx={{
-                marginTop: 20,
+                marginTop: 15,
                 display: 'flex',
                 flexDirection: 'column',
                 alignItems: 'center',
+                [theme.breakpoints.down('sm')]: {
+                  marginBottom: 10,
+                },
               }}
             >
               <Avatar sx={{ m: 1, bgcolor: '#f9bc60' }}>
@@ -112,17 +140,44 @@ function SignIn() {
                   value={email}
                   onChange={({ target }) => setEmail(target.value)}
                 />
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="Mot de passe"
-                  type="password"
-                  id="password"
-                  value={password}
-                  onChange={({ target }) => setPassword(target.value)}
-                />
+                <FormControl sx={{ width: '100%' }} variant="outlined">
+                  <InputLabel htmlFor="outlined-adornment-password">
+                    Mot de passe
+                  </InputLabel>
+                  <OutlinedInput
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    onChange={(e) => handleValidation(e)}
+                    value={password}
+                    error={!valid}
+                    required
+                    fullWidth
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={handleClickShowPassword}
+                          onMouseDown={handleMouseDownPassword}
+                          edge="end"
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                    label="Mot de passe"
+                    aria-describedby="outlined-helper-text"
+                    inputProps={{
+                      'aria-label': 'weight',
+                    }}
+                  />
+                  {!valid && (
+                    <FormHelperText id="outlined-helper-text">
+                      Le mot de passe doit contenir au moins 8 caratères, 1
+                      majuscule et 1 caractère spécial
+                    </FormHelperText>
+                  )}
+                </FormControl>
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Se souvenir de moi"

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,8 +11,16 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useDispatch } from 'react-redux';
+import { createTheme, ThemeProvider, useTheme } from '@mui/material/styles';
+import { VisibilityOff, Visibility } from '@mui/icons-material';
+import {
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  InputAdornment,
+  IconButton,
+  FormHelperText,
+} from '@mui/material';
 import { themeOptions } from '../Theme/Theme';
 import {
   NotificationType,
@@ -21,6 +28,7 @@ import {
 } from '../../store/reducers/notification';
 import NotificationBar from '../NotificationBar/NotificationBar';
 import axiosInstance from '../../utils/axios';
+import { useAppDispatch } from '../../hooks/redux';
 
 const defaultTheme = createTheme(themeOptions);
 
@@ -32,10 +40,20 @@ export default function SignUp() {
   const [user, setUser] = useState();
   const [valid, setValid] = useState(true);
   const [mailValid, setMailValid] = useState(true);
+  const [showPassword, setShowPassword] = React.useState(false);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
+  const theme = useTheme();
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+  };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -83,6 +101,9 @@ export default function SignUp() {
             backgroundColor: '#ABD1C6',
             borderRadius: 5,
             px: 5,
+            [theme.breakpoints.down('sm')]: {
+              marginBottom: 10,
+            },
           }}
         >
           <Box
@@ -91,6 +112,9 @@ export default function SignUp() {
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              [theme.breakpoints.down('sm')]: {
+                marginTop: 10,
+              },
             }}
           >
             <NotificationBar />
@@ -150,22 +174,44 @@ export default function SignUp() {
                   />
                 </Grid>
                 <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    error={!valid}
-                    helperText={
-                      !valid &&
-                      'Le mot de passe doit contenir au moins 8 caratères, 1 majuscule et 1 caractère spécial'
-                    }
-                    name="password"
-                    label="Mot de passe"
-                    type="password"
-                    id="password"
-                    // autoComplete="new-password"
-                    value={password}
-                    onChange={(e) => handleValidation(e)}
-                  />
+                  <FormControl sx={{ width: '100%' }} variant="outlined">
+                    <InputLabel htmlFor="outlined-adornment-password">
+                      Mot de passe
+                    </InputLabel>
+                    <OutlinedInput
+                      id="password"
+                      name="password"
+                      type={showPassword ? 'text' : 'password'}
+                      onChange={(e) => handleValidation(e)}
+                      value={password}
+                      error={!valid}
+                      required
+                      fullWidth
+                      endAdornment={
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={handleClickShowPassword}
+                            onMouseDown={handleMouseDownPassword}
+                            edge="end"
+                          >
+                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                          </IconButton>
+                        </InputAdornment>
+                      }
+                      label="Mot de passe"
+                      aria-describedby="outlined-helper-text"
+                      inputProps={{
+                        'aria-label': 'weight',
+                      }}
+                    />
+                    {!valid && (
+                      <FormHelperText id="outlined-helper-text">
+                        Le mot de passe doit contenir au moins 8 caratères, 1
+                        majuscule et 1 caractère spécial
+                      </FormHelperText>
+                    )}
+                  </FormControl>
                 </Grid>
               </Grid>
               <Button
