@@ -4,7 +4,6 @@ import { Box, Container, useTheme } from '@mui/system';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import axios from 'axios';
 import { themeOptions } from '../Theme/Theme';
 import { getTokenId, getCookie } from '../../utils/cookieUtils';
 import {
@@ -29,9 +28,11 @@ function JoinEventForm() {
     const id = getTokenId();
     const formData = new FormData(form);
     const formObj = Object.fromEntries(formData);
-    //! A commenter pour le dev
+
+    // create object to send to backend
     const eventtoJoin = { password: formObj.password, id };
 
+    // error handling
     if (formObj.password !== '') {
       try {
         await axiosInstance.post('/joinEvent', eventtoJoin).then((response) => {
@@ -72,6 +73,7 @@ function JoinEventForm() {
     }
   };
 
+  // verify if user is authenticated and redirect to signin if not with a notification
   useEffect(() => {
     if (!isAuthenticated) {
       dispatch(

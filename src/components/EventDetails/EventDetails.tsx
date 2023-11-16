@@ -11,7 +11,6 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import { BarChart } from '@mui/x-charts';
 import { FormEvent, useEffect, useState } from 'react';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import Cookies from 'js-cookie';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -41,6 +40,7 @@ function EventDetails() {
   const [open, setOpen] = React.useState(false);
   const [openDeleteModal, setOpenDeleteModal] = React.useState(false);
 
+  // Modal
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleOpenDeleteModal = () => setOpenDeleteModal(true);
@@ -54,6 +54,8 @@ function EventDetails() {
 
   const OneEvent = useAppSelector((state) => state.events.oneEvent);
   const loading = useAppSelector((state) => state.events.loading);
+
+  // Verify if user is authenticated, if not show error message and redirect to signin page
   useEffect(() => {
     if (!isAuthenticated) {
       dispatch(
@@ -74,6 +76,7 @@ function EventDetails() {
 
   // console.log('OneEvent dans eventDetails', OneEvent);
 
+  // VisuallyHiddenInput component
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -85,6 +88,8 @@ function EventDetails() {
     whiteSpace: 'nowrap',
     width: 1,
   });
+
+  // function to get the date from the child component
 
   const endDateReceived = (date: string | null) => {
     const formattedEndDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
@@ -108,6 +113,7 @@ function EventDetails() {
     formData.append('startDate', startDate);
     formData.append('endDate', endDate);
 
+    // error handling
     if (startDate && endDate) {
       try {
         axiosInstance
@@ -144,6 +150,8 @@ function EventDetails() {
     }
   };
 
+  // decode token to get user id
+
   const token = Cookies.get('token');
   const decoded = jwtDecode(token);
 
@@ -171,6 +179,8 @@ function EventDetails() {
     const formData = new FormData(form);
     const formObj = Object.fromEntries(formData);
     console.log(formObj);
+
+    // error handling
 
     if (formObj.email !== '') {
       try {
@@ -215,14 +225,14 @@ function EventDetails() {
     handleOpenDeleteModal();
   };
 
-  // Créer une condition qui retourne soit l'un soit l'autre suivant le state de isLoading
+  // Create condition to show loading component
   if (loading) {
     setTimeout(() => {}, 1000);
 
     return <Loading />;
   }
 
-  //! A commenter
+  // Create condition to show the chart with userChoices & numberVote
   if (!OneEvent.eventDetails.users.includes(null)) {
     const numberVote = OneEvent.eventDetails.numberVote.map(
       (vote: any) => vote

@@ -61,9 +61,11 @@ function Footer() {
                 </Link>
               </FooterText>
               <br />
-              <FooterText>Plan du site</FooterText>
-              <br />
-              <FooterText>Mention légales</FooterText>
+              <FooterText>
+                <Link href="/legalnotices" sx={{ textDecoration: 'none' }}>
+                  Mention légales
+                </Link>
+              </FooterText>
             </Box>
 
             <Box

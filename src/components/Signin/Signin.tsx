@@ -41,8 +41,6 @@ function SignIn() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
-    // const formEmail = form.email.value.toLowerCase();
-    // form.email.value = formEmail;
     const formData: FormData = new FormData(form);
 
     // create conditional to check if email and password are not empty
@@ -74,14 +72,6 @@ function SignIn() {
       navigate(`/events`);
     }
   }, [isLogged, navigate]);
-  // ! JEREMY
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     alert('Vous êtes connectés !');
-  //     navigate('/');
-  //   }
-  // }, [isAuthenticated, navigate]);
-  // ! JEREMY
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -130,7 +120,6 @@ function SignIn() {
                   label="Mot de passe"
                   type="password"
                   id="password"
-                  // autoComplete="current-password"
                   value={password}
                   onChange={({ target }) => setPassword(target.value)}
                 />
@@ -153,11 +142,7 @@ function SignIn() {
                   Me connecter
                 </Button>
                 <Grid container>
-                  <Grid item xs>
-                    {/* <Link href="#" variant="body2">
-                      Mot de passe oublié ?
-                    </Link> */}
-                  </Grid>
+                  <Grid item xs />
                   <Grid item>
                     <Link href="/signup" variant="body2">
                       {/* eslint-disable-next-line react/no-unescaped-entities */}

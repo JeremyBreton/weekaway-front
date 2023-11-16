@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {
   Box,
   Link,
@@ -23,18 +22,14 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux';
+import { useAppDispatch } from '../../hooks/redux';
 import { themeOptions } from '../Theme/Theme';
 
 import logo from '../../assets/LOGO_HORIZONTAL__ONLY_VERT___RESIZE-NEWpng.png';
 import { logout } from '../../store/reducers/user';
-import { getTokenId, getCookie } from '../../utils/cookieUtils';
+import { getCookie } from '../../utils/cookieUtils';
 
 interface Props {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
   // eslint-disable-next-line react/require-default-props
   window?: () => Window;
 }
@@ -71,12 +66,6 @@ function Navbar(props: Props) {
     navigate('/');
   };
 
-  //! A supprimer potentiellement puisque pas utilisé
-
-  // const isLogged = useAppSelector((state) => state.user.logged);
-
-  // const firstname = useAppSelector((state) => state.user.firstname);
-
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Typography variant="h6" sx={{ my: 2 }}>
@@ -87,6 +76,7 @@ function Navbar(props: Props) {
         <List>
           <ButtonBase
             href="/"
+            aria-label="Accueil"
             sx={{
               color: '#001E1D',
               borderRadius: 1,
@@ -104,7 +94,11 @@ function Navbar(props: Props) {
           </ButtonBase>
           {navItems.map((item) => (
             <ListItem key={item.name} disablePadding>
-              <ListItemButton href={item.link} sx={{ textAlign: 'center' }}>
+              <ListItemButton
+                href={item.link}
+                sx={{ textAlign: 'center' }}
+                aria-label={item.name}
+              >
                 <ListItemText primary={item.name} />
               </ListItemButton>
             </ListItem>
@@ -115,6 +109,7 @@ function Navbar(props: Props) {
         <List>
           <ButtonBase
             href="/"
+            aria-label="Accueil"
             sx={{
               color: '#001E1D',
               borderRadius: 1,
@@ -128,17 +123,22 @@ function Navbar(props: Props) {
             }}
           >
             {' '}
-            Accueil
+            ACCUEIL
           </ButtonBase>
           {navItemsLogged.map((item) => (
             <ListItem key={item.name} disablePadding>
-              <ListItemButton href={item.link} sx={{ textAlign: 'center' }}>
+              <ListItemButton
+                href={item.link}
+                sx={{ textAlign: 'center' }}
+                aria-label={item.name}
+              >
                 <ListItemText primary={item.name} />
               </ListItemButton>
             </ListItem>
           ))}
           <ButtonBase
             href="/"
+            aria-label="Me déconnecter"
             sx={{
               color: '#001E1D',
               borderRadius: 1,
@@ -189,6 +189,7 @@ function Navbar(props: Props) {
               >
                 <Link
                   href="/"
+                  aria-label="Accueil"
                   sx={{
                     display: { xs: 'none', sm: 'none', md: 'block' },
                   }}
@@ -197,7 +198,6 @@ function Navbar(props: Props) {
                     alt="logo-weekaway"
                     src={logo}
                     style={{
-                      // maxWidth: 150,
                       maxHeight: 120,
                       padding: 10,
                     }}
@@ -238,6 +238,7 @@ function Navbar(props: Props) {
                 ))}
                 <ButtonBase
                   href="/"
+                  aria-label="Me déconnecter"
                   sx={{
                     color: '#001E1D',
                     borderRadius: 1,
@@ -339,7 +340,7 @@ function Navbar(props: Props) {
             open={mobileOpen}
             onClose={handleDrawerToggle}
             ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
+              keepMounted: true,
             }}
             sx={{
               display: { xs: 'block', sm: 'block' },

@@ -11,7 +11,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import axios from 'axios';
 import dayjs from 'dayjs';
 import { themeOptions } from '../Theme/Theme';
 import Calendar from '../Calendar/Calendar';
@@ -36,6 +35,7 @@ function EventForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  // verify if user is authenticated and redirect to signin if not with a notification
   useEffect(() => {
     if (!isAuthenticated) {
       dispatch(
@@ -57,6 +57,7 @@ function EventForm() {
     const formData = new FormData(form);
     const fileToSend = fileChange;
 
+    // modify formData to send everything we need to the backend
     const eventPicture = fileToSend as unknown as string;
     formData.append('event', eventPicture);
     formData.append('startDate', startDate);
@@ -64,8 +65,7 @@ function EventForm() {
 
     const formObj = Object.fromEntries(formData);
 
-    //! A commenter pour le dev
-
+    // error handling
     if (formObj) {
       try {
         await axiosInstance
@@ -75,7 +75,6 @@ function EventForm() {
             },
           })
           .then((response) => {
-            // const dataEventId = JSON.parse(JSON.stringify(response.data));
             Cookies.set('eventId', response.data.id);
             navigate(`/event/${response.data.id}`);
           });
@@ -90,7 +89,7 @@ function EventForm() {
       }
     }
   };
-
+  // visually hidden input
   const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
     clipPath: 'inset(50%)',
@@ -103,7 +102,7 @@ function EventForm() {
     width: 1,
   });
 
-  //! A commenter pour le dev
+  // functions to get startDate and endDate from Calendar component and format them
   const startDateReceived = (date: string | null) => {
     const formattedStartDate = dayjs(date).format('YYYY-MM-DD HH:mm:ssZ');
     setStartDate(formattedStartDate);

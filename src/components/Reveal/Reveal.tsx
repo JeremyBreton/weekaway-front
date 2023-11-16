@@ -51,9 +51,7 @@ function Reveal() {
                 <Typography
                   variant="h3"
                   sx={{
-                    // fontSize: '2rem',
                     color: '#F9BC60',
-                    // fontWeight: '700',
                     my: 2,
                   }}
                 >
@@ -100,13 +98,13 @@ function Reveal() {
             {!isAuthenticated && (
               <Button
                 type="button"
-                // fullWidth
                 href="/signup"
                 variant="contained"
                 sx={{
                   backgroundColor: '#f9bc60',
                   color: '#001E1D',
                   width: '50%',
+
                   '&:hover': { color: '#f9bc60', backgroundColor: '#001E1D' },
                   [theme.breakpoints.down('md')]: {
                     width: '80%',
