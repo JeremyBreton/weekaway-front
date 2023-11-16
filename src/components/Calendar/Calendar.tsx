@@ -10,6 +10,11 @@ import { useState } from 'react';
 import { frFR } from '@mui/x-date-pickers/locales';
 import { themeOptions } from '../Theme/Theme';
 import 'dayjs/locale/fr';
+import {
+  showNotification,
+  NotificationType,
+} from '../../store/reducers/notification';
+import { useAppDispatch } from '../../hooks/redux';
 
 const StyledButton = styled(IconButton)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
@@ -32,20 +37,20 @@ function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
   const [endDate, setEndDate] = useState<Date | null>(null);
   // console.log('endDate', endDate);
 
-  const [error, setError] = useState('');
-  // console.log('error', error);
+  const dispatch = useAppDispatch();
 
   const handleStartDateChange = (date) => {
     // compare if date is after endDate
     if (endDate && date > endDate) {
-      setError(
-        'La date de fin ne peut pas être antérieure à la date de début.'
+      dispatch(
+        showNotification({
+          message:
+            'La date de début ne peut pas être antérieure à la date de fin.',
+          type: NotificationType.Error,
+        })
       );
-      alert('La date de fin ne peut pas être antérieure à la date de début.');
-      return;
     }
     setStartDate(date);
-    setError(null);
 
     startDateReceived(date);
   };
@@ -53,14 +58,15 @@ function Calendar({ startDateReceived, endDateReceived }: CalendarProps) {
   const handleEndDateChange = (date) => {
     // compare if date is before startDate
     if (startDate && date < startDate) {
-      setError(
-        'La date de fin ne peut pas être antérieure à la date de début.'
+      dispatch(
+        showNotification({
+          message:
+            'La date de fin ne peut pas être antérieure à la date de début.',
+          type: NotificationType.Error,
+        })
       );
-      alert('La date de fin ne peut pas être antérieure à la date de début.');
-      return;
     }
     setEndDate(date);
-    setError('');
 
     endDateReceived(date);
   };

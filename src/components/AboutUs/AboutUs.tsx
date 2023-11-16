@@ -7,12 +7,10 @@ import {
   Chip,
   useTheme,
 } from '@mui/material';
-import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import { themeOptions } from '../Theme/Theme';
@@ -28,7 +26,6 @@ function AboutUs() {
           py: 5,
           bgcolor: '#004643',
           pt: 15,
-          minHeight: '28vh',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -62,7 +59,7 @@ function AboutUs() {
         {aboutUsData.map((item) => (
           <Card
             key={item.name}
-            sx={{ width: 350, height: 500, borderRadius: 2, boxShadow: 5 }}
+            sx={{ width: 350, height: 550, borderRadius: 2, boxShadow: 5 }}
           >
             <CardMedia
               sx={{ height: 300 }}
@@ -98,7 +95,6 @@ function AboutUs() {
                   }}
                 />
               </Box>
-
               <Typography
                 variant="body2"
                 color="text.secondary"

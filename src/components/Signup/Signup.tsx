@@ -40,8 +40,6 @@ export default function SignUp() {
     event.preventDefault();
 
     const userData = { firstname, lastname, email, password };
-    // userData.email.toLowerCase();
-    const data = new FormData(event.currentTarget);
     if (firstname && lastname && email && password) {
       try {
         const response = await axiosInstance.post('/register', userData, {
@@ -132,7 +130,6 @@ export default function SignUp() {
                     id="lastName"
                     label="Nom"
                     name="lastName"
-                    // autoComplete="family-name"
                     value={lastname}
                     onChange={({ target }) => setlastname(target.value)}
                   />
@@ -144,7 +141,6 @@ export default function SignUp() {
                     id="email"
                     label="Email"
                     name="email"
-                    // autoComplete="email"
                     error={!mailValid}
                     helperText={
                       !mailValid && 'Merci de rentrer un email valide'

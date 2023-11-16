@@ -17,7 +17,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import * as React from 'react';
 
-import axios from 'axios';
 import dayjs from 'dayjs';
 import { DateField, LocalizationProvider, frFR } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -75,11 +74,6 @@ function ProfileSettings() {
       Cookies.get('token');
     }
   }, [dispatch, isAuthenticated, navigate]);
-  // useEffect(() => {
-  //   if (isAuthenticated) {
-  //     Cookies.get('token');
-  //   }
-  // }, [isAuthenticated]);
 
   const style = {
     position: 'absolute' as const,
@@ -109,6 +103,7 @@ function ProfileSettings() {
     const form = event.currentTarget;
     const formData = new FormData(form);
 
+    // Formate date with dayjs to be consistent with the back
     const formattedDate = dayjs(birthDate).format('YYYY-MM-DD HH:mm:ssZ');
     formData.set('birth_date', formattedDate);
 
@@ -285,7 +280,6 @@ function ProfileSettings() {
                   <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
                       <TextField
-                        // autoComplete="given-name"
                         name="firstname"
                         required
                         fullWidth
@@ -302,7 +296,6 @@ function ProfileSettings() {
                         id="lastname"
                         label="Nom"
                         name="lastname"
-                        // autoComplete="family-name"
                         defaultValue={userfetch.lastname}
                         onChange={({ target }) => setLastname(target.value)}
                       />
@@ -426,7 +419,6 @@ function ProfileSettings() {
                         id="email"
                         label="Email"
                         name="email"
-                        // autoComplete="email"
                         defaultValue={userfetch.email}
                         onChange={({ target }) => setEmail(target.value)}
                       />
