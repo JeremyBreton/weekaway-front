@@ -178,7 +178,6 @@ function EventDetails() {
 
     const formData = new FormData(form);
     const formObj = Object.fromEntries(formData);
-    console.log(formObj);
 
     // error handling
 
@@ -454,9 +453,25 @@ function EventDetails() {
                         id="modal-modal-title"
                         variant="h6"
                         component="h2"
+                        sx={{ mb: 3 }}
                       >
-                        Coucou
+                        Etes vous sur de voulour supprimer cet évènement ?
                       </Typography>
+                      <Button
+                        variant="outlined"
+                        startIcon={<DeleteIcon />}
+                        sx={{
+                          mb: 2,
+                          color: 'primary.main',
+                          '&:hover': {
+                            backgroundColor: '#e16162',
+                            color: '#001E1D',
+                          },
+                        }}
+                        onClick={handleDeleteValidation}
+                      >
+                        Je veux supprimer cet évènement
+                      </Button>
                     </Box>
                   </Modal>
 
@@ -525,7 +540,7 @@ function EventDetails() {
   }
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs" sx={{ minHeight: '62vh' }}>
+      <Container component="main" sx={{ minHeight: '60vh' }}>
         <CssBaseline />
         <NotificationBar />
         <Box
@@ -535,20 +550,21 @@ function EventDetails() {
             flexDirection: 'column',
             backgroundColor: 'background.default',
             pt: 11,
-            minHeight: '100vh',
+            [theme.breakpoints.down('md')]: {
+              pt: 0,
+            },
           }}
         >
           <Box
             sx={{
               backgroundColor: '#ABD1C6',
               borderRadius: 2,
-              // px: 5,
               my: 20,
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              width: '100vh',
+              width: '100%',
             }}
           >
             <CardMedia
