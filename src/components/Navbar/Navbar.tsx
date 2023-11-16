@@ -5,7 +5,6 @@ import {
   ThemeProvider,
   Typography,
   createTheme,
-  Chip,
   useTheme,
   ButtonBase,
 } from '@mui/material';
@@ -74,9 +73,9 @@ function Navbar(props: Props) {
 
   //! A supprimer potentiellement puisque pas utilisé
 
-  const isLogged = useAppSelector((state) => state.user.logged);
+  // const isLogged = useAppSelector((state) => state.user.logged);
 
-  const firstname = useAppSelector((state) => state.user.firstname);
+  // const firstname = useAppSelector((state) => state.user.firstname);
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
@@ -86,6 +85,23 @@ function Navbar(props: Props) {
       <Divider sx={{ bgcolor: '#001E1D' }} />
       {!isLoggedIn && (
         <List>
+          <ButtonBase
+            href="/"
+            sx={{
+              color: '#001E1D',
+              borderRadius: 1,
+              p: 1,
+              '&:hover': {
+                backgroundColor: '#001E1D',
+                color: '#F9BC60',
+              },
+              fontWeight: 500,
+              fontSize: '1.07rem',
+            }}
+          >
+            {' '}
+            ACCUEIL
+          </ButtonBase>
           {navItems.map((item) => (
             <ListItem key={item.name} disablePadding>
               <ListItemButton href={item.link} sx={{ textAlign: 'center' }}>
@@ -97,6 +113,23 @@ function Navbar(props: Props) {
       )}
       {isLoggedIn && (
         <List>
+          <ButtonBase
+            href="/"
+            sx={{
+              color: '#001E1D',
+              borderRadius: 1,
+              p: 1,
+              '&:hover': {
+                backgroundColor: '#001E1D',
+                color: '#F9BC60',
+              },
+              fontWeight: 500,
+              fontSize: '1.07rem',
+            }}
+          >
+            {' '}
+            Accueil
+          </ButtonBase>
           {navItemsLogged.map((item) => (
             <ListItem key={item.name} disablePadding>
               <ListItemButton href={item.link} sx={{ textAlign: 'center' }}>
@@ -104,6 +137,23 @@ function Navbar(props: Props) {
               </ListItemButton>
             </ListItem>
           ))}
+          <ButtonBase
+            href="/"
+            sx={{
+              color: '#001E1D',
+              borderRadius: 1,
+              p: 1,
+              '&:hover': {
+                backgroundColor: '#001E1D',
+                color: '#F9BC60',
+              },
+              fontWeight: 500,
+              fontSize: '1.07rem',
+            }}
+            onClick={handleLogout}
+          >
+            ME DÉCONNECTER
+          </ButtonBase>
         </List>
       )}
     </Box>
@@ -170,6 +220,7 @@ function Navbar(props: Props) {
                   <ButtonBase
                     key={item.name}
                     href={item.link}
+                    aria-label={item.name}
                     sx={{
                       color: '#001E1D',
                       borderRadius: 1,
@@ -262,6 +313,7 @@ function Navbar(props: Props) {
                   <Button
                     key={item.name}
                     href={item.link}
+                    aria-label={item.name}
                     sx={{
                       color: 'primary.main',
                       '&:hover': {
