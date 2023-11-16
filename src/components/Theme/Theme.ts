@@ -1,8 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { ThemeOptions } from '@mui/material/styles';
-import '@fontsource/coming-soon';
 import '@fontsource-variable/nunito';
-import { fontSize } from '@mui/system';
 
 export const themeOptions: ThemeOptions = {
   palette: {

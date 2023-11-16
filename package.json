@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "builder": "vite build",
     "preview": "vite preview",
     "lint": "tsc --noEmit && eslint src/**/*.{js,jsx,ts,tsx} --cache --max-warnings=0",
     "lint:fix": "eslint src/**/*.{js,jsx,ts,tsx} --fix"
@@ -13,9 +14,7 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@fontsource-variable/comfortaa": "^5.0.17",
     "@fontsource-variable/nunito": "^5.0.16",
-    "@fontsource/coming-soon": "^5.0.8",
     "@mui/icons-material": "^5.14.14",
     "@mui/material": "^5.14.14",
     "@mui/styles": "^5.14.15",

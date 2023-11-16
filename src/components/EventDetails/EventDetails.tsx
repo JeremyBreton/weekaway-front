@@ -404,7 +404,7 @@ function EventDetails() {
                         color: '#004643',
                       },
                     ]}
-                    style={{ maxWidth: '100%' }}
+                    // style={{ maxWidth: '100%' }}
                     height={500}
                   />
                 </Box>
