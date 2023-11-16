@@ -20,8 +20,6 @@ import {
   showNotification,
 } from '../../store/reducers/notification';
 import { getCookie } from '../../utils/cookieUtils';
-import '@fontsource-variable/comfortaa';
-import '@fontsource/coming-soon';
 
 function Landing() {
   const [isAuthenticated, setIsAuthenticated] = useState(!!getCookie('token'));
@@ -41,6 +39,7 @@ function Landing() {
     navigate(`/join`);
   };
 
+  // filter event to separate past and futur events
   const eventFilteredPast = eventsArray?.filter(
     (event) => event.status === false
   );
@@ -48,6 +47,7 @@ function Landing() {
     (event) => event.status === true
   );
 
+  // verify if user is authenticated and redirect to signin if not with a notification
   useEffect(() => {
     if (!isAuthenticated) {
       dispatch(
@@ -125,7 +125,10 @@ function Landing() {
               mb: 5,
             }}
           >
-            <Typography variant="h2" sx={{ color: 'primary.main', fontSize: '1.2rem' }}>
+            <Typography
+              variant="h2"
+              sx={{ color: 'primary.main', fontSize: '1.2rem' }}
+            >
               {/* eslint-disable-next-line react/no-unescaped-entities */}
               Vous n'avez pas encore d'évènements à venir
             </Typography>
@@ -203,7 +206,10 @@ function Landing() {
           <Box
             sx={{ backgroundColor: 'background.paper', borderRadius: 1, p: 2 }}
           >
-            <Typography sx={{ color: 'primary.main', fontSize: '1.2rem'  }} variant="h2">
+            <Typography
+              sx={{ color: 'primary.main', fontSize: '1.2rem' }}
+              variant="h2"
+            >
               {/* eslint-disable-next-line react/no-unescaped-entities */}
               Vous n'avez pas encore d'évènements passés
             </Typography>

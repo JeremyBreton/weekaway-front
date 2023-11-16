@@ -8,7 +8,7 @@ import {
   TextField,
   Container,
 } from '@mui/material';
-import { FormEvent, useState } from 'react';
+import { FormEvent } from 'react';
 import { themeOptions } from '../Theme/Theme';
 
 function ContactUs() {
@@ -29,7 +29,7 @@ function ContactUs() {
           pb: 5,
           [theme.breakpoints.down('md')]: {
             height: '75vh',
-            pt: 5,
+            pt: 10,
           },
           [theme.breakpoints.down('sm')]: {
             pt: 0,
@@ -130,91 +130,3 @@ function ContactUs() {
 }
 
 export default ContactUs;
-
-// <ThemeProvider theme={defaultTheme}>
-//   <Container
-//     component="main"
-//     maxWidth="md"
-//     sx={{
-//       border: '2px solid #f0f',
-//       borderRadius: 5,
-//       mt: 12,
-//       mb: 5,
-//       [theme.breakpoints.down('sm')]: {
-//         mt: 8,
-//       },
-//     }}
-//   >
-//     <Box
-//       sx={{
-//         backgroundColor: '#ABD1C6',
-//         borderRadius: 5,
-//         display: 'flex',
-//         justifyContent: 'center',
-//         alignItems: 'center',
-//         flexDirection: 'column',
-//         border: '10px solid #f1b3a2',
-//       }}
-//     >
-//       <Typography component="h1" variant="h5">
-//         Conctactez-nous
-//       </Typography>
-//       <Box
-//         component="form"
-//         // onSubmit={handleSubmit}
-//         noValidate
-//         sx={{
-//           mt: 1,
-//           justifyContent: 'center',
-
-//           alignItems: 'center',
-//           padding: 10,
-//         }}
-//       >
-//         <TextField
-//           margin="normal"
-//           required
-//           fullWidth
-//           id="name"
-//           label="Nom & Prénom"
-//           name="name"
-//           autoFocus
-//         />
-//         <TextField
-//           margin="normal"
-//           required
-//           fullWidth
-//           id="email"
-//           label="Email"
-//           name="email"
-//           autoFocus
-//         />
-//         <TextField
-//           margin="normal"
-//           required
-//           fullWidth
-//           multiline
-//           rows={5}
-//           id="message"
-//           label="Message"
-//           name="message"
-//           autoFocus
-//         />
-//         <Button
-//           type="submit"
-//           fullWidth
-//           variant="contained"
-//           sx={{
-//             mt: 3,
-//             mb: 2,
-//             backgroundColor: '#f9bc60',
-//             color: '#001E1D',
-//             '&:hover': { color: 'secondary.main' },
-//           }}
-//         >
-//           Envoyer
-//         </Button>
-//       </Box>
-//     </Box>
-//   </Container>
-// </ThemeProvider>

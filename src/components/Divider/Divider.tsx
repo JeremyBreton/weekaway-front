@@ -1,4 +1,4 @@
-import { styled, useTheme } from '@mui/system';
+import { styled } from '@mui/system';
 
 const Divider = styled('div')(({ theme }) => ({
   width: '13%',

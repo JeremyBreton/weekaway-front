@@ -13,6 +13,7 @@ import ProfileSettings from '../components/ProfileSettings/ProfileSettings';
 import EventDetails from '../components/EventDetails/EventDetails';
 import AboutUs from '../components/AboutUs/AboutUs';
 import ContactUs from '../components/ContactUs/ContactUs';
+import LegalNotices from '../components/LegalNotices/LegalNotices';
 
 // Router : 1. je crée le router avec `createBrowserRouter`
 const router = createBrowserRouter([
@@ -72,7 +73,10 @@ const router = createBrowserRouter([
             path: '/contactus',
             element: <ContactUs />,
           },
-
+          {
+            path: '/legalnotices',
+            element: <LegalNotices />,
+          },
         ],
       },
     ],

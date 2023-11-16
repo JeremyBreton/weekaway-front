@@ -1,6 +1,4 @@
-import { Box, CssBaseline, styled, Typography } from '@mui/material';
-import { Container, useTheme } from '@mui/system';
-import { Css } from '@mui/icons-material';
+import { Box, styled, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import GuideBox from '../GuideBox/GuideBox';
 import GuidesBox from '../GuidesBox/GuidesBox';
@@ -11,7 +9,7 @@ import VoyagesATheme from '../../assets/3-VoyagesATheme.png';
 import { themeOptions } from '../Theme/Theme';
 
 function Advantage() {
-  const theme = useTheme();
+  // const theme = useTheme();
   const defaultTheme = createTheme(themeOptions);
 
   const Divider = styled('div')(({ theme }) => ({
