@@ -1,6 +1,6 @@
 # 📦 React Modele Vite
 
-Bienvenue dans ce modèle/template de projet React !
+Bienvenue dans ce modèle/template de projet React !!
 
 - Première utilisation
 - Comment démarrer un projet ?
