@@ -688,7 +688,7 @@ function EventDetails() {
                   }}
                   onClick={handleDeleteEvent}
                 >
-                  Delete
+                  Supprimer
                 </Button>
                 <Modal
                   open={openDeleteModal}
