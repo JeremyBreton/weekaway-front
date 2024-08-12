@@ -16,6 +16,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
 
 import dayjs from 'dayjs';
 import { DateField, LocalizationProvider, frFR } from '@mui/x-date-pickers';
@@ -178,7 +179,6 @@ function ProfileSettings() {
           }}
         >
           <CssBaseline />
-
           <Box
             sx={{
               backgroundColor: '#ABD1C6',

@@ -123,6 +123,25 @@ function SignIn() {
                 Me connecter
               </Typography>
               <Box
+                sx={{
+                  mt: 2,
+                  width: '100%',
+                  backgroundColor: '#004643',
+                  color: '#fff',
+                  borderRadius: 5,
+                  pt: 2,
+                  pl: 2,
+                }}
+              >
+                <Typography>
+                  Vous pouvez tester en utilisant :
+                  <ul>
+                    <li>john.doe@example.com</li>
+                    <li>ABcd1234!</li>
+                  </ul>
+                </Typography>
+              </Box>
+              <Box
                 component="form"
                 onSubmit={handleSubmit}
                 noValidate
